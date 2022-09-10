@@ -99,23 +99,7 @@ class LoginPage extends UserInterface{
             const SizedBox(
               height: 22,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: InkWell(
-                onTap: (){
-                //  postRegister();
-                Navigator.pushNamed(context, appPageLayout);
-                },
-                child: FormFeilds.buttonFormField(
-                  title:'sign in',
-                  colorButton: ColorTheme.primary,
-                  colorText: ColorTheme.white,
-                  heightButton: 50,
-                  dPadding: false,
-                ),
-              ),
-            ),
-            Row(
+             Row(
               children: [
                 Text(
                   'Did you forget your password ?',
@@ -148,13 +132,32 @@ class LoginPage extends UserInterface{
                 ),
               ],
             ),
-            const Padding(
+            const SizedBox(
+              height: 22,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+              child: InkWell(
+                onTap: (){
+                //  postRegister();
+                Navigator.pushNamed(context, appPageLayout);
+                },
+                child: FormFeilds.buttonFormField(
+                  title:'sign in',
+                  colorButton: ColorTheme.primary,
+                  colorText: ColorTheme.white,
+                  heightButton: 50,
+                  dPadding: false,
+                ),
+              ),
+            ),
+            /* const Padding(
               padding:  EdgeInsets.fromLTRB(0, 20, 0, 15),
               child: Divider(
                 color: ColorTheme.primary,
                 thickness: 1,
               ),
-            ),
+            ), */
             Row(
               children: [
                 Text(
