@@ -8,6 +8,7 @@ class ColorTheme{
   static const Color primary                                   = Color(0xff6610f2);
   static const Color white                                     = Color(0xffFFFFFF);
   static const Color backroundInput                            = Color(0xff0f1a2b);
+  static const Color titleTypePlay                             = Color(0xff303031);
 
   
   
