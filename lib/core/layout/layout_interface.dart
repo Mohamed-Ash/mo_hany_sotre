@@ -20,7 +20,7 @@ abstract class LayoutInterface extends StatelessWidget{
       
       backgroundColor: ColorTheme.darkBackroundPage,  
       appBar:appBar,
-      body: SafeArea(child: buildBody(context)),
+      body: buildBody(context),
     );
     /* return Directionality(
       textDirection: TextDirection.rtl,
