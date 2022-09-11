@@ -4,26 +4,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/cubit/layout_cubit.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
+import 'package:m_hany_store/user/user_interface.dart';
 
-class AppPageLayout extends StatelessWidget{
+class AppPageLayout extends UserInterface{
   const AppPageLayout({Key? key}) : super(key: key);
 
+ @override
+  PreferredSizeWidget? get appBar => AppBar( 
+    leading: const  Text(''),
+    elevation: 0,
+    // backgroundColor: ColorTheme.primary,
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarColor:  Colors.transparent,
+    ),
+    title: Text('M.hany_store',style: getBoldStyle(color: ColorTheme.white,fontSize: 18)), 
+  );
+
+  
   @override
-  Widget build(BuildContext context) {
-    return  BlocProvider(
+  Widget buildBody(BuildContext context) {
+    return BlocProvider(
       create: (context) => LayoutCubit(),
       child: BlocBuilder<LayoutCubit, LayoutState>(
         builder: (context, state) {
             LayoutCubit cubit = LayoutCubit.get(context);
           return Scaffold(
-            appBar: AppBar( 
-              leading: const  Text(''),
-              backgroundColor: ColorTheme.primary,
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                statusBarColor:  ColorTheme.primary,
-              ),
-              title: Text('M.hany_store',style: getBoldStyle(color: ColorTheme.white,fontSize: 18)), 
-            ),
+            appBar: null,
             body: cubit.screen[cubit.currentIndex],
             bottomNavigationBar: BottomNavigationBar(
               onTap: (index){
