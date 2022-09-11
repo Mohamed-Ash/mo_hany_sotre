@@ -10,6 +10,7 @@ class FormFeilds{
     Color colorText     =  ColorTheme.white,
     double widthtButton =  double.infinity,
     double heightButton = 40,
+    double fontSize = 15,
     bool dPadding = true,
   }){
     return Container(
@@ -24,7 +25,7 @@ class FormFeilds{
         child: Center(
           child: Text(
             title!,
-            style: getBoldStyle(color: colorText, dDecoration: TextDecoration.none,),
+            style: getBoldStyle(color: colorText, dDecoration: TextDecoration.none, fontSize: fontSize ),
           ),
         ),
       ),
