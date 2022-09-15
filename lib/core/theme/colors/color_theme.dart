@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 class ColorTheme{
-  static const Color iconAppBar                                = Color(0xff6a77a0); //const Color(0xff282828), 
-  // static const Color darkAppBar                             = Color(0xff282828); //const Color(0xff282828), 
+  static const Color selectIconNavBar                          = Color(0xff6a77a0); //const Color(0xff282828), 
+  static const Color unSelectIconNavBar                        = Color(0xffCCCCCC); 
+  static const Color steam                                     = Color(0xff193446); 
+  static const Color textSteam                                 = Color(0xff55C0F4); 
+  static const Color rockStar                                  = Color(0xffFFAB00); 
+  // static const Color darkAppBar                             = Color(0xff282828); 
   static const Color darkAppBar                                = Color(0xff262a2d); 
   static const Color darkBackroundPage                         = Color(0xff111315);
   static const Color primary                                   = Color(0xff6610f2);
