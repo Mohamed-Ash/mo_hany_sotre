@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/cubit/layout_cubit.dart';
+import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:m_hany_store/user/user_interface.dart';
@@ -12,7 +13,7 @@ class AppPageLayout extends UserInterface{
  @override
   PreferredSizeWidget? get appBar => AppBar( 
     leading: const  Text(''),
-    elevation: 0,
+    elevation: 2,
     // backgroundColor: ColorTheme.primary,
     systemOverlayStyle: const SystemUiOverlayStyle(
       statusBarColor:  Colors.transparent,
@@ -35,14 +36,51 @@ class AppPageLayout extends UserInterface{
               onTap: (index){
                   cubit.changeCurrentIndex(index);
                 },
-              selectedItemColor: ColorTheme.iconAppBar,
-              unselectedItemColor: Colors.grey[200],
+              selectedItemColor: ColorTheme.selectIconNavBar,
+              unselectedItemColor: ColorTheme.unSelectIconNavBar,
               backgroundColor: ColorTheme.darkAppBar,
               currentIndex: cubit.currentIndex,
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
-                BottomNavigationBarItem(icon: Icon(Icons.discount_outlined),label: 'Sale'),
-                BottomNavigationBarItem(icon: Icon(Icons.person ),label: 'Profile'),
+              items:  [
+                BottomNavigationBarItem(
+                  icon: FormFeilds.containerImage(
+                    assetImage: 'assets/images/un_home.png',
+                    height: 25,
+                    width: 25,
+                  ),
+                  activeIcon: FormFeilds.containerImage(
+                    assetImage: 'assets/images/home.png',
+                    height: 25,
+                    width: 25,
+                  ),
+                  label: 'Home',
+                ),
+                 BottomNavigationBarItem(
+                  icon: FormFeilds.containerImage(
+                  assetImage: 'assets/images/un_discount.png',
+                  height: 30,
+                  width: 30,
+                  ),
+                  activeIcon: FormFeilds.containerImage(
+                    assetImage: 'assets/images/discount.png',
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: 'Sale',
+                  
+                ),
+                BottomNavigationBarItem(
+                  icon: FormFeilds.containerImage(
+                    assetImage: 'assets/images/un_profile.png',
+                    height: 25,
+                    width: 25,
+                  ),
+                  activeIcon: FormFeilds.containerImage(
+                    assetImage: 'assets/images/profile.png',
+                    height: 25,
+                    width: 25,
+                  ),
+                  label: 'Profile'
+                ),
               ]
             ),
           );
