@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/auth/login/login_page.dart';
 import 'package:m_hany_store/core/auth/register/register_page/register_page.dart';
 import 'package:m_hany_store/core/page/app_page_layout.dart';
+import 'package:m_hany_store/core/payments/checkout_page.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/user/product/product_page/preview_product_page.dart';
 
@@ -17,6 +18,9 @@ class Routes{
       case appPageLayout:                                       return MaterialPageRoute(builder: (_)=> const AppPageLayout());
       case previewProductPage:                                       return MaterialPageRoute(builder: (_)=> const PreviewProductPage());
         
+      // todo: payment methods
+      case checkoutpage:                                       return MaterialPageRoute(builder: (_)=> const CheckoutPage());
+
       default:
     }
     return null; 
