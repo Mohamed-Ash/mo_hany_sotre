@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "72256966305",
+    "project_id": "mohanystore-268dd",
+    "storage_bucket": "mohanystore-268dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72256966305:android:19227cfbcf7a17bdc32ae0",
+        "android_client_info": {
+          "package_name": "com.example.mo_hany_sotre"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72256966305-k9re4g6toodoc2soje2k8dac0f7kn7hh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mo_hany_sotre",
+            "certificate_hash": "d6dbf054258a0633f66b3450973ccb95ad721b5f"
+          }
+        },
+        {
+          "client_id": "72256966305-ee8j56uh9li0qgj8vibcot1vit4f09mc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCumbuig7yYvy90vEeZXsLkEJJqwvEO7Og"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72256966305-ee8j56uh9li0qgj8vibcot1vit4f09mc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
