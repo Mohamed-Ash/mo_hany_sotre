@@ -1,4 +1,8 @@
+// ignore_for_file: avoid_print
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
@@ -7,22 +11,21 @@ import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:m_hany_store/user/user_interface.dart';
 
 class RegisterPage extends UserInterface{
-  final  nameController = TextEditingController();
-  final  emailController = TextEditingController();
-  final  passwordController = TextEditingController();
-  final  comfirmPasswordController = TextEditingController();
-  final  jobsController = TextEditingController();
-  final  phoneController = TextEditingController();
-
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final comfirmPasswordController = TextEditingController();
+  final jobsController = TextEditingController();
+  final phoneController = TextEditingController();
+  final user = FirebaseAuth.instance.currentUser;
+  final  userCredential =  UserCredential; 
   RegisterPage({super.key});
-  
-   
   
   @override
   Widget buildBody(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.fromLTRB(12, 44, 12, 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,7 +56,7 @@ class RegisterPage extends UserInterface{
               height: 22,
             ),
             Text(
-              'First Name',
+              'Name',
               style: getSemiBoldStyle(
                 color: ColorTheme.primary,
                 fontSize: 14
@@ -72,7 +75,7 @@ class RegisterPage extends UserInterface{
               child: FormFeilds.textField(
                 keyboardType: TextInputType.name, 
                 controller: nameController, 
-                hintText: 'First Name', 
+                hintText: 'your Name', 
                 validator: (vail){
                   return null;
                 },
@@ -100,8 +103,8 @@ class RegisterPage extends UserInterface{
               ),
               child: FormFeilds.textField(
                 controller: phoneController, 
-                keyboardType: TextInputType.phone, 
-                hintText:  'Email',
+                keyboardType: TextInputType.emailAddress, 
+                hintText:  'hello@company.com',
               ),
             ),
              const SizedBox(
@@ -127,7 +130,7 @@ class RegisterPage extends UserInterface{
               child: FormFeilds.textField(
                 controller: passwordController, 
                 keyboardType: TextInputType.phone, 
-                hintText: 'Password',
+                hintText: 'your password',
               ),
             ),
               const SizedBox(
@@ -153,7 +156,7 @@ class RegisterPage extends UserInterface{
               child: FormFeilds.textField(
                 controller: comfirmPasswordController, 
                 keyboardType: TextInputType.phone, 
-                hintText: 'Confirm Password',
+                hintText: 'Confirm your password',
               ),
             ),
             const SizedBox(
@@ -163,7 +166,29 @@ class RegisterPage extends UserInterface{
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
               child: InkWell(
                 onTap: ()async{
-                  Navigator.pushNamed(context, appPageLayout);
+                  try {
+                    final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: 'mohamed.ashraf4117@gmail.com',
+                      password: 'asdasdasdasd',
+                    );
+                    print(userCredential.user!.emailVerified);
+                    if(userCredential.user!.emailVerified == false ){
+                      User? user = FirebaseAuth.instance.currentUser;
+                      await user?.sendEmailVerification().then((value) => Navigator.pushNamed(context, appPageLayout));
+                    }
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'weak-password') {
+                      print('The password provided is too weak.');
+                    } else if (e.code == 'email-already-in-use') {
+                      print('The account already exists for that email.');
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+                  // print(User.emailVerified);
+                  //  print(serCredential.user!.emailVerified);
+                  //   if(  serCredential.user!.emailVerified == false){}
+                  // Navigator.pushNamed(context, appPageLayout);
                 },
                 child: FormFeilds.buttonFormField(
                   title: 'Create New Accounte',
@@ -252,13 +277,54 @@ class RegisterPage extends UserInterface{
               assetImage: 'assets/images/facebook.png',
             ),
             // const SizedBox(height: 22,),
-            FormFeilds.continueWith(
-              title: 'Continue with google',
-              assetImage: 'assets/images/google.png',
+            InkWell(
+              onTap: ()async {
+                UserCredential cred = await signInWithGoogle(context);
+                  
+                print(cred.toString());                
+              },
+              child: FormFeilds.continueWith(
+                title: 'Continue with google',
+                assetImage: 'assets/images/google.png',
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  Future<UserCredential> signInWithGoogle(context) async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    Navigator.pushNamed(context, appPageLayout);
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+   /* void buildLoginUser()async{
+    try {
+      // ignore: unused_local_variable
+      UserCredential serCredential  = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+         email: emailController.text,
+        password: passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  } */
 }
