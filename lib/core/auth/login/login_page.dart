@@ -1,4 +1,7 @@
 
+// ignore_for_file: avoid_print
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
@@ -11,38 +14,26 @@ class LoginPage extends UserInterface{
   final  emailController = TextEditingController();
   final  passwordController = TextEditingController();
 
+  final user = FirebaseAuth.instance.currentUser;
+
+
   LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget buildBody(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.fromLTRB(12,45,12,0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-               Text(
-                  'Welcome',
-                  style: getBoldStyle(
-                    color: ColorTheme.primary,
-                    dDecoration: TextDecoration.none,
-                    fontSize: 34,
-                  ),
-                ),
-                const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Back ',
-                    style: getBoldStyle(
-                      color: ColorTheme.primary,
-                      fontSize: 34, 
-                      dDecoration: TextDecoration.none
-                  ),
-                ),
-              ],
+            Text(
+              'Welcome Back',
+              style: getBoldStyle(
+                color: ColorTheme.primary,
+                dDecoration: TextDecoration.none,
+                fontSize: 34,
+              ),
             ),
             const SizedBox(
               height: 15,
@@ -55,7 +46,7 @@ class LoginPage extends UserInterface{
               ),
             ),
             const SizedBox(
-              height: 8,
+              height: 20,
             ),
             Container(
               height: 50,
@@ -71,7 +62,7 @@ class LoginPage extends UserInterface{
               ),
             ),
             const SizedBox(
-              height: 8,
+              height: 28,
             ),
             Text(
               'Password',
@@ -81,7 +72,7 @@ class LoginPage extends UserInterface{
               ),
             ),
             const SizedBox(
-              height: 8,
+              height: 20,
             ),
             Container(
               height: 50,
@@ -91,13 +82,13 @@ class LoginPage extends UserInterface{
                 borderRadius: BorderRadius.circular(8),
               ),
               child:  FormFeilds.textField(
-                controller: emailController, 
+                controller: passwordController, 
                 keyboardType: TextInputType.emailAddress, 
                 hintText: 'your password',
               ),
             ),
             const SizedBox(
-              height: 22,
+              height: 33,   
             ),
              Row(
               children: [
@@ -138,9 +129,8 @@ class LoginPage extends UserInterface{
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
               child: InkWell(
-                onTap: (){
-                //  postRegister();
-                Navigator.pushNamed(context, appPageLayout);
+                onTap: ()async{
+                  buildLoginUser();
                 },
                 child: FormFeilds.buttonFormField(
                   title:'sign in',
@@ -151,13 +141,7 @@ class LoginPage extends UserInterface{
                 ),
               ),
             ),
-            /* const Padding(
-              padding:  EdgeInsets.fromLTRB(0, 20, 0, 15),
-              child: Divider(
-                color: ColorTheme.primary,
-                thickness: 1,
-              ),
-            ), */
+            const SizedBox(height: 22,),
             Row(
               children: [
                 Text(
@@ -193,7 +177,7 @@ class LoginPage extends UserInterface{
                 ),
               ],
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(height: 22,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children:  [
@@ -227,12 +211,12 @@ class LoginPage extends UserInterface{
                 ),
               ],
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(height: 12,),
             FormFeilds.continueWith(
               title: 'Continue with facebook',
               assetImage: 'assets/images/facebook.png',
             ),
-            const SizedBox(height: 22,),
+            const SizedBox(height: 12,),
             FormFeilds.continueWith(
               title: 'Continue with google',
               assetImage: 'assets/images/google.png',
@@ -241,5 +225,23 @@ class LoginPage extends UserInterface{
         ),
       ),
     );
+  }
+   buildLoginUser()async{
+    try {
+      UserCredential serCredential  = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+
+      );
+      print(serCredential.user!.emailVerified);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
