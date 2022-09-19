@@ -34,7 +34,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  # flutter_native_splash: ^2.2.9
   bloc: ^8.1.0
   flutter_bloc: ^8.1.1
   # share_plus: ^4.1.0
@@ -44,6 +43,7 @@ dependencies:
   firebase_core: ^1.22.0
   firebase_auth: ^3.8.0
   google_sign_in: ^5.4.1
+  flutter_native_splash: ^2.2.9
   
 dev_dependencies:
   flutter_test:
@@ -112,3 +112,12 @@ fonts:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_launcher_name:
   name: "m.Hany Store"
+
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/m_hany.png"
+
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/images/m_hany.png"
