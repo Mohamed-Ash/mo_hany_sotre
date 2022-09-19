@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
@@ -17,7 +16,6 @@ class PreviewProductWidget extends StatelessWidget {
   String subject = '';
   String tetst =  'https://wallpaperaccess.com/full/7070020.jpg';
   bool videoEnable = false;
-  ImagePicker picker = ImagePicker();
   List<String> imagePaths = [];
 
   final _imageUrls = <String>[
@@ -59,7 +57,7 @@ class PreviewProductWidget extends StatelessWidget {
                 },
                 child: Container(
                   width: double.infinity,
-                  height: 333,
+                  height: 350,
                   decoration: const BoxDecoration(
                     // borderRadius:BorderRadius.circular(8),
                     //  color: Colors.black,
@@ -156,26 +154,7 @@ class PreviewProductWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 22,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              FormFeilds.containerImage(assetImage: 'assets/images/Rockstar_Games.png'),
-              FormFeilds.containerImage(assetImage: 'assets/images/eepic.png'),
-              FormFeilds.containerImage(assetImage: 'assets/images/steam.png'),
-              
-            ],
-          ),
-          /* const SizedBox(
-            height: 15,
-          ),
-          Text(
-            '160 LE',
-            style: getBoldStyle(color: Colors.white,fontSize: 26),
-          ),
-           */
+         
           const SizedBox(
             height: 15,
           ),
@@ -194,9 +173,85 @@ class PreviewProductWidget extends StatelessWidget {
               style: getRegulerStyle(
                 color: ColorTheme.authTitle,
                 fontSize: 14
-              ),
+              ),  
             ),
           ),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(18,18,18,0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Accounts Available On',
+                    style: getRegulerStyle(color: ColorTheme.authHint,),  
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      FormFeilds.containerImage(assetImage: 'assets/images/Rockstar_Games.png',height: 25,width: 25,),
+                      FormFeilds.containerImage(assetImage: 'assets/images/eepic.png',height: 25,width: 25,),
+                      FormFeilds.containerImage(assetImage: 'assets/images/steam.png',height: 25,width: 25,),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12,12,12,12),
+              child: Divider(
+                color: ColorTheme.primary,
+                thickness: 1,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18,0,18,0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Publisher',
+                    style: getRegulerStyle(color: ColorTheme.authHint,fontSize: 13),  
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Rockstar Game',
+                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                  ),
+                ],
+              ),
+            ),  
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12,12,12,12),
+              child: Divider(
+                color: ColorTheme.primary,
+                thickness: 1,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18,0,18,0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Platform',
+                    style: getRegulerStyle(color: ColorTheme.authHint,fontSize: 13),  
+                  ),
+                  const Spacer(),
+                 FormFeilds.containerImage(assetImage: 'assets/images/windows.png',height: 15,width: 15,),
+                 const SizedBox(
+                  width: 2,
+                 ),
+                 FormFeilds.containerImage(assetImage: 'assets/images/apple.png',height: 15,width: 15,),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12,12,12,12),
+              child: Divider(
+                color: ColorTheme.primary,
+                thickness: 1,
+              ),
+            ),
           const SizedBox(
             height: 15,
           ),
@@ -218,7 +273,7 @@ class PreviewProductWidget extends StatelessWidget {
                       createButtonSheet(context);
                     },
                     child: FormFeilds.buttonFormField(
-                      title: 'Bye Now',
+                      title: 'Buy Now',
                       colorButton: ColorTheme.primary, 
                       fontSize: 15,
                       widthtButton: 100,
@@ -244,43 +299,6 @@ class PreviewProductWidget extends StatelessWidget {
               ),
             ],
           ),
-         /*  ListTile(
-            leading: const Icon(Icons.add),
-            title: Text('Add image',style: getBoldStyle(color: Colors.white,fontSize: 26),),
-            onTap: () async {
-              final imagePicker = ImagePicker();
-              final pickedFile = await imagePicker.pickImage(
-                source: ImageSource.gallery,
-              );
-              if (pickedFile != null) {
-                setState(() {
-                  imagePaths.add(pickedFile.path);
-                });
-              }
-            },
-          ),
-          const Padding(padding: EdgeInsets.only(top: 12.0)), */
-          /* Builder(
-            builder: (BuildContext context) {
-              return ElevatedButton(
-                onPressed: text.isEmpty && imagePaths.isEmpty
-                    ? null
-                    : () => _onShare(context),
-                child: Text('Share',style: getBoldStyle(color: Colors.white,fontSize: 26),),
-              );
-            },
-          ),
-          const Padding(padding: EdgeInsets.only(top: 12.0)),
-          Builder(
-            builder: (BuildContext context) {
-              return ElevatedButton(
-                onPressed: text.isEmpty && imagePaths.isEmpty
-                    ? null
-                    : () => _onShareWithResult(context),
-                child:  Text('Share With Result',style: getBoldStyle(color: Colors.white,fontSize: 26),),
-              );
-            },
-          ), */
           const SizedBox(
             height: 33,
           ),
@@ -384,148 +402,6 @@ class PreviewProductWidget extends StatelessWidget {
           ),
         ),
       ),
-    );// 28f@Ge4p9NDUwXX  password(fawry)
+    );
   }
-
-
-
-/*   Future<void> onButtonTap(Share share) async { 
-    String msg = 'pay account epic $tetst';
-    String url =  'pay account epic adads';
-
-    String? response;
-    final FlutterShareMe flutterShareMe = FlutterShareMe();
-    switch (share) {
-      case Share.facebook:
-        response = await flutterShareMe.shareToFacebook(url: url, msg: msg,);
-        break;
-      case Share.messenger:
-        response = await flutterShareMe.shareToMessenger(url: url, msg: msg);
-        break;
-      case Share.twitter:
-        response = await flutterShareMe.shareToTwitter(url: url, msg: msg);
-        break;
-      case Share.whatsapp:
-        if (file != null) {
-          response = await flutterShareMe.shareToWhatsApp(
-              imagePath: file!.path,
-              fileType: videoEnable ? FileType.video : FileType.image);
-        } else {
-          response = await flutterShareMe.shareToWhatsApp(msg: msg);
-        }
-        break;
-      case Share.whatsapp_business:
-        response = await flutterShareMe.shareToWhatsApp(msg: msg);
-        break;
-      case Share.share_system:
-        response = await flutterShareMe.shareToSystem(msg: msg);
-        break;
-      case Share.whatsapp_personal:
-        response = await flutterShareMe.shareWhatsAppPersonalMessage(
-            message: msg, phoneNumber: 'phone-number-with-country-code');
-        break;
-      case Share.share_instagram:
-        response = await flutterShareMe.shareToInstagram(
-            filePath: file!.path,
-            fileType: videoEnable ? FileType.video : FileType.image);
-        break;
-      case Share.share_telegram:
-        response = await flutterShareMe.shareToTelegram(msg: msg);
-        break;
-    }
-    debugPrint('asdadasd$response');
-  } */
-  /*  void _onShare(BuildContext context) async {
-    // A builder is used to retrieve the context immediately
-    // surrounding the ElevatedButton.
-    //
-    // The context's `findRenderObject` returns the first
-    // RenderObject in its descendent tree when it's not
-    // a RenderObjectWidget. The ElevatedButton's RenderObject
-    // has its position and size after it's built.
-    final box = context.findRenderObject() as RenderBox?;
-
-    if (imagePaths.isNotEmpty) {
-      await Share.shareFiles(imagePaths,
-          text: text,
-          subject: subject,
-          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-    } else {
-      await Share.share(text,
-          subject: subject,
-          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-    }
-  } */
-
-  /* void _onShareWithResult(BuildContext context) async {
-    final box = context.findRenderObject() as RenderBox?;
-    ShareResult result;
-    if (imagePaths.isNotEmpty) {
-      result = await Share.shareFilesWithResult(imagePaths,
-          text: text,
-          subject: subject,
-          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-    } else {
-      result = await Share.shareWithResult(text,
-          subject: subject,
-          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-    }
-    ScaffoldMessenger.of( context).showSnackBar(
-      SnackBar(
-      content: Text("Share result: ${result.status}"),
-    ));
-  }
-
-   void _onDeleteImage(int position) {
-    setState(() {
-      imagePaths.removeAt(position);
-    });
-  } */
- 
 }
-
-
-
-
-/*  Container(
-                  width: 88,
-                  height: 25,
-                  decoration: BoxDecoration(
-                    color: ColorTheme.steam,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'steam',
-                      style: getSemiBoldStyle(color: ColorTheme.textSteam, fontSize: 16),
-                    ),
-                  ),
-                ), */
-                /* Container(
-                  width: 88,
-                  height: 25,
-                  decoration: BoxDecoration(
-                    color: ColorTheme.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Epic',
-                      style: getSemiBoldStyle(color: Colors.black, fontSize: 16),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 88,
-                  height: 25,
-                  decoration: BoxDecoration(
-                    color: ColorTheme.rockStar,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Rock Star',
-                      style: getSemiBoldStyle(color: Colors.black, fontSize: 16),
-                    ),
-                  ),
-                ), */
