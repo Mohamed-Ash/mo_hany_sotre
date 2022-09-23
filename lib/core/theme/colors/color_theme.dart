@@ -13,11 +13,8 @@ class ColorTheme{
   static const Color white                                     = Color(0xffFFFFFF);
   static const Color backroundInput                            = Color(0xff0f1a2b);
   static const Color titleTypePlay                             = Color(0xff303031);
-
-  
-  
-  //todo: authColor
-  static const Color authHint                                  = Color(0xff5e6676);
+  static const Color porder                                    = Color(0xff303031);
+  static const Color hintText                                  = Color(0xff5e6676);
   static const Color authTitle                                 = Color(0xff585858);
 
 }
