@@ -32,20 +32,17 @@ class FormFeilds{
     );
   }
 
-  static Padding containerImage({
+  static Container containerImage({
     required String assetImage,
     double height = 45,
     double width = 45,
   }){
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(assetImage)
-          ),
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(assetImage)
         ),
       ),
     );
@@ -74,7 +71,7 @@ class FormFeilds{
     // required TextStyle hintStyle,
     required String hintText,
     Color cursorColor = ColorTheme.primary,
-    Color hintTextColor = ColorTheme.authHint,
+    Color hintTextColor = ColorTheme.hintText,
     InputBorder border = InputBorder.none, 
     String? Function(String?)? validator,
     EdgeInsets contentPadding = const EdgeInsets.all(12),
@@ -84,7 +81,7 @@ class FormFeilds{
       // textAlignVertical: textAlignVertical,
       // textAlign: textAlign,
       textAlignVertical: TextAlignVertical.center,
-      keyboardType: TextInputType.text,
+      keyboardType: keyboardType,
       cursorColor: cursorColor,
       cursorHeight: cursorHeight, 
       controller: controller,
@@ -106,11 +103,10 @@ class FormFeilds{
         border: InputBorder.none,
         focusedBorder: InputBorder.none,
         enabledBorder: InputBorder.none,
-        
         errorBorder: InputBorder.none,
         disabledBorder: InputBorder.none,
       ),
-    );//getBoldStyle(color: ColorTheme.hintSearchText, dDecoration: TextDecoration.none,),
+    );
   }
   static Row rowTextIcon({
      String?  firstIconImage,
@@ -214,19 +210,19 @@ class FormFeilds{
       border: const Border(
         bottom: BorderSide(
           width: 1,
-          color: ColorTheme.authHint
+          color: ColorTheme.hintText
         ),
         left: BorderSide(
           width: 1,
-          color: ColorTheme.authHint
+          color: ColorTheme.hintText
         ),
         right: BorderSide(
           width: 1,
-          color: ColorTheme.authHint
+          color: ColorTheme.hintText
         ),
         top: BorderSide(
           width: 1,
-          color: ColorTheme.authHint
+          color: ColorTheme.hintText
         ),
       ),
     ),
@@ -235,10 +231,31 @@ class FormFeilds{
       leading: FormFeilds.containerImage(assetImage: assetImage,height: 28,width: 28),
         title: Text(
           title,
-          style: getSemiBoldStyle(color: ColorTheme.authHint),
+          style: getSemiBoldStyle(color: ColorTheme.hintText),
         ),
         horizontalTitleGap: 33,
       ),
     );
   }
+
+  static Future showLoading(context){
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          backgroundColor: Colors.transparent,
+          // title: Text('please waite'),
+          content:  SizedBox(
+            height: 50,
+            child:  Center(
+              child:  CircularProgressIndicator(
+                color: ColorTheme.primary,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+  
 }
