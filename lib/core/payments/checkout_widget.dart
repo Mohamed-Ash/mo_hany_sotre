@@ -220,19 +220,19 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                         border: const Border(
                           bottom: BorderSide(
                             width: 1,
-                            color: ColorTheme.authHint
+                            color: ColorTheme.porder
                           ),
                           left: BorderSide(
                             width: 1,
-                            color: ColorTheme.authHint
+                            color: ColorTheme.porder
                           ),
                           right: BorderSide(
                             width: 1,
-                            color: ColorTheme.authHint
+                            color: ColorTheme.porder
                           ),
                           top: BorderSide(
                             width: 1,
-                            color: ColorTheme.authHint
+                            color: ColorTheme.porder
                           ),
                         ),
                       ),
@@ -272,19 +272,19 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                         border: const Border(
                           bottom: BorderSide(
                             width: 1,
-                            color: ColorTheme.authHint
+                            color: ColorTheme.porder
                           ),
                           left: BorderSide(
                             width: 1,
-                            color: ColorTheme.authHint
+                            color: ColorTheme.porder
                           ),
                           right: BorderSide(
                             width: 1,
-                            color: ColorTheme.authHint
+                            color: ColorTheme.porder
                           ),
                           top: BorderSide(
                             width: 1,
-                            color: ColorTheme.authHint
+                            color: ColorTheme.porder
                           ),
                         ),
                       ),
