@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
@@ -11,6 +12,10 @@ import 'package:image_preview/image_preview.dart';
 
 // ignore: must_be_immutable
 class PreviewProductWidget extends StatelessWidget {
+  CollectionReference getAllProducts = FirebaseFirestore.instance.collection('sale product');
+
+  List products = [];
+
   File? file;
   String text = '';
   String subject = '';
@@ -183,7 +188,7 @@ class PreviewProductWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Accounts Available On',
-                    style: getRegulerStyle(color: ColorTheme.authHint,),  
+                    style: getRegulerStyle(color: ColorTheme.hintText,),  
                   ),
                   const Spacer(),
                   Row(
@@ -210,7 +215,7 @@ class PreviewProductWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Publisher',
-                    style: getRegulerStyle(color: ColorTheme.authHint,fontSize: 13),  
+                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 13),  
                   ),
                   const Spacer(),
                   Text(
@@ -234,7 +239,7 @@ class PreviewProductWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Platform',
-                    style: getRegulerStyle(color: ColorTheme.authHint,fontSize: 13),  
+                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 13),  
                   ),
                   const Spacer(),
                  FormFeilds.containerImage(assetImage: 'assets/images/windows.png',height: 15,width: 15,),
@@ -404,4 +409,10 @@ class PreviewProductWidget extends StatelessWidget {
       ),
     );
   }
+ /*  getPreviewProducts(){
+    CollectionReference getData = FirebaseFirestore.instance.collection('product');
+    getData.doc('').get({
+
+    });
+  } */
 }
