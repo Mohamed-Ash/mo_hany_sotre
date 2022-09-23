@@ -10,7 +10,7 @@ import 'package:m_hany_store/user/user_interface.dart';
 class AppPageLayout extends UserInterface{
   const AppPageLayout({Key? key}) : super(key: key);
 
- @override
+  @override
   PreferredSizeWidget? get appBar => AppBar( 
     leading: const  Text(''),
     elevation: 2,
@@ -54,7 +54,7 @@ class AppPageLayout extends UserInterface{
                   ),
                   label: 'Home',
                 ),
-                 BottomNavigationBarItem(
+                BottomNavigationBarItem(
                   icon: FormFeilds.containerImage(
                   assetImage: 'assets/images/un_discount.png',
                   height: 30,
