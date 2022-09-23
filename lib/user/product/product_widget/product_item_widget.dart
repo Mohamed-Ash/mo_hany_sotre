@@ -1,67 +1,40 @@
+/* // ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
+import 'package:m_hany_store/core/theme/colors/color_theme.dart';
+import 'package:m_hany_store/core/theme/fonts/style.dart';
+
+// ignore: must_be_immutable
+class ProductItemWidget extends StatelessWidget {  
+  final List products = [];
+  final int index;
+  ProductItemWidget({super.key , required products , required this.index });
 
 
-class ProductItemWidget extends StatelessWidget {
-  const ProductItemWidget({super.key});
-// NetworkImage('https://media.gettyimages.com/photos/commuters-cross-a-main-road-next-to-an-advertisement-of-console-game-picture-id180851513?s=612x612') 
+  @override
+  Widget build(BuildContext context) {
+    return  
 
-Widget product(){
-  return Container(
-    width: 170,
-    height: 222,
-    decoration: BoxDecoration(
-      borderRadius:BorderRadius.circular(8),
-      //  color: Colors.black,
-      image: const DecorationImage(
-        fit: BoxFit.fill,
-        image: NetworkImage(
-          'https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/games/fob/1280/V.jpg'
-        ),
-      ),
-    ),
-  );
-}
-  Widget listProduct(){
+/*   Widget product(context,index){
+    return 
+  }
+ */
+  /* Widget listProduct(context){
     return Row(
       children: [
-        product(),
+        product(context),
         const SizedBox(
           width: 15,
         ),
-        product(),
+        product(context),
       ],
     );
+
+    
+  } */
+
   }
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-        child: Column(
-          children: [
-            InkWell(
-              onTap: ()=> Navigator.pushNamed(context, previewProductPage),
-              child: listProduct()
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            listProduct(),
-            const SizedBox(
-              height: 12,
-            ),
-            listProduct(),
-            const SizedBox(
-              height: 12,
-            ),
-           listProduct(),
-            const SizedBox(
-              height: 12,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+  
+    
+} */
