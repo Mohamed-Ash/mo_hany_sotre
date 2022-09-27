@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:m_hany_store/user/product/product_page/product_page.dart';
+import 'package:m_hany_store/user/home/home_widget/home_widget.dart';
 import 'package:m_hany_store/user/user_interface.dart';
 
 class HomePage extends UserInterface{
@@ -7,6 +7,7 @@ class HomePage extends UserInterface{
 
   @override
   Widget buildBody(BuildContext context) {
-    return const ProductPage();
+    return const HomeWidget();
   }
 }
+          // const ProductWidget(),
