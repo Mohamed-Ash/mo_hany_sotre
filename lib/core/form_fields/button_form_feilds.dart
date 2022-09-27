@@ -68,6 +68,7 @@ class FormFeilds{
   static TextFormField textField({
     required TextEditingController controller, 
     required TextInputType keyboardType,
+    bool obscureText = false,
     // required TextStyle hintStyle,
     required String hintText,
     Color cursorColor = ColorTheme.primary,
@@ -76,6 +77,7 @@ class FormFeilds{
     String? Function(String?)? validator,
     EdgeInsets contentPadding = const EdgeInsets.all(12),
     double cursorHeight = 22, 
+    Widget? suffixIcon,
     }){
     return TextFormField(
       // textAlignVertical: textAlignVertical,
@@ -85,6 +87,7 @@ class FormFeilds{
       cursorColor: cursorColor,
       cursorHeight: cursorHeight, 
       controller: controller,
+      obscureText: obscureText,
       // keyboardAppearance: Brightness.light,
       style: const TextStyle(
         color: Colors.white,
@@ -93,12 +96,15 @@ class FormFeilds{
         decorationThickness: 0,
       ),
       validator: validator,
-       keyboardAppearance: Brightness.dark,
-      autocorrect: false,
-      enableSuggestions: false,
+      keyboardAppearance: Brightness.dark,
       decoration: InputDecoration(
+        // contentPadding: const EdgeInsets.fromLTRB(12, 22, 0, -10),
+        alignLabelWithHint: true,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
         contentPadding: contentPadding,
+        errorStyle: getRegulerStyle(color: Colors.red,fontSize: 12),
         hintText: hintText,
+        suffixIcon: suffixIcon,
         hintStyle: getBoldStyle(color: hintTextColor, dDecoration: TextDecoration.none,),
         border: InputBorder.none,
         focusedBorder: InputBorder.none,
@@ -237,8 +243,22 @@ class FormFeilds{
       ),
     );
   }
+   
+  static showMyDialog(context,String message){
+    return showDialog(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      // barrierColor: ColorTheme.hintText,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: ColorTheme.hintText,
+          content: Text(message,style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 14)),
+        );
+      },
+    );
+  }
 
-  static Future showLoading(context){
+  static showLoading(context){
     return showDialog(
       context: context,
       builder: (context) {
@@ -257,5 +277,28 @@ class FormFeilds{
       },
     );
   }
-  
+
+  static fixFontSize(BuildContext context){
+    final width = MediaQuery.of(context).size.width;
+    if(width > 50.0 && width < 100.0 ) {
+      return 11.0;
+    }else if (width > 100.0 && MediaQuery.of(context).size.width < 200.0 ){
+      return 12.5;
+    }else{ 
+      return 12.5;
+    }
+  }
+
+  static fixBixiles(BuildContext context){
+    final width = MediaQuery.of(context).size.width;
+    if(width > 50.0 && width < 100.0 ) {
+      return 90.0;
+    }else if (width > 100.0 && width < 150.0 ){
+      return 125.0;
+    }else if (width > 150.0 && width < 200.0 ){
+      return 140.0;
+    }else{
+      return 160.0;
+    }
+  }
 }
