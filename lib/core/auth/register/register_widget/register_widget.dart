@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, unrelated_type_equality_checks
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -25,7 +26,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   final user = FirebaseAuth.instance.currentUser;
   final userCredential =  UserCredential; 
   final formKye = GlobalKey<FormState>();
-  bool showPassord = false;
+  bool showPassword = true;
+  bool showConfirmPassword = true;
   
   @override
   Widget build(BuildContext context) {
@@ -73,21 +75,28 @@ class _RegisterWidgetState extends State<RegisterWidget> {
               const SizedBox(
                 height: 18,
               ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color:  ColorTheme.backroundInput,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: FormFeilds.textField(
-                  keyboardType: TextInputType.name, 
-                  controller: nameController, 
-                  hintText: 'your Name', 
-                  validator: (vail){
-                    return null;
-                  },
-                ),
+              Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  FormFeilds.textField(
+                    keyboardType: TextInputType.name, 
+                    controller: nameController, 
+                    hintText: 'your Name', 
+                    validator: (vail){
+                      if(vail!.isEmpty) {
+                        return 'please add your name';
+                      }
+                      return null ;
+                    },
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 8,
@@ -102,29 +111,32 @@ class _RegisterWidgetState extends State<RegisterWidget> {
               const SizedBox(
                 height: 18,
               ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color:  ColorTheme.backroundInput ,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: FormFeilds.textField(
-                  controller: emailController, 
-                  keyboardType: TextInputType.emailAddress, 
-                  hintText:  'hello@company.com',
-                  validator: (validate){
-                     if(validate!.isEmpty)
-                  {
-                    return 'Please Enter your Email';
-                  }else if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(validate)){
-                    return 'Please a valid Email';
-                  }else if(validate.hashCode == 'email-already-in-use'){
-                    return 'The account already exists for that email.';
-                  }
-                  return null;
-                  }
-                ),
+              Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput ,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  FormFeilds.textField(
+                    controller: emailController, 
+                    keyboardType: TextInputType.emailAddress, 
+                    hintText:  'hello@company.com',
+                    validator: (validate){
+                      if(validate!.isEmpty){
+                        return 'Please Enter your Email';
+                      }else if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(validate)){
+                        return 'Please a valid Email';
+                      }else if(validate.hashCode == 'email-already-in-use'){
+                        return 'The account already exists for that email.';
+                      }
+                      return null;
+                    }
+                  ),
+                ],
               ),
                const SizedBox(
                 height: 18,
@@ -139,26 +151,43 @@ class _RegisterWidgetState extends State<RegisterWidget> {
               const SizedBox(
                 height: 18,
               ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color:  ColorTheme.backroundInput,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: FormFeilds.textField(
-                  controller: passwordController, 
-                  keyboardType: TextInputType.visiblePassword, 
-                  hintText: 'your password',
-                  validator: (value){
-                    if(value == null){
-                      return 'Confirm Password';
-                    }else if(value.length < 6){
-                      return 'Confirm Password does  not match' ;
-                    }
-                    return null;
-                  }
-                ),
+              Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  FormFeilds.textField(
+                    controller: passwordController, 
+                    keyboardType: TextInputType.visiblePassword, 
+                    obscureText: showPassword,
+                    hintText: 'your password',
+                    validator: (value){
+                      if(value == null){
+                        return 'Enter the password';
+                      }else if(value.length < 6){
+                        return 'Password must has 8 characters' ;
+                      }
+                      return null;
+                    },
+                     suffixIcon: IconButton(
+                      splashColor: Colors.transparent,
+                      
+                      onPressed: (){
+                        setState(() {
+                          showPassword = !showPassword ; 
+                        });  
+                      }, 
+                      icon: showPassword == true
+                        ? FormFeilds.containerImage(assetImage: 'assets/icons/eye.png') 
+                        : FormFeilds.containerImage(assetImage: 'assets/icons/eye_closed.png') 
+                    ),
+                  ),
+                ],
               ),
                 const SizedBox(
                 height: 18,
@@ -173,31 +202,47 @@ class _RegisterWidgetState extends State<RegisterWidget> {
               const SizedBox(
                 height: 18,
               ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color:  ColorTheme.backroundInput,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: FormFeilds.textField(
-                  controller: comfirmPasswordController, 
-                  keyboardType: showPassord == true ? TextInputType.visiblePassword : TextInputType.text, 
-                  hintText: 'Confirm your password',
-                  validator: (value){
-                    if(value == null){
-                      return 'Confirm Password';
-                    }else if(value.length < 6){
-                      return 'Confirm Password does  not match' ;
-                    }
-                    else if(passwordController.text != comfirmPasswordController.text){
-                      return 'Confirm Password does not match';
-                    } else if(value.length < 6){
-                      return 'Confirm Password does  not match' ;
-                    }
-                    return null;
-                  }
-                ),
+              Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  FormFeilds.textField(
+                    controller: comfirmPasswordController, 
+                    keyboardType: TextInputType.visiblePassword, 
+                    obscureText: showConfirmPassword,
+                    hintText: 'Confirm your password',
+                    validator: (value){
+                      if(value == null){
+                        return 'Confirm Password';
+                      }else if(value.length < 6){
+                        return 'Confirm Password does  not match' ;
+                      }
+                      else if(passwordController.text != comfirmPasswordController.text){
+                        return 'Confirm Password does not match';
+                      }else{
+                        return null;
+                      }
+                    },
+                    suffixIcon: IconButton(
+                      splashColor: Colors.transparent,
+                      
+                      onPressed: (){
+                        setState(() {
+                          showConfirmPassword = !showConfirmPassword ; 
+                        });  
+                      }, 
+                      icon: showConfirmPassword == true
+                        ? FormFeilds.containerImage(assetImage: 'assets/icons/eye.png') 
+                        : FormFeilds.containerImage(assetImage: 'assets/icons/eye_closed.png') 
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 22,
@@ -318,26 +363,38 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       ),
     );
   }
-  buildResister(context)async{
+
+  Future<void> buildResister(context)async{
     try {
-      showLoading(context);
+      FormFeilds.showLoading(context);
       final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
       print(userCredential.user!.emailVerified);
-      if(userCredential.user!.emailVerified == false ){
         User? user = FirebaseAuth.instance.currentUser;
-        await user?.sendEmailVerification().then((value) => Navigator.pushNamed(context, appPageLayout));
+          await FirebaseFirestore.instance.collection("users")
+          .add({
+            "usernaem": nameController.text,
+            "email": emailController.text,
+            "id":user!.uid
+          });
+        Navigator.pushNamedAndRemoveUntil(context, appPageLayout, (route) => false);
+      if(userCredential.user!.emailVerified == false ){
+        // await user.sendEmailVerification()
+        //   .then((value) =>
+        //    Navigator.pushNamed(context, appPageLayout));
       }else{
 
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        showMyDialog(context,'The password provided is too weak.');
+        Navigator.of(context).pop();
+        FormFeilds.showMyDialog(context,'The password provided is too weak.');
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        showMyDialog(context,'The account already exists for that email.');
+        Navigator.of(context).pop();
+        FormFeilds.showMyDialog(context,'The account already exists for that email.');
         print('The account already exists for that email.');
       }
       
@@ -346,45 +403,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     }  
   }
   
-  showMyDialog(context,String message){
-    return showDialog(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text(message),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
- showLoading(context){
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          backgroundColor: Colors.transparent,
-          // title: Text('please waite'),
-          content:  SizedBox(
-            height: 50,
-            child:  Center(
-              child:  CircularProgressIndicator(
-                color: ColorTheme.primary,
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
   Future<UserCredential> signInWithGoogle(context) async {
-      showLoading(context);
+      FormFeilds.showLoading(context);
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
