@@ -56,7 +56,7 @@ class Ssale_widgWState extends State<SaleWidget> {
 
   buldItemSale(context,index){
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, previewSalePage),
+      onTap: () => Navigator.pushNamed(context, showSalePage),
       child: Container(
         width: double.infinity,
         height: 420,
