@@ -22,7 +22,7 @@ class AdminDrawer extends StatelessWidget{
               InkWell(
                 borderRadius: BorderRadius.circular(8),
                 highlightColor: Colors.transparent,
-                onTap: () => Navigator.pushNamed(context, adminProductPage),
+                onTap: () => Navigator.pushNamed(context, adminProductsPage),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -31,7 +31,7 @@ class AdminDrawer extends StatelessWidget{
                       width: 12,
                     ),
                     Text(
-                      'Product',
+                      'products',
                       style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),
                     ),
                   ],
@@ -43,7 +43,7 @@ class AdminDrawer extends StatelessWidget{
               Padding(
                 padding: const EdgeInsets.fromLTRB(2,0,22,0),
                 child: InkWell(
-                  onTap: () => Navigator.pushNamed(context, discountsProduct),
+                  onTap: () => Navigator.pushNamed(context, offersPage),
                   borderRadius: BorderRadius.circular(8),
                   highlightColor: Colors.transparent,
                   child: Row(
@@ -54,7 +54,7 @@ class AdminDrawer extends StatelessWidget{
                         width: 12,
                       ),
                       Text(
-                        'Discounts product',
+                        'offers',
                         style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),
                       ),
                     ],
@@ -77,7 +77,7 @@ class AdminDrawer extends StatelessWidget{
               Padding(
                 padding: const EdgeInsets.fromLTRB(2,0,22,0),
                 child: InkWell(
-                  onTap: () => Navigator.pushNamed(context, adminProductPage),
+                  onTap: () => Navigator.pushNamed(context, shippingPage),
                   borderRadius: BorderRadius.circular(8),
                   highlightColor: Colors.transparent,
                   child: Row(
@@ -88,7 +88,7 @@ class AdminDrawer extends StatelessWidget{
                         width: 12,
                       ),
                       Text(
-                        'Total all purchases',
+                        'shipping',
                         style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),
                       ),
                     ],
@@ -98,7 +98,28 @@ class AdminDrawer extends StatelessWidget{
               const SizedBox(
                 height: 20,
               ),
-              Padding(
+               Padding(
+                padding: const EdgeInsets.fromLTRB(2,0,22,0),
+                child: InkWell(
+                  onTap: () => Navigator.pushNamed(context, categoriePage),
+                  borderRadius: BorderRadius.circular(8),
+                  highlightColor: Colors.transparent,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FormFeilds.containerImage(assetImage: 'assets/images/un_discount.png',height: 30,width: 30),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Text(
+                        'Categories',
+                        style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+             /*  Padding( categoriePage
                 padding: const EdgeInsets.fromLTRB(2,0,22,0),
                 child: InkWell(
                   onTap: () => Navigator.pushNamed(context, adminProductPage),
@@ -177,7 +198,7 @@ class AdminDrawer extends StatelessWidget{
                     ],
                   ),
                 ),
-              ),
+              ), */
             ],
           ),
         ),
