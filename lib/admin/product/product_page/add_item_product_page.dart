@@ -8,14 +8,14 @@ import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 
-class AdminProductWidget extends StatefulWidget {
-  const AdminProductWidget({Key? key}) : super(key: key);
+class AddItemProductPage extends StatefulWidget {
+  const AddItemProductPage({Key? key}) : super(key: key);
 
   @override
-  State<AdminProductWidget> createState() => _AdminProductWidgetState();
+  State<AddItemProductPage> createState() => _AddItemProductPageState();
 }
 
-class _AdminProductWidgetState extends State<AdminProductWidget> {
+class _AddItemProductPageState extends State<AddItemProductPage> {
   XFile? image;
   final ImagePicker _picker = ImagePicker();
 
@@ -289,49 +289,3 @@ class _AdminProductWidgetState extends State<AdminProductWidget> {
     print('========================================='); */
   } 
 }
-
-/* 
-  Table(
-          children: [
-            TableRow(
-              children: [
-                Column(
-                  children: [
-                    Text('adasds',
-                     style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
-                    ),
-                    Text('adasds',
-                     style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
-                    ),
-                    Text('adasds',
-                     style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
-                    ),
-                    Text('adasds',
-                     style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
-                    ),
-                    Text('adasds',
-                     style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
-                    ),
-                    Text('adasds',
-                     style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
-                    ),
-                  ],
-                ),
-                 Text('adasds',
-                 style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
-                ),
-                 Text('adasds',
-                 style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
-                ),
-              ],
-            ),
-          ],
-          border: TableBorder(
-            bottom: const BorderSide(color: ColorTheme.porder),
-            left: const BorderSide(color: ColorTheme.porder),
-            right: const BorderSide(color: ColorTheme.porder),
-            top: const BorderSide(color: ColorTheme.porder),
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ), 
- */
