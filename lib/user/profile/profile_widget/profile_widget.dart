@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
@@ -15,8 +16,11 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
-final user = FirebaseAuth.instance.currentUser;
-
+  List usersidd = [];
+  final user = FirebaseAuth.instance.currentUser;
+  
+  var users = FirebaseFirestore.instance.collection("users");
+  
   @override
   void initState() {
     super.initState();
@@ -162,7 +166,7 @@ final user = FirebaseAuth.instance.currentUser;
                 ),
               ),
             ),
-            if(user!.uid == 'kk6Ujqw8ddYuFkj7VvJ6fVXMKDT2')
+            // if(user!.uid == "li5Z4IpPpISLgbvMO3wrbakNx9p2")
               InkWell(
                 borderRadius: BorderRadius.circular(8),
                 onTap: (){
@@ -209,6 +213,14 @@ final user = FirebaseAuth.instance.currentUser;
       print('===========================');
         
       }); */
+  }
+  Future<void> getCategories() async {
+    QuerySnapshot responseBody  = await users.get();
+    for(var element in responseBody.docs){
+      setState(() {
+        usersidd.add(element.data());
+      });
+    }
   }
 
   showLoading(context){
