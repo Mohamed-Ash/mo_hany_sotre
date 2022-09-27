@@ -22,8 +22,10 @@ class PreviewSalePage extends UserInterface{
     'https://wallpaperaccess.com/full/7070020.jpg',
     'https://wallpaperaccess.com/full/7070020.jpg',
   ];
-  
+
   PreviewSalePage({super.key});
+  
+
   
   @override
   Widget buildBody(BuildContext context) {
