@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+
 
 import 'dart:io';
 
@@ -9,15 +9,16 @@ import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 
-class DiscountsProductWidget extends StatefulWidget {
-  const DiscountsProductWidget({Key? key}) : super(key: key);
+
+class AddItemOffersPage extends StatefulWidget {
+  const AddItemOffersPage({Key? key}) : super(key: key);
 
   @override
-  State<DiscountsProductWidget> createState() => _DiscountsProductWidgetState();
+  State<AddItemOffersPage> createState() => _AddItemOffersPageState();
 }
 
-class _DiscountsProductWidgetState extends State<DiscountsProductWidget> {
-  XFile? imagees;
+class _AddItemOffersPageState extends State<AddItemOffersPage> {
+ XFile? imagees;
 
   final ImagePicker _picker = ImagePicker();
   final newPriceController = TextEditingController();
