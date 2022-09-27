@@ -18,7 +18,7 @@ class AppPageLayout extends UserInterface{
     systemOverlayStyle: const SystemUiOverlayStyle(
       statusBarColor:  Colors.transparent,
     ),
-    title: Text('M.hany_store',style: getBoldStyle(color: ColorTheme.white,fontSize: 18)), 
+    title: Text('M HANY STORE',style: getBoldStyle(color: ColorTheme.white,fontSize: 18)), 
   );
 
   
