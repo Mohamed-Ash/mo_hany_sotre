@@ -1,4 +1,5 @@
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/font_theme.dart';
@@ -244,7 +245,9 @@ class FormFeilds{
     );
   }
    
-  static showMyDialog(context,String message){
+  static showMyDialog(
+    context,String message
+  ){
     return showDialog(
       context: context,
       barrierDismissible: true, // user must tap button!
@@ -252,12 +255,38 @@ class FormFeilds{
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: ColorTheme.hintText,
+          actions: [
+
+          ],
+
           content: Text(message,style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 14)),
         );
       },
     );
   }
+   static mesgDelete(
+    context,
+    String message,
+    Widget buttinDelete,
+    // Widget buttonCancel,
+  ){
+    return showDialog(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      // barrierColor: ColorTheme.hintText,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: ColorTheme.hintText,
+          actions: [
+            buttinDelete,
+            // buttonCancel
+          ],
 
+          content: Text(message,style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 14)),
+        );
+      },
+    );
+  }
   static showLoading(context){
     return showDialog(
       context: context,
@@ -301,4 +330,83 @@ class FormFeilds{
       return 160.0;
     }
   }
+ /*  static Widget drobdown(){
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2(
+        isExpanded: true,
+        hint: Row(
+          children: const [
+            Icon(
+              Icons.list,
+              size: 16,
+              color: Colors.yellow,
+            ),
+            SizedBox(
+              width: 4,
+            ),
+            Expanded(
+              child: Text(
+                'Select Item',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.yellow,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        items: items.map((item) => DropdownMenuItem<String>(
+          value: item,
+          child: Text(
+            item,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        )).toList(),
+        value: selectedValue,
+        onChanged: (value) {
+          setState(() {
+            selectedValue = value as String;
+          });
+        },
+        icon: const Icon(
+          Icons.arrow_forward_ios_outlined,
+        ),
+        iconSize: 14,
+        iconEnabledColor: Colors.yellow,
+        iconDisabledColor: Colors.grey,
+        buttonHeight: 50,
+        buttonWidth: 160,
+        buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+        buttonDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: Colors.black26,
+          ),
+          color: Colors.redAccent,
+        ),
+        buttonElevation: 2,
+        itemHeight: 40,
+        itemPadding: const EdgeInsets.only(left: 14, right: 14),
+        dropdownMaxHeight: 200,
+        dropdownWidth: 200,
+        dropdownPadding: null,
+        dropdownDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: Colors.redAccent,
+        ),
+        dropdownElevation: 8,
+        scrollbarRadius: const Radius.circular(40),
+        scrollbarThickness: 6,
+        scrollbarAlwaysShow: true,
+        offset: const Offset(-20, 0),
+      ),
+    );
+  } */
 }
