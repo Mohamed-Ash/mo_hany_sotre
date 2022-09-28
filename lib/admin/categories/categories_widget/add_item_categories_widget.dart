@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,27 +21,28 @@ class AddItemCategoriesWidget extends StatefulWidget {
 
 class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   XFile? image;
+  DateTime now =  DateTime.now();
+  String? selectedValue;
+
   final ImagePicker _picker = ImagePicker();
-
-  final  hintController = TextEditingController();
-  final  titleController = TextEditingController();
+  final nameController = TextEditingController();
   final formKye = GlobalKey<FormState>();
-  uploadImages()async{
-    var imagePiced =await _picker.pickImage(source: ImageSource.camera);
-    
-    if (imagePiced != null){
-    var file = File(imagePiced.path);
-      var nameimage = basename(imagePiced.path);
-    var refSorage = FirebaseStorage.instance.ref(nameimage); 
-    await refSorage.putFile(file);
-    var url = await refSorage.getDownloadURL();
-    print('=========================================');
-    print(nameimage);
-    print('=========================================');
-    print('url: $url');
-    }
-  }
+  
 
+  final List<String> genderItems = [
+    'shipping',
+    'offers',
+    'products',
+  ];
+  
+  var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  @override
+  void initState() {
+    selectedValue = null ; 
+    nameController.clear(); 
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -48,7 +50,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
         key: formKye,
         child: Column(
           children: [
-            const SizedBox(height: 33,),
+            const SizedBox(height: 12,),
             if (image == null)
               InkWell(
                 onTap: () async {
@@ -100,9 +102,9 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                             );
                           },
                           child: Image.file(
-                            width: 100,
+                            width: double.infinity,
                             height: 100,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             filterQuality: FilterQuality.high,
                             File(image!.path)),
                         ),
@@ -111,67 +113,47 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                   ),
                 ],
               ),
-              const SizedBox(
-               height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color:  ColorTheme.backroundInput,
-                      borderRadius: BorderRadius.circular(8),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color:  ColorTheme.backroundInput,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: FormFeilds.textField(
+                        controller: nameController, 
+                        keyboardType: TextInputType.text, 
+                        hintText: 'Add Name',
+                        validator:(validate){
+                          if(validate == null){
+                            return 'please add Name';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                    child: FormFeilds.textField(
-                      controller: hintController, 
-                      keyboardType: TextInputType.number, 
-                      hintText: 'Add hint',
-                      validator:(validate){
-                        if(validate == null){
-                          return 'please add price';
-                        }
-                        return null;
-                      },
+                    const SizedBox(
+                    height: 22,
                     ),
-                  ),
-                  const SizedBox(
-                  width: 33,
-                  ),
-                  Container(
-                    height: 50,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color:  ColorTheme.backroundInput,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: FormFeilds.textField(
-                      controller: titleController, 
-                      keyboardType: TextInputType.text, 
-                      hintText: 'Add title',
-                      validator:(validate){
-                        if(validate!.isEmpty){
-                          return 'please add product name ';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                  height: 20,
+                  ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Divider(
-                    color: ColorTheme.primary,
-                    thickness: 2.32,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
+              ),
+                CustomDropdownButton2(
+                  hint: 'Select Item',
+                  
+                  iconDisabledColor: ColorTheme.white,
+                  iconEnabledColor: ColorTheme.white,
+                  dropdownItems: genderItems,
+                  value: selectedValue,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedValue = value;
+                    });
+                  },
                 ),
               ElevatedButton.icon(
               onPressed: () {
@@ -185,25 +167,32 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
             const SizedBox(
               height: 10,
             ),
-            ElevatedButton.icon(
+           /*  ElevatedButton.icon(
               onPressed: () async{
                 if(formKye.currentState!.validate()){
-                  await postData();
+                  await postData(context);
                 }
               },
               label: const Text('done'),
               icon: FormFeilds.containerImage(assetImage: 'assets/images/upload.png',height: 30,width: 30),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            /* ElevatedButton.icon(
-              onPressed: () async{
-                uploadImages();
-              },
-              label: const Text('fire store & storage'),
-              icon: const Icon(Icons.close),
             ), */
+            const SizedBox(
+              height:100, 
+            ),
+            InkWell(
+              onTap: ()async{
+                if(formKye.currentState!.validate()){
+                  await postData(context);
+                }
+              },
+              child: FormFeilds.buttonFormField(
+                widthtButton: double.infinity,
+                heightButton: 50,
+                // dPadding: false,
+                title: 'Done',
+                colorButton: ColorTheme.primary, 
+              ),
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -213,10 +202,11 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
     );
   }
   
-  postData()async{
+  postData(context)async{
     CollectionReference postDat = FirebaseFirestore.instance.collection('categories');
     
     if (image != null){
+      FormFeilds.showLoading(context);
 
       var file = File(image!.path);
 
@@ -235,14 +225,19 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
 
       await postDat.add({
           "images": uri,
-          "title": titleController.text,
-          "hint": hintController.text,
+          "name": nameController.text,
+          "craeted at": formattedDateTime(),
+          "type": selectedValue,
         }).then((value) {
           setState(() {
             image = null;
           });
           print('url: $uri');
         });
+      Navigator.pop(context);
+    }else{
+      // Navigator.pop(context);
+      FormFeilds.showMyDialog(context, 'please choose image');
     }
    /*  print('=========================================');
     print(nameimage);
@@ -250,4 +245,9 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
     print(postDat);
     print('========================================='); */
   } 
+
+  String formattedDateTime() {
+      return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
+  }
+
 }
