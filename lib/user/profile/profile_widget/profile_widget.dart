@@ -18,8 +18,8 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget> {
   List usersidd = [];
   final user = FirebaseAuth.instance.currentUser;
-  
-  var users = FirebaseFirestore.instance.collection("users");
+  final Query users = FirebaseFirestore.instance.collection('admin').where("admin", isEqualTo: 'adminId');
+  // var users = FirebaseFirestore.instance.collection("admin");
   
   @override
   void initState() {
@@ -189,7 +189,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
   }
   getData(context)async {
-      if(user!.uid == 'kk6Ujqw8ddYuFkj7VvJ6fVXMKDT2'){
+      if( users == user!.uid  ){
         InkWell(
           borderRadius: BorderRadius.circular(8),
           onTap: (){
