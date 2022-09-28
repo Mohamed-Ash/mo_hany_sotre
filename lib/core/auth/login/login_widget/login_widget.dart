@@ -75,8 +75,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                         return 'Please Enter your Email';
                       }else if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(validate)){
                         return 'Please a valid Email';
-                      }else {
-                        return null;
+                      }else if (validate.endsWith("@google.com")){
+                        return "Email address is not valid!";
+                      }else{
+                        return null; 
                       }
                     }
                   ),
@@ -134,7 +136,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ],
               ),
               const SizedBox(
-                height: 33,   
+                height: 18,   
               ),
                Row(
                 children: [
