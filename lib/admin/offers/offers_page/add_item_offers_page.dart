@@ -254,7 +254,5 @@ class _AddItemOffersPageState extends State<AddItemOffersPage> {
         imagees = null;
       }),
     );
-    print(postDat);
-    print('=========================================');
   } 
 }
