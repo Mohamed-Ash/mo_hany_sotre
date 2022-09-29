@@ -3,13 +3,14 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_button2/custom_dropdown_button2.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
+import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
 class AddItemCategoriesWidget extends StatefulWidget {
@@ -23,6 +24,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   XFile? image;
   DateTime now =  DateTime.now();
   String? selectedValue;
+  bool isSelect = false ;
 
   final ImagePicker _picker = ImagePicker();
   final nameController = TextEditingController();
@@ -37,12 +39,12 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  @override
+ /*  @override
   void initState() {
     selectedValue = null ; 
     nameController.clear(); 
     super.initState();
-  }
+  } */
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -50,7 +52,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
         key: formKye,
         child: Column(
           children: [
-            const SizedBox(height: 12,),
+            const SizedBox(height: 55,),
             if (image == null)
               InkWell(
                 onTap: () async {
@@ -76,12 +78,14 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                     const Icon(
                       Icons.image,color: ColorTheme.white,
                       size: 66,
-                    ), 
+                    ),
+                   
                   ],
                 ),
               )
             else
               Stack(
+                alignment: Alignment.topRight,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -111,11 +115,24 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                       ),
                     ),
                   ),
+                   Positioned(
+                      /* top: 18,
+                      right: 20, */
+                      // bottom: 2,
+                      // left: 2,
+                      child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            image = null;
+                          });
+                        },
+                        child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40)),
+                    ) ,
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
-                child: Column(
+                child: Stack(
                   children: [
                     Container(
                       height: 50,
@@ -124,78 +141,101 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                         color:  ColorTheme.backroundInput,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: FormFeilds.textField(
-                        controller: nameController, 
-                        keyboardType: TextInputType.text, 
-                        hintText: 'Add Name',
-                        validator:(validate){
-                          if(validate == null){
-                            return 'please add Name';
-                          }
-                          return null;
-                        },
-                      ),
                     ),
-                    const SizedBox(
-                    height: 22,
+                    FormFeilds.textField(
+                      controller: nameController, 
+                      keyboardType: TextInputType.text, 
+                      hintText: 'Add Name',
+                      validator:(validate){
+                        if(validate == null || validate.isEmpty){
+                          return 'please add Name';
+                        }
+                        return null;
+                      },
                     ),
                   ],
                 ),
               ),
-                CustomDropdownButton2(
-                  hint: 'Select Item',
-                  
-                  iconDisabledColor: ColorTheme.white,
-                  iconEnabledColor: ColorTheme.white,
-                  dropdownItems: genderItems,
-                  value: selectedValue,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedValue = value;
-                    });
-                  },
+              Padding(
+                padding:  const EdgeInsets.fromLTRB(22, 0, 22, 00),
+                child: DropdownButtonFormField2(
+                  decoration:  InputDecoration(
+                    disabledBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder:  InputBorder.none,
+                    border: InputBorder.none,
+                    errorStyle:  getRegulerStyle(color: Colors.red,fontSize: 12),
+                  ),
+                  // isExpanded: false,
+                  hint: Text(
+                    'Select Type',
+                    style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 14)
+                  ),
+                  icon: const Icon(
+                    Icons.arrow_right_rounded,
+                    color: ColorTheme.hintText,
+                  ),
+                  iconSize: 30,
+                  buttonHeight: 60,
+                  buttonWidth: double.infinity,
+                  buttonDecoration:BoxDecoration(
+                    color: ColorTheme.backroundInput,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  dropdownPadding: const EdgeInsets.only(left: 20, right: 10),
+                  buttonPadding: const EdgeInsets.only(left: 20, right: 10),
+                  dropdownDecoration: BoxDecoration(
+                    color: ColorTheme.backroundInput,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  items: genderItems  .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                      child: Text(
+                        item,
+                        style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 14),
+                      ),
+                    )).toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select type.';
+                      }
+                      return null;
+                    },
+                    onChanged: (value){
+                      setState(() {
+                        isSelect = !isSelect;
+                      });
+                    },
+                    onSaved: (value) {
+                      selectedValue = value.toString();
+                    },
+                    iconOnClick: const Icon(
+                      Icons.arrow_drop_down_rounded,
+                      color: ColorTheme.hintText,
+                    ),
+                  ),
                 ),
-              ElevatedButton.icon(
-              onPressed: () {
-                setState(() {
-                  image = null;
-                });
-              },
-              label: const Text('Remove Image'),
-              icon: const Icon(Icons.close),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-           /*  ElevatedButton.icon(
-              onPressed: () async{
-                if(formKye.currentState!.validate()){
-                  await postData(context);
-                }
-              },
-              label: const Text('done'),
-              icon: FormFeilds.containerImage(assetImage: 'assets/images/upload.png',height: 30,width: 30),
-            ), */
-            const SizedBox(
-              height:100, 
-            ),
-            InkWell(
-              onTap: ()async{
-                if(formKye.currentState!.validate()){
-                  await postData(context);
-                }
-              },
-              child: FormFeilds.buttonFormField(
-                widthtButton: double.infinity,
-                heightButton: 50,
-                // dPadding: false,
-                title: 'Done',
-                colorButton: ColorTheme.primary, 
+                const SizedBox(
+                  height:22, 
+                ),
+              InkWell(
+                onTap: ()async{
+                  if(formKye.currentState!.validate()){
+                    formKye.currentState!.save();
+                    await postData(context);
+                  }
+                },
+                child: FormFeilds.buttonFormField(
+                  widthtButton: double.infinity,
+                  heightButton: 50,
+                  // dPadding: false,
+                  title: 'Done',
+                  colorButton: ColorTheme.primary, 
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+              const SizedBox(
+                height: 10,
+              ),
           ],
         ),
       ),
@@ -239,11 +279,6 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
       // Navigator.pop(context);
       FormFeilds.showMyDialog(context, 'please choose image');
     }
-   /*  print('=========================================');
-    print(nameimage);
-    print('=========================================');
-    print(postDat);
-    print('========================================='); */
   } 
 
   String formattedDateTime() {
