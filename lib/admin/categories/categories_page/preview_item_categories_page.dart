@@ -45,86 +45,6 @@ class PreviewItemCategoriesPage extends AdminInterface{
               color: ColorTheme.porder,
               thickness: 1,
             ),
-           /*  Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'price',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  const Spacer(),
-                  Text(
-                    '123 LE',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
-                  ),
-                ],
-              ),
-            ),
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
-            ), */
-            /* Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Region',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  const Spacer(),
-                  Text(
-                    'Turkey',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
-                  ),
-                ],
-              ),
-            ),
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'sale ends',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  const Spacer(),
-                  Text(
-                    '2022/12/22 09:30 pm',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
-                  ),
-                ],
-              ),
-            ),
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'platform',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  const Spacer(),
-                  Text(
-                    'steam',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
-                  ),
-                ],
-              ),
-            ), */
           ],
         ),
       ),
@@ -163,7 +83,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
                 style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
               ),
               Text(
-                '${categories['title']}',
+                '${categories['name']}',
                 style: getSemiBoldStyle(color: ColorTheme.white,),  
               ),
             ],
@@ -204,6 +124,26 @@ class PreviewItemCategoriesPage extends AdminInterface{
               ),
               Text(
                 '2022/9/9 09:30 pm',
+                style: getSemiBoldStyle(color: ColorTheme.white,),  
+              ),
+            ],
+          ),
+        ),  
+        const Divider(
+          color: ColorTheme.porder,
+          thickness: 1,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(18,0,18,0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'type ',
+                style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+              ),
+              Text(
+                '${categories['type']}',
                 style: getSemiBoldStyle(color: ColorTheme.white,),  
               ),
             ],
