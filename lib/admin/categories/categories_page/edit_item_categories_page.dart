@@ -118,7 +118,7 @@ class EditItemCategoriesPage extends AdminInterface{
                 style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
               ),
               Text(
-                '${categories!['title']}',
+                '${categories!['name']}',
                 style: getSemiBoldStyle(color: ColorTheme.white,),  
               ),
             ],
@@ -138,7 +138,7 @@ class EditItemCategoriesPage extends AdminInterface{
                 style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
               ),
               Text(
-                '2022/9/9 09:30 pm',
+                '${categories!['craeted at']}',
                 style: getSemiBoldStyle(color: ColorTheme.white,),  
               ),
             ],
