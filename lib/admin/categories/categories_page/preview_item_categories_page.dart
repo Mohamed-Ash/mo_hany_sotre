@@ -84,7 +84,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
               ),
               Text(
                 '${categories['name']}',
-                style: getSemiBoldStyle(color: ColorTheme.white,),  
+                style: getSemiBoldStyle(color: ColorTheme.wight,),  
               ),
             ],
           ),
@@ -104,7 +104,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
               ),
               Text(
                 '${categories['craeted at']}',
-                style: getSemiBoldStyle(color: ColorTheme.white,),  
+                style: getSemiBoldStyle(color: ColorTheme.wight,),  
               ),
             ],
           ),
@@ -124,7 +124,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
               ),
               Text(
                 '2022/9/9 09:30 pm',
-                style: getSemiBoldStyle(color: ColorTheme.white,),  
+                style: getSemiBoldStyle(color: ColorTheme.wight,),  
               ),
             ],
           ),
@@ -144,7 +144,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
               ),
               Text(
                 '${categories['type']}',
-                style: getSemiBoldStyle(color: ColorTheme.white,),  
+                style: getSemiBoldStyle(color: ColorTheme.wight,),  
               ),
             ],
           ),

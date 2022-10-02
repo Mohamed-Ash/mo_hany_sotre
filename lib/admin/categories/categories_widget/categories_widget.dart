@@ -1,11 +1,11 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:m_hany_store/admin/categories/categories_page/edit_item_categories_page.dart';
-import 'package:m_hany_store/admin/categories/categories_page/preview_item_categories_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_hany_store/core/bloc/categories_bloc/categories_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
@@ -20,12 +20,18 @@ class CategoriesWidget extends StatefulWidget {
 class _CategoriesWidgetState extends State<CategoriesWidget> {
   List salePRoducts = [];
 
-  CollectionReference getAllProductSale = FirebaseFirestore.instance.collection('categories');
+  var getAllProductSale = FirebaseFirestore.instance.collection('categories').doc().id.length;
  
+String collectionRef= 'collectionRef';
+String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
+
+
   @override
   void initState() {
-    getCategories();
+    // getCategories();
+    BlocProvider.of<CategoriesBloc>(context);
     super.initState();
+    print(getAllProductSale);
   }
 
   @override
@@ -33,41 +39,37 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 33, 12, 33),
       child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 22,),
-          StreamBuilder(
-            stream: getAllProductSale.snapshots(),
-            builder: (context,AsyncSnapshot<QuerySnapshot>  snapshot) {
-              // List<DocumentSnapshot> docs = snapshot.data!.docs;
-              if(snapshot.hasData) {
+          BlocBuilder<CategoriesBloc,CategoriesState>(
+            builder: (context, state) {
+              if(state is GetCategoriesLoadedState){
                 return Expanded(
                   child: ListView.separated(
                     physics: const ScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (context ,index) => buildItemProduct(
-                      getAllProductSale: getAllProductSale,
-                      categories: snapshot.data!.docs[index],
+                    itemBuilder: (context ,index) => 
+                    buildItemProduct(
+                      categories: state.categoriesModel[index],
                       context: context, 
                       // index: index, 
-                      id: snapshot.data!.docs[index].id
+                      // id: state.categoriesModel[index].id
                     ),
                     separatorBuilder: (context ,index)=> const Divider(
                       color: ColorTheme.porder,
                       thickness: 1,
                     ),
-                    itemCount: snapshot.data!.docs.length,
+                    itemCount: state.categoriesModel.length,
                   ),
                 );
-              } else if(snapshot.connectionState == ConnectionState.waiting){
-                return const Center(child:  CircularProgressIndicator(),);
+              }else if(state is CategoriesLoadingState){
+                return const Expanded(child: Center(child:  CircularProgressIndicator(),));
               } else {
-                return const Text('error 404');
+                return  Expanded(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));
               }
-            },
+            } 
           ),
-          // const Spacer(),
           const SizedBox(height: 22,),
           InkWell(
             onTap: () => Navigator.pushNamed(context, addItemCategoriesPage),
@@ -85,8 +87,8 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   Widget buildItemProduct({
     required BuildContext context,
     // required int index,
-    required String id,
-    required DocumentSnapshot categories,
+    // required String id,
+    required CategoriesModel categories,
     getAllProductSale
   }){
     return Row(
@@ -100,71 +102,77 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
             borderRadius: BorderRadius.circular(12),
             image:  DecorationImage(
               fit: BoxFit.contain,
-              image: NetworkImage('${categories['images']}')
+                image: NetworkImage(categories.image)
+              ),
             ),
           ),
-        ),
-        
-        const SizedBox(width: 18,),
-        Flexible(
-          // flex: 3,
-          child: Text(
-            '${categories['name']}',
-            style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 14,),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          
+          const SizedBox(width: 18,),
+          Flexible(
+            // flex: 3,
+            child: Text(
+              categories.name,
+              style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-        ),
-        const Spacer(),
-        // const SizedBox(width: 12,),
-        Row(
+          const Spacer(),
+          // const SizedBox(width: 12,),
+          /* Row(
+            children: [ 
           children: [ 
-            IconButton(
-              onPressed: () =>Navigator.push(
-                context, MaterialPageRoute(
-                  builder: (context){
-                    return PreviewItemCategoriesPage(id: id,categories: categories,);
-                  }
-                ),
-              ),
-              icon: FormFeilds.containerImage(assetImage: 'assets/images/eye.png',height: 18,width: 18),
-            ),
-            IconButton(
-              // onPressed: () => Navigator.pushNamed(context, editItemCategoriesPage,arguments: id),
-              onPressed: () => Navigator.push(
-                context, MaterialPageRoute(
-                  builder: (context){
-                    return EditItemCategoriesPage(id: id,categories: categories,);
-                  }
-                ),
-              ),
-              icon: FormFeilds.containerImage(assetImage: 'assets/images/edit.png',height: 18,width: 18),
-            ),
-            IconButton(
-              onPressed: (){
-                FormFeilds.mesgDelete(
-                  context, 
-                  'Are you sure to delete?',
-                  InkWell(
-                    onTap: () async {
-                      await FirebaseStorage.instance.refFromURL(categories['images']).delete();
-                      await getAllProductSale.doc(id).delete();
-                      Navigator.of(context).pop();
-                    },
-                    child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
+            children: [ 
+              IconButton(
+                onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context){
+                      return PreviewItemCategoriesPage(id: categories,categories: categories,);
+                    }
                   ),
-                  // FormFeilds.buttonFormField(title: 'cancel')
-                );
+                ),
+                icon: FormFeilds.containerImage(assetImage: 'assets/images/eye.png',height: 18,width: 18),
+              ),
+              IconButton(
+                // onPressed: () => Navigator.pushNamed(context, editItemCategoriesPage,arguments: id),
+                onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context){
+                      return EditItemCategoriesPage(id: categories.id,categories: categories,);
+                    }
+                  ),
+                ),
+                icon: FormFeilds.containerImage(assetImage: 'assets/images/edit.png',height: 18,width: 18),
+              ),
+              IconButton(
+                onPressed: (){
+                  FormFeilds.mesgDelete(
+                    context, 
+                  context, 
+                    context, 
+                    'Are you sure to delete?',
+                    InkWell(
+                      onTap: () async {
+                        await FirebaseStorage.instance.refFromURL(categories['images']).delete();
+                        await getAllProductSale.doc(id).delete();
+                        Navigator.of(context).pop();
+                      },
+                      child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
+                    ),
+                    // FormFeilds.buttonFormField(title: 'cancel')
+                  );
+                }, 
               }, 
-              icon: FormFeilds.containerImage(assetImage: 'assets/images/delete.png',height: 18,width: 18),
-            ),
-          ],
-        ),
+                }, 
+                icon: FormFeilds.containerImage(assetImage: 'assets/images/delete.png',height: 18,width: 18),
+              ),
+            ],
+          ), */
       ],
     );
   }
 
-  Future<void> getCategories() async {
+ /*  Future<void> getCategories() async {
     QuerySnapshot responseBody  = await getAllProductSale.get();
     for(var element in responseBody.docs){
       setState(() {
@@ -174,7 +182,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
         print('====================');
         print(salePRoducts); */
     }
-  }
+  } */
 
   
  /* Future<void> deleteData(index)async{

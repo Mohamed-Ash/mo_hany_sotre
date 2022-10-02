@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'dart:math';
 
@@ -9,27 +10,31 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
-import 'package:m_hany_store/core/helper/next_id_helper.dart';
-import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
-class AddItemCategoriesWidget extends StatefulWidget {
-  const AddItemCategoriesWidget({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class EditItemCategoriesWidget extends StatefulWidget {
+  String? id;
+  DocumentSnapshot? categories;
 
+    EditItemCategoriesWidget({super.key,required this.id,required this.categories});
+  
   @override
-  State<AddItemCategoriesWidget> createState() => _AddItemCategoriesWidgetState();
+  State<EditItemCategoriesWidget> createState() => _EditItemCategoriesWidgetState();
 }
 
-class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
+class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
+  
   XFile? image;
   DateTime now =  DateTime.now();
   String? selectedValue;
-  bool isSelect = false ;
-
-  final ImagePicker _picker = ImagePicker();
+  
   final nameController = TextEditingController();
+  final formKey =GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+
   final formKye = GlobalKey<FormState>();
   
 
@@ -40,22 +45,18 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   ];
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
 
- /*  @override
-  void initState() {
-    selectedValue = null ; 
-    nameController.clear(); 
-    super.initState();
-  } */
+  var editData = FirebaseFirestore.instance.collection('categories');
+ 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Form(
-        key: formKye,
+    return  SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const SizedBox(height: 55,),
-            if (image == null)
+             if (image == null)
               InkWell(
                 onTap: () async {
                   final imagePiced = await _picker.pickImage(source: ImageSource.gallery);
@@ -122,17 +123,93 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                       right: 20, */
                       // bottom: 2,
                       // left: 2,
-                      child: InkWell(
-                        onTap: (){
-                          setState(() {
-                            image = null;
-                          });
-                        },
-                        child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40)),
-                    ) ,
+                    child: InkWell(
+                      onTap: (){
+                        setState(() {
+                          image = null;
+                        });
+                      },
+                      child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40),
+                    ),
+                  ),
                 ],
               ),
-              Padding(
+            /* Container(
+              width: MediaQuery.of(context).size.width,
+              height: 300,
+              decoration:  BoxDecoration(
+                // color: Colors.white,
+                // borderRadius: BorderRadius.circular(12),
+                image: DecorationImage(
+                  fit: BoxFit.contain,
+                  image: NetworkImage(widget.categories!['images'])
+                ),
+              ),
+            ), */
+            const SizedBox(
+              height: 22  ,
+            ),
+            const Divider(
+              color: ColorTheme.porder,
+              thickness: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18,0,18,0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Name',
+                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                  ),
+                  Text(
+                    '${widget.categories!['name']}',
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                  ),
+                ],
+              ),
+            ),  
+            const Divider(
+              color: ColorTheme.porder,
+              thickness: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18,0,18,0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Creatged at ',
+                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                  ),
+                  Text(
+                    '${widget.categories!['craeted at']}',
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                  ),
+                ],
+              ),
+            ),  
+            const Divider(
+              color: ColorTheme.porder,
+              thickness: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18,0,18,0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Updated At ',
+                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                  ),
+                  Text(
+                    '2022/9/9 09:30 pm',
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                  ),
+                ],
+              ),
+            ),  
+            Padding(
                 padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
                 child: Stack(
                   children: [
@@ -166,7 +243,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                     enabledBorder: InputBorder.none,
                     focusedBorder:  InputBorder.none,
                     border: InputBorder.none,
-                    errorStyle: getRegulerStyle(color: Colors.red,fontSize: 12),
+                    errorStyle:  getRegulerStyle(color: Colors.red,fontSize: 12),
                   ),
                   // isExpanded: false,
                   hint: Text(
@@ -190,7 +267,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                     color: ColorTheme.backroundInput,
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  items: genderItems.map((item) => DropdownMenuItem<String>(
+                  items: genderItems  .map((item) => DropdownMenuItem<String>(
                     value: item,
                       child: Text(
                         item,
@@ -204,9 +281,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                       return null;
                     },
                     onChanged: (value){
-                      setState(() {
-                        isSelect = !isSelect;
-                      });
+                     
                     },
                     onSaved: (value) {
                       selectedValue = value.toString();
@@ -222,10 +297,10 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                 ),
               InkWell(
                 onTap: ()async{
-                  if(formKye.currentState!.validate()){
+                  /* if(formKye.currentState!.validate()){
                     formKye.currentState!.save();
+                  } */
                     await postData(context);
-                  }
                 },
                 child: FormFeilds.buttonFormField(
                   widthtButton: double.infinity,
@@ -243,11 +318,24 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
       ),
     );
   }
-  
+
+   Future<void> deleteImage()async{
+    try{
+      await FirebaseStorage.instance.refFromURL(widget.categories!['images']).delete();
+    }catch(e){
+      print(e);
+      throw " image Not Deleted ";
+    }
+   }
+
   postData(context)async{
-    CollectionReference postDat = FirebaseFirestore.instance.collection('categories');
-    
-    if (formKye.currentState!.validate() && image != null){
+    try{
+    if (image != null){
+      await FirebaseStorage.instance.refFromURL(widget.categories!['images']).delete();
+
+      print("==++++++++++++++==");
+      print('printDeleteImage');
+     
       FormFeilds.showLoading(context);
 
       var file = File(image!.path);
@@ -264,38 +352,41 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
       await refSorage.putFile(file);
 
       var uri =  await refSorage.getDownloadURL();
-      int id = await NextIdHelper.getNextId("categories");
-      CategoriesModel category = CategoriesModel(
-        id: id, 
-        image: uri,
-        name: nameController.text, 
-        type: selectedValue!, 
-        createdAt: now.toIso8601String(),
-      );
-      await postDat.add(category.toJson()).then((value) {
-        setState(() {
-          image = null;
-          nameController.clear();
+
+      await editData.doc(widget.id).update({
+          "image": uri,
+          "name": nameController.text,
+          "updated at ": formattedDateTime(),
+          // "craeted at": null,
+          "type": selectedValue ,
+        }).then((value) {
+          setState(() {
+            image = null;
+          });
+          print('url: $uri');
         });
-        print('url: $uri');
-      });
       Navigator.pop(context);
     }else{
-      // Navigator.pop(context);
-      FormFeilds.showMyDialog(
-        context, 
-        'please fill fileds',
-         [
-          TextButton(
-            onPressed: ()=>Navigator.of(context).pop(), 
-            child: Text(
-              'Okay',
-              style: getBoldStyle(color: ColorTheme.wight,
-              )
-            ),
-          ),
-        ]
-      );
+      FormFeilds.showLoading(context);
+      await editData.doc(widget.id).update({
+        "name": nameController.text.isEmpty ? widget.categories!['name'] : nameController.text,
+        "updated at ": formattedDateTime(),
+        // "craeted at": null,
+        "type": selectedValue ?? widget.categories!['type'] ,
+      }).then((value) {
+        setState(() {
+          image = null;
+        });
+      });
+      Navigator.pop(context);
+    }
+    }catch(e){
+       print(e);
+      throw " image Not Deleted ";
     }
   } 
-}
+
+  String formattedDateTime() {
+      return "${now.day} ${month[now.month]} ${now.year} ${now.hour}:${now.minute}";
+  }
+} 
