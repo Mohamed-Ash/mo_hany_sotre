@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -40,7 +41,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                GridView.builder(
+               /*  GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -58,8 +59,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                     );
                   } ,
                   itemCount: salePRoducts.length,
-                ),
-                /* Row(
+                ), */
+                Row(
                   children: [
                     Container(
                       width: 180,
@@ -97,16 +98,21 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
-                      height: 250,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
-                        image: const DecorationImage(
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                          image: AssetImage('assets/images/upgrade_gtav.jpg') 
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, userShippingPage);
+                      },
+                      child: Container(
+                        width: 180,
+                        height: 250,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                          image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            alignment: Alignment.center,
+                            image: AssetImage('assets/images/upgrade_gtav.jpg') 
+                          ),
                         ),
                       ),
                     ), 
@@ -175,7 +181,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       ],
                     ), 
                   ],
-                ), */
+                ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -187,16 +193,16 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  Future<void> getCategories() async {
+  /* Future<void> getCategories() async {
     QuerySnapshot responseBody  = await getAllProductSale.get();
     for(var element in responseBody.docs){
       setState(() {
         salePRoducts.add(element.data());
       });
     }
-  }
+  } */
   
-  Widget buildCategories(context,index){
+  /* Widget buildCategories(context,index){
     return Container(
       width: 180,
       height: 250,
@@ -206,16 +212,16 @@ class _HomeWidgetState extends State<HomeWidget> {
         image: DecorationImage(
           fit: BoxFit.cover,
           alignment: Alignment.center,
-          image: NetworkImage('${salePRoducts[index]['images']}') 
+          image: NetworkImage('${salePRoducts[index]['image']}') 
         ),
       ),  
     );
-  }
+  } */
 
-  @override
+  /* @override
   void initState() {
     getCategories();
     super.initState();
-  }
+  } */
   
 }
