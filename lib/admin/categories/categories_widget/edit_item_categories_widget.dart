@@ -19,17 +19,12 @@ import 'package:path/path.dart';
 class EditItemCategoriesWidget extends StatefulWidget {
   final CategoriesModel categoriesModel;
   const EditItemCategoriesWidget({super.key, required this.categoriesModel});
-  /* String? id;
-  DocumentSnapshot? categories; */
-
-    // EditItemCategoriesWidget({super.key,required this.id,required this.categories});
   
   @override
   State<EditItemCategoriesWidget> createState() => _EditItemCategoriesWidgetState();
 }
 
 class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
-  
   XFile? image;
   DateTime now =  DateTime.now();
   String? selectedValue;
@@ -37,8 +32,6 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
   final nameController = TextEditingController();
   final formKey =GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-
-  final formKye = GlobalKey<FormState>();
   
 
   final List<String> genderItems = [
@@ -302,17 +295,17 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                   ),
                  InkWell(
                   onTap: ()async{
-                    /* if(formKye.currentState!.validate()){
-                      formKye.currentState!.save();
-                    } */
-                      await postData(context);
+                    if(formKey.currentState!.validate()){
+                      formKey.currentState!.save();
+                        postData(context);
+                    }
                   },
                   child: FormFeilds.buttonFormField(
                     widthtButton: double.infinity,
                     heightButton: 50,
                     // dPadding: false,
                     title: 'Done',
-                    colorButton: ColorTheme.primary, 
+                    colorButton: ColorTheme.primary,
                   ),
                 ),
                 const SizedBox(
@@ -337,66 +330,68 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
   postData(context)async{
     var editItemCategories = FirebaseFirestore.instance.collection('categories');
     try{  
-    if (formKye.currentState!.validate() && image != null){
-      await FirebaseStorage.instance.refFromURL("${widget.categoriesModel.image}").delete();
+      if (formKey.currentState!.validate() && image != null){
+        await FirebaseStorage.instance.refFromURL("${widget.categoriesModel.image}").delete();
 
-      print("==++++++++++++++==");
-      print('printDeleteImage');
-     
-      FormFeilds.showLoading(context);
+        print("==++++++++++++++==");
+        print('printDeleteImage');
+      
+        FormFeilds.showLoading(context);
 
-      var file = File(image!.path);
+        var file = File(image!.path);
 
-      var nameimage = basename(image!.path);
+        var nameimage = basename(image!.path);
 
-      var random = Random().nextInt(1000000);
+        var random = Random().nextInt(1000000);
 
-      nameimage = "$random$nameimage";
+        nameimage = "$random$nameimage";
 
-      var refSorage = FirebaseStorage.instance.ref("categories").child(nameimage); 
-      print('=========================================');
-      print(nameimage);
-      await refSorage.putFile(file);
+        var refSorage = FirebaseStorage.instance.ref("categories").child(nameimage); 
+        print('=========================================');
+        print(nameimage);
+        await refSorage.putFile(file);
 
-      var uri =  await refSorage.getDownloadURL();
-      CategoriesModel category = CategoriesModel(
-        createdAt: widget.categoriesModel.createdAt,
-        id: widget.categoriesModel.id,
-        idDoc: widget.categoriesModel.idDoc,
-        // start update 
-        image: uri,
-        name: nameController.text, 
-        type: "selectedValue!",
-        updatedAt: now.toIso8601String(),
-      );
-      await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson()).then((value) {
+        var uri =  await refSorage.getDownloadURL();
+        CategoriesModel category = CategoriesModel(
+          createdAt: widget.categoriesModel.createdAt,
+          id: widget.categoriesModel.id,
+          idDoc: widget.categoriesModel.idDoc,
+          // start update 
+          image: uri,
+          name: nameController.text, 
+          type: selectedValue!,
+          updatedAt: now.toIso8601String(),
+        );
+        await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson()).then((value) {
           setState(() {
             image = null;
+            nameController.clear();
           });
-          print('url: $uri');
+            print('url: $uri');
         });
-      Navigator.pop(context);
-    }else if(formKye.currentState!.validate()){
-       CategoriesModel category = CategoriesModel(
-        createdAt: widget.categoriesModel.createdAt,
-        id: widget.categoriesModel.id,
-        idDoc: widget.categoriesModel.idDoc,
-        image: widget.categoriesModel.image,
-        // start update 
-        name: nameController.text, 
-        type: "selectedValue!", 
-        updatedAt: now.toIso8601String(),
-      );
-      FormFeilds.showLoading(context);
-      await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson()).then((value) {
-        setState(() {
-          image = null;
+        Navigator.pop(context);
+      } else if(formKey.currentState!.validate()){
+        CategoriesModel category = CategoriesModel(
+          createdAt: widget.categoriesModel.createdAt,
+          id: widget.categoriesModel.id,
+          idDoc: widget.categoriesModel.idDoc,
+          image: widget.categoriesModel.image,
+          // start update 
+          name: nameController.text, 
+          type: selectedValue!, 
+          updatedAt: now.toIso8601String(),
+        );
+        FormFeilds.showLoading(context);
+        await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson()).then((value) {
+          setState(() {
+            image = null;
+            nameController.clear();
+          });
         });
-      });
-      Navigator.pop(context);
-    }
+        Navigator.pop(context);
+      }
     }catch(e){
-       print(e);
+      print(e);
     }
   } 
 
