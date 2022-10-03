@@ -1,8 +1,11 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously, avoid_print, unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_hany_store/admin/categories/categories_page/edit_item_categories_page.dart';
+import 'package:m_hany_store/admin/categories/categories_page/preview_item_categories_page.dart';
 import 'package:m_hany_store/core/bloc/categories_bloc/categories_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
@@ -18,20 +21,16 @@ class CategoriesWidget extends StatefulWidget {
 }
 
 class _CategoriesWidgetState extends State<CategoriesWidget> {
-  List salePRoducts = [];
-
-  var getAllProductSale = FirebaseFirestore.instance.collection('categories').doc().id.length;
- 
-String collectionRef= 'collectionRef';
-String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
+ CollectionReference<Map<String, dynamic>> getAllProductSale = FirebaseFirestore.instance.collection('categories');
 
 
+  // List<DocumentSnapshot> 
   @override
   void initState() {
     // getCategories();
     BlocProvider.of<CategoriesBloc>(context);
     super.initState();
-    print(getAllProductSale);
+    print(getAllProductSale.id);
   }
 
   @override
@@ -41,7 +40,8 @@ String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
       child: Column(
         children: [
           const SizedBox(height: 22,),
-          BlocBuilder<CategoriesBloc,CategoriesState>(
+          BlocConsumer<CategoriesBloc,CategoriesState>(
+            listener: (context, state) => getAllProductSale,
             builder: (context, state) {
               if(state is GetCategoriesLoadedState){
                 return Expanded(
@@ -51,9 +51,10 @@ String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context ,index) => 
                     buildItemProduct(
-                      categories: state.categoriesModel[index],
+                      categoriesModel: state.categoriesModel[index],
                       context: context, 
-                      // index: index, 
+                      getAllProductSale:  getAllProductSale,
+                      id: state.categoriesModel[index].id
                       // id: state.categoriesModel[index].id
                     ),
                     separatorBuilder: (context ,index)=> const Divider(
@@ -65,10 +66,12 @@ String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
                 );
               }else if(state is CategoriesLoadingState){
                 return const Expanded(child: Center(child:  CircularProgressIndicator(),));
-              } else {
+              }else if (state  == null ){
+                return Expanded(child: Text('categories page is empty Please add a Ctegories',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));
+              }else {
                 return  Expanded(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));
               }
-            } 
+            },
           ),
           const SizedBox(height: 22,),
           InkWell(
@@ -87,9 +90,9 @@ String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
   Widget buildItemProduct({
     required BuildContext context,
     // required int index,
-    // required String id,
-    required CategoriesModel categories,
-    getAllProductSale
+    required  id,
+    required CategoriesModel categoriesModel,
+    required CollectionReference<Map<String, dynamic>> getAllProductSale
   }){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,20 +101,18 @@ String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
           width: 75,
           height: 75,
           decoration: BoxDecoration(
-            // color: Colors.white,
             borderRadius: BorderRadius.circular(12),
             image:  DecorationImage(
               fit: BoxFit.contain,
-                image: NetworkImage(categories.image)
+                image: NetworkImage("${categoriesModel.image}")
               ),
             ),
           ),
-          
           const SizedBox(width: 18,),
           Flexible(
             // flex: 3,
             child: Text(
-              categories.name,
+              categoriesModel.name,
               style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -119,15 +120,13 @@ String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
           ),
           const Spacer(),
           // const SizedBox(width: 12,),
-          /* Row(
-            children: [ 
-          children: [ 
+          Row(
             children: [ 
               IconButton(
                 onPressed: () => Navigator.push(
                   context, MaterialPageRoute(
                     builder: (context){
-                      return PreviewItemCategoriesPage(id: categories,categories: categories,);
+                      return PreviewItemCategoriesPage(categoriesModel: categoriesModel,);
                     }
                   ),
                 ),
@@ -135,10 +134,11 @@ String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
               ),
               IconButton(
                 // onPressed: () => Navigator.pushNamed(context, editItemCategoriesPage,arguments: id),
+                // onPressed: (){},
                 onPressed: () => Navigator.push(
                   context, MaterialPageRoute(
                     builder: (context){
-                      return EditItemCategoriesPage(id: categories.id,categories: categories,);
+                      return EditItemCategoriesPage(categoriesModel: categoriesModel,);
                     }
                   ),
                 ),
@@ -147,31 +147,41 @@ String docId = FirebaseFirestore.instance.collection('collectionRef').doc().id;
               IconButton(
                 onPressed: (){
                   FormFeilds.mesgDelete(
-                    context, 
-                  context, 
+
                     context, 
                     'Are you sure to delete?',
                     InkWell(
                       onTap: () async {
-                        await FirebaseStorage.instance.refFromURL(categories['images']).delete();
-                        await getAllProductSale.doc(id).delete();
+                        await FirebaseStorage.instance.refFromURL("${categoriesModel.image}").delete();
+                        await getAllProductSale.doc(categoriesModel.idDoc).delete();
+                        print(id);
+                        // deleteItemCatecories(categoriesModel,);
                         Navigator.of(context).pop();
                       },
                       child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
                     ),
                     // FormFeilds.buttonFormField(title: 'cancel')
                   );
-                }, 
-              }, 
+
                 }, 
                 icon: FormFeilds.containerImage(assetImage: 'assets/images/delete.png',height: 18,width: 18),
               ),
             ],
-          ), */
+          ),
       ],
     );
   }
+  Future deleteItemCatecories(CategoriesModel categoriesModel)async{
+      //  .FirebaseFirestore.collection('post_details').doc();
+    // var  getIDCollection = FirebaseFirestore.instance.collection('categories').doc();
+    try{
+      await getAllProductSale.doc(categoriesModel.idDoc).delete().then((value) => print('deleted ==+++'));
+      // await FirebaseStorage.instance.refFromURL(categoriesModel.image).delete();
+    }catch(e){
+      print('[delete Item Catecories method is] [error] [$e]');
+    }
 
+  }
  /*  Future<void> getCategories() async {
     QuerySnapshot responseBody  = await getAllProductSale.get();
     for(var element in responseBody.docs){
