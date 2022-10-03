@@ -107,7 +107,7 @@ class PreviewSalePage extends UserInterface{
                   child: Center(
                     child: Text(
                       '-20%',
-                      style: getSemiBoldStyle(color: ColorTheme.white, fontSize: 16),
+                      style: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 16),
                     ),
                   ),
                 ),
@@ -135,7 +135,7 @@ class PreviewSalePage extends UserInterface{
                 ),
                 Text(
                   '119.99 LE',
-                  style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
+                  style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
                 ),
               ],
             ),
@@ -144,7 +144,7 @@ class PreviewSalePage extends UserInterface{
             ),
             Text(
               'Sale ends 9/27/2022 at 3:00 pm',
-              style: getBoldStyle(color: ColorTheme.white,fontSize: 14),
+              style: getBoldStyle(color: ColorTheme.wight,fontSize: 14),
             ),
             const SizedBox(
               height: 22,
@@ -243,7 +243,7 @@ class PreviewSalePage extends UserInterface{
                   const Spacer(),
                   Text(
                     'Rockstar Game',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
               ),
@@ -285,7 +285,7 @@ class PreviewSalePage extends UserInterface{
             child: FormFeilds.buttonFormField(
               title: 'Buy',
               colorButton: ColorTheme.primary,
-              colorText: ColorTheme.white,
+              colorText: ColorTheme.wight,
               dPadding: false,
               heightButton: 50,
               widthtButton: 250,
