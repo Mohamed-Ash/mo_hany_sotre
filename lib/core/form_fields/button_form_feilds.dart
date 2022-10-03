@@ -1,5 +1,4 @@
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/font_theme.dart';
@@ -8,7 +7,7 @@ class FormFeilds{
   static Container buttonFormField({
     required String? title,
     Color? colorButton,
-    Color colorText     =  ColorTheme.white,
+    Color colorText     =  ColorTheme.wight,
     double widthtButton =  double.infinity,
     double heightButton = 40,
     double fontSize = 15,
@@ -79,10 +78,13 @@ class FormFeilds{
     EdgeInsets contentPadding = const EdgeInsets.all(12),
     double cursorHeight = 22, 
     Widget? suffixIcon,
+    String? initialValue
     }){
     return TextFormField(
       // textAlignVertical: textAlignVertical,
       // textAlign: textAlign,
+      initialValue: initialValue,
+      
       textAlignVertical: TextAlignVertical.center,
       keyboardType: keyboardType,
       cursorColor: cursorColor,
@@ -121,7 +123,7 @@ class FormFeilds{
     required String  text,
     required IconData iconData,
      IconData? firstIconData,
-    Color iconColor = ColorTheme.white,
+    Color iconColor = ColorTheme.wight,
     required bool isIconImage,
     double iconSize = 16,
   }){
@@ -144,7 +146,7 @@ class FormFeilds{
         const SizedBox(width: 8),
         Text(
           text,
-          style: getBoldStyle(color: ColorTheme.white, dDecoration: TextDecoration.none,),
+          style: getBoldStyle(color: ColorTheme.wight, dDecoration: TextDecoration.none,),
         ),
         const Spacer(),
         Icon(
@@ -181,21 +183,21 @@ class FormFeilds{
             floatingLabelStyle:  getBoldStyle(color: ColorTheme.primary,fontSize: 15),
             labelText: labelText, //' الاسم ',
             hintText: hintText,//'عبدالرحمن خالد',
-            hintStyle: getSemiBoldStyle(color: ColorTheme.white, fontSize: 13),
+            hintStyle: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 13),
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            labelStyle: getBoldStyle(color: ColorTheme.white, fontSize: 15),
+            labelStyle: getBoldStyle(color: ColorTheme.wight, fontSize: 15),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: ColorTheme.white),
+              borderSide: const BorderSide(color: ColorTheme.wight),
               
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: ColorTheme.white),
+              borderSide: const BorderSide(color: ColorTheme.wight),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: ColorTheme.white),
+              borderSide: const BorderSide(color: ColorTheme.wight),
               // gapPadding: 8,
             ),
             // enabledBorder: InputBorder.none
@@ -246,7 +248,8 @@ class FormFeilds{
   }
    
   static showMyDialog(
-    context,String message
+    context,String message,
+    List<Widget>? actions
   ){
     return showDialog(
       context: context,
@@ -255,11 +258,9 @@ class FormFeilds{
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: ColorTheme.hintText,
-          actions: [
+          actions: const[],
 
-          ],
-
-          content: Text(message,style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 14)),
+          content: Text(message,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14)),
         );
       },
     );
@@ -273,16 +274,14 @@ class FormFeilds{
     return showDialog(
       context: context,
       barrierDismissible: true, // user must tap button!
-      // barrierColor: ColorTheme.hintText,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: ColorTheme.hintText,
           actions: [
             buttinDelete,
-            // buttonCancel
           ],
-
-          content: Text(message,style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 14)),
+      
+          content: Text(message,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14)),
         );
       },
     );
