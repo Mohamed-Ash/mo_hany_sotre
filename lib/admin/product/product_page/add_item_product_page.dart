@@ -95,7 +95,7 @@ class _AddItemProductPageState extends State<AddItemProductPage> {
                     ),
                   ),
                   const Icon(
-                    Icons.image,color: ColorTheme.white,
+                    Icons.image,color: ColorTheme.wight,
                     size: 66,
                   ), 
                 ],
