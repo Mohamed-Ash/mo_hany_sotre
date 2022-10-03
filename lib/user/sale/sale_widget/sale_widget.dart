@@ -86,7 +86,7 @@ class Ssale_widgWState extends State<SaleWidget> {
               padding: const EdgeInsets.fromLTRB(15,15,0,15),
               child: Text(
                 '${salePRoducts[index]["name"]}',
-                style: getSemiBoldStyle(color: ColorTheme.white, fontSize: 16),
+                style: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 16),
               ),
             ),
             Padding(
@@ -104,7 +104,7 @@ class Ssale_widgWState extends State<SaleWidget> {
                     child: Center(
                       child: Text(
                         '-20%',
-                        style: getSemiBoldStyle(color: ColorTheme.white, fontSize: 16),
+                        style: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 16),
                       ),
                     ),
                   ),
@@ -132,7 +132,7 @@ class Ssale_widgWState extends State<SaleWidget> {
                   ),
                   Text(
                     '${salePRoducts[index]["new price"]} LE',
-                    style: getBoldStyle(color: ColorTheme.white,fontSize: 16),
+                    style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
                   ),
                 ],
               ),
