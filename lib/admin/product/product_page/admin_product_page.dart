@@ -59,7 +59,7 @@ class AdminProductsPage extends AdminInterface{
           ),
         ),
         const SizedBox(width: 33,),
-        Text('fifa 22',style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),),
+        Text('fifa 22',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 18),),
         const Spacer(),
           Row(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
