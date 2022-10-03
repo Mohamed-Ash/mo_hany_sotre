@@ -52,7 +52,7 @@ class PreviewItemProductPage extends AdminInterface{
                   const Spacer(),
                   Text(
                     'Valorant',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
               ),
@@ -73,7 +73,7 @@ class PreviewItemProductPage extends AdminInterface{
                   const Spacer(),
                   Text(
                     '2022/9/9 09:30 pm',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
               ),
@@ -94,7 +94,7 @@ class PreviewItemProductPage extends AdminInterface{
                   const Spacer(),
                   Text(
                     '123 LE',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
               ),
@@ -115,7 +115,7 @@ class PreviewItemProductPage extends AdminInterface{
                   const Spacer(),
                   Text(
                     'Turkey',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
               ),
@@ -136,7 +136,7 @@ class PreviewItemProductPage extends AdminInterface{
                   const Spacer(),
                   Text(
                     '2022/12/22 09:30 pm',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
               ),
@@ -157,7 +157,7 @@ class PreviewItemProductPage extends AdminInterface{
                   const Spacer(),
                   Text(
                     'steam',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
               ),
