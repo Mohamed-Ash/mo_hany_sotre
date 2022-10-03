@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:m_hany_store/admin/admin_interface.dart';
 import 'package:flutter/material.dart';
+import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 // ignore: must_be_immutable
 class PreviewItemCategoriesPage extends AdminInterface{
-  final String id;
-  final DocumentSnapshot categories;
+  final  CategoriesModel categoriesModel;
 
   CollectionReference getAllProductSale = FirebaseFirestore.instance.collection('categories');
+/*   final String id;
+  final DocumentSnapshot categories; */
 
-  PreviewItemCategoriesPage({super.key,required this.id,required this.categories});
+  PreviewItemCategoriesPage({super.key,required this.categoriesModel});
 
    @override
   Widget buildBody(BuildContext context) {
@@ -28,10 +30,11 @@ class PreviewItemCategoriesPage extends AdminInterface{
               onPressed: () => Navigator.pop(context), 
               icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
             ),
-            StreamBuilder(
+            /* StreamBuilder(
               stream: getAllProductSale.snapshots(),
               builder: (context,AsyncSnapshot<QuerySnapshot>  snapshot){
                 // List<DocumentSnapshot> docs = snapshot.data!.docs;
+                print(categoriesModel.name);
                 if(snapshot.hasData) {
                   return getData(context);
                 } else if(snapshot.connectionState == ConnectionState.waiting){
@@ -40,7 +43,8 @@ class PreviewItemCategoriesPage extends AdminInterface{
                   return const Text('error 404');
                 }
               },
-            ),
+            ), */
+            getData(context),
             const Divider(
               color: ColorTheme.porder,
               thickness: 1,
@@ -62,7 +66,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
             // borderRadius: BorderRadius.circular(12),
             image: DecorationImage(
               fit: BoxFit.contain,
-              image: NetworkImage(categories['images'])
+              image: NetworkImage("${categoriesModel.image}")
             ),
           ),
         ),
@@ -83,7 +87,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
                 style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
               ),
               Text(
-                '${categories['name']}',
+                categoriesModel.name,
                 style: getSemiBoldStyle(color: ColorTheme.wight,),  
               ),
             ],
@@ -103,7 +107,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
                 style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
               ),
               Text(
-                '${categories['craeted at']}',
+                '${categoriesModel.createdAt}',
                 style: getSemiBoldStyle(color: ColorTheme.wight,),  
               ),
             ],
@@ -143,7 +147,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
                 style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
               ),
               Text(
-                '${categories['type']}',
+                categoriesModel.type,
                 style: getSemiBoldStyle(color: ColorTheme.wight,),  
               ),
             ],
