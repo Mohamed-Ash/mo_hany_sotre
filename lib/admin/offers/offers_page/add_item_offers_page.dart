@@ -57,7 +57,7 @@ class _AddItemOffersPageState extends State<AddItemOffersPage> {
                     ),
                   ),
                   const Icon(
-                    Icons.image,color: ColorTheme.white,
+                    Icons.image,color: ColorTheme.wight,
                     size: 66,
                   ), 
                 ],
