@@ -262,7 +262,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                   child: FormFeilds.buttonFormField(
                     title: 'Create New Accounte',
                     colorButton: ColorTheme.primary,
-                    colorText: ColorTheme.white,
+                    colorText: ColorTheme.wight,
                     heightButton: 50,
                     dPadding: false,
                   ),
@@ -390,11 +390,37 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Navigator.of(context).pop();
-        FormFeilds.showMyDialog(context,'The password provided is too weak.');
+        FormFeilds.showMyDialog(
+          context,
+          'The password provided is too weak.',
+           [
+            TextButton(
+              onPressed: ()=>Navigator.of(context).pop(), 
+              child: Text(
+                'Okay',
+                style: getBoldStyle(color: ColorTheme.wight,
+                )
+              ),
+            ),
+          ]
+        );
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         Navigator.of(context).pop();
-        FormFeilds.showMyDialog(context,'The account already exists for that email.');
+        FormFeilds.showMyDialog(
+          context,
+          'The account already exists for that email.',
+           [
+            TextButton(
+              onPressed: ()=>Navigator.of(context).pop(), 
+              child: Text(
+                'Okay',
+                style: getBoldStyle(color: ColorTheme.wight,
+                )
+              ),
+            ),
+          ]  
+        );
         print('The account already exists for that email.');
       }
       
