@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unrelated_type_equality_checks
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,7 +38,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               padding: const EdgeInsets.fromLTRB(0, 20, 15, 15),
               child: Text(
                 'My Profile',
-                style: getBoldStyle(color: ColorTheme.white),
+                style: getBoldStyle(color: ColorTheme.wight),
               ),
             ),
             Container(// 01002581739
@@ -91,7 +91,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               padding: const EdgeInsets.fromLTRB( 0, 20, 15, 15),
               child: Text(
                 'settengs',
-                style: getBoldStyle(color: ColorTheme.white, dDecoration: TextDecoration.none,),
+                style: getBoldStyle(color: ColorTheme.wight, dDecoration: TextDecoration.none,),
               ),
             ),
             Container(
@@ -109,19 +109,19 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       children:  [
                         const Icon(
                           Icons.language_outlined,
-                          color: ColorTheme.white,
+                          color: ColorTheme.wight,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           'اللغة',
-                          style: getBoldStyle(color: ColorTheme.white, dDecoration: TextDecoration.none,),
+                          style: getBoldStyle(color: ColorTheme.wight, dDecoration: TextDecoration.none,),
                         ),
                         const Spacer(),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(33, 0, 0, 0),
                           child: Text(
                             'English',
-                            style: getBoldStyle(color: ColorTheme.white, dDecoration: TextDecoration.none,),
+                            style: getBoldStyle(color: ColorTheme.wight, dDecoration: TextDecoration.none,),
                           ),
                         ),
                       ],
@@ -162,7 +162,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 onTap: () => logOut(context),
                 child: Text(
                   'Log out',
-                  style: getBoldStyle(color: ColorTheme.white, dDecoration: TextDecoration.none,),
+                  style: getBoldStyle(color: ColorTheme.wight, dDecoration: TextDecoration.none,),
                 ),
               ),
             ),
