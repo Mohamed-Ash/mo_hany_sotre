@@ -185,7 +185,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   child: FormFeilds.buttonFormField(
                     title:'sign in',
                     colorButton: ColorTheme.primary,
-                    colorText: ColorTheme.white,
+                    colorText: ColorTheme.wight,
                     heightButton: 50,
                     dPadding: false,
                   ),
@@ -298,17 +298,56 @@ class _LoginWidgetState extends State<LoginWidget> {
         Navigator.pushNamedAndRemoveUntil(context, appPageLayout, (route) => false);
       }else{
         Navigator.pop(context);
-        FormFeilds.showMyDialog(context, 'please confirem your email');
+        FormFeilds.showMyDialog(
+          context, 
+          'please confirem your email',
+          [
+            TextButton(
+              onPressed: ()=>Navigator.of(context).pop(), 
+              child: Text(
+                'Okay',
+                style: getBoldStyle(color: ColorTheme.wight,
+                )
+              ),
+            ),
+          ]
+        );
       }
       print(credential.user!.emailVerified);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Navigator.of(context).pop();
-        FormFeilds.showMyDialog(context, 'No user found for that email.');
+        FormFeilds.showMyDialog(
+          context, 
+          'No user found for that email.',
+           [
+            TextButton(
+              onPressed: ()=>Navigator.of(context).pop(), 
+              child: Text(
+                'Okay',
+                style: getBoldStyle(color: ColorTheme.wight,
+                )
+              ),
+            ),
+          ]  
+        );
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         Navigator.of(context).pop();
-        FormFeilds.showMyDialog(context, 'Wrong password provided for that user.');
+        FormFeilds.showMyDialog(
+          context, 
+          'Wrong password provided for that user.',
+           [
+            TextButton(
+              onPressed: ()=>Navigator.of(context).pop(), 
+              child: Text(
+                'Okay',
+                style: getBoldStyle(color: ColorTheme.wight,
+                )
+              ),
+            ),
+          ]
+        );
         print('Wrong password provided for that user.');
       }
     }
