@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
@@ -12,7 +11,6 @@ import 'package:image_preview/image_preview.dart';
 
 // ignore: must_be_immutable
 class PreviewProductWidget extends StatelessWidget {
-  CollectionReference getAllProducts = FirebaseFirestore.instance.collection('sale product');
 
   List products = [];
 
@@ -117,7 +115,7 @@ class PreviewProductWidget extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Sports',
-                      style: getSemiBoldStyle(color: ColorTheme.white, fontSize: 16),
+                      style: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 16),
                     ),
                   ),
                 ),
@@ -220,7 +218,7 @@ class PreviewProductWidget extends StatelessWidget {
                   const Spacer(),
                   Text(
                     'Rockstar Game',
-                    style: getSemiBoldStyle(color: ColorTheme.white,),  
+                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
               ),
