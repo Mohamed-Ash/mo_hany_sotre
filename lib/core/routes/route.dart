@@ -4,12 +4,13 @@ import 'package:m_hany_store/admin/categories/categories_page/categories_page.da
 import 'package:m_hany_store/admin/home/admin_home.dart';
 import 'package:m_hany_store/admin/offers/offers_page/edit_item_offers_page.dart';
 import 'package:m_hany_store/admin/offers/offers_page/offers_page.dart';
+import 'package:m_hany_store/admin/offers/offers_page/preview_item_offers_page.dart';
 import 'package:m_hany_store/admin/product/product_page/add_item_product_page.dart';
 import 'package:m_hany_store/admin/product/product_page/edit_item_product_page.dart';
 import 'package:m_hany_store/admin/product/product_page/admin_product_page.dart';
 import 'package:m_hany_store/admin/product/product_page/preview_item_product_page.dart';
+import 'package:m_hany_store/admin/shipping/shipping_page/add_item_shipping_page.dart';
 import 'package:m_hany_store/admin/shipping/shipping_page/edit_item_shipping_page.dart';
-import 'package:m_hany_store/admin/shipping/shipping_page/preview_item_shipping_page.dart';
 import 'package:m_hany_store/admin/shipping/shipping_page/shipping_page.dart';
 import 'package:m_hany_store/core/auth/login/login_page/login_page.dart';
 import 'package:m_hany_store/core/auth/register/register_page/register_page.dart';
@@ -18,6 +19,7 @@ import 'package:m_hany_store/core/payments/checkout_page.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/user/categories/product/product_page/preview_product_page.dart';
 import 'package:m_hany_store/user/categories/product/product_page/product_page.dart';
+import 'package:m_hany_store/user/categories/shipping/user_shipping_page/user_shipping_page.dart';
 import 'package:m_hany_store/user/sale/sale_page/preview_sale_page.dart';
 
 class Routes{
@@ -33,9 +35,15 @@ class Routes{
       case previewProductPage:                                  return MaterialPageRoute(builder: (_)=> const PreviewProductPage());
       case showSalePage:                                        return MaterialPageRoute(builder: (_)=>  PreviewSalePage());
       case productPagse:                                        return MaterialPageRoute(builder: (_)=>  const ProductPage());
+      case userShippingPage:                                        return MaterialPageRoute(builder: (_)=>  const UserShippingPage());
         
+
+
       // todo: payment methods
       case checkoutpage:                                        return MaterialPageRoute(builder: (_)=> const CheckoutPage());
+
+
+
 
       // todo: admin
 
@@ -43,25 +51,25 @@ class Routes{
       case adminProductsPage:                                   return MaterialPageRoute(builder: (_)=> const AdminProductsPage());
       case previewItemProductPage:                              return MaterialPageRoute(builder: (_)=> const PreviewItemProductPage());
       case editItemProductPage:                                 return MaterialPageRoute(builder: (_)=> const EditItemProductPage());
-      case categoriePage:                                       return MaterialPageRoute(builder: (_)=> const CategoriePage());
-      case shippingPage:                                        return MaterialPageRoute(builder: (_)=> const ShippingPage());
-      case offersPage:                                          return MaterialPageRoute(builder: (_)=> const OffersPage());
       case addItemProductPage:                                  return MaterialPageRoute(builder: (_)=> const AddItemProductPage());
+      
+      case categoriesPage:                                      return MaterialPageRoute(builder: (_)=> const CategoriePage());
       case addItemCategoriesPage:                               return MaterialPageRoute(builder: (_)=> const AddItemCategoriesPage());
-     /*  case editItemCategoriesPage:              
-         String id = settings.arguments as String;
-          return MaterialPageRoute(builder: (_)=> EditItemCategoriesPage(id:id,)); */
-      // case previewItemCategoriesPage:                           return MaterialPageRoute(builder: (_)=> const PreviewItemCategoriesPage());
-      case previewItemShippingPage:                             return MaterialPageRoute(builder: (_)=> const PreviewItemShippingPage());
-      case editItemShippingPage:                                return MaterialPageRoute(builder: (_)=> const EditItemShippingPage());
+
+
+      case shippingPage:                                        return MaterialPageRoute(builder: (_)=> const ShippingPage());
+      case addItemShippingPage:                                 return MaterialPageRoute(builder: (_)=> const AddItemShippingPage());
+      // case previewItemShippingPage:                             return MaterialPageRoute(builder: (_)=> const PreviewItemShippingPage());
+      case editItemShippingPage:                                return MaterialPageRoute(builder: (_)=> EditItemShippingPage());
+      
+      
+      case offersPage:                                          return MaterialPageRoute(builder: (_)=> const OffersPage());
       case editItemOffersPage:                                  return MaterialPageRoute(builder: (_)=> const EditItemOffersPage());
-
-
-
-
+      case previewItemOffersPage:                               return MaterialPageRoute(builder: (_)=> const PreviewItemOffersPage());
 
       default:
     }
     return null; 
   }
+      // case previewItemCategoriesPage:                           return MaterialPageRoute(builder: (_)=> const PreviewItemCategoriesPage());
 }
