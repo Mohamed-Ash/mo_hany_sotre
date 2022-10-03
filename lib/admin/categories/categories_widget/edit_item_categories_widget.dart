@@ -10,16 +10,19 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
 // ignore: must_be_immutable
 class EditItemCategoriesWidget extends StatefulWidget {
-  String? id;
-  DocumentSnapshot? categories;
+  final CategoriesModel categoriesModel;
+  const EditItemCategoriesWidget({super.key, required this.categoriesModel});
+  /* String? id;
+  DocumentSnapshot? categories; */
 
-    EditItemCategoriesWidget({super.key,required this.id,required this.categories});
+    // EditItemCategoriesWidget({super.key,required this.id,required this.categories});
   
   @override
   State<EditItemCategoriesWidget> createState() => _EditItemCategoriesWidgetState();
@@ -47,25 +50,50 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
 
-  var editData = FirebaseFirestore.instance.collection('categories');
+  // var editData = FirebaseFirestore.instance.collection('categories');
  
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-             if (image == null)
-              InkWell(
-                onTap: () async {
-                  final imagePiced = await _picker.pickImage(source: ImageSource.gallery);
-                  setState(() {
-                    image = imagePiced;
-                  });     
-                },
-                child: Stack(
-                  alignment: Alignment.center,
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+               if (image == null)
+                InkWell(
+                  onTap: () async {
+                    final imagePiced = await _picker.pickImage(source: ImageSource.gallery);
+                    setState(() {
+                      image = imagePiced;
+                    });     
+                  },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 400,
+                          decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 94, 93, 93),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      const Icon(
+                        Icons.image,color: ColorTheme.wight,
+                        size: 66,
+                      ),
+                     
+                    ],
+                  ),
+                )
+              else
+                Stack(
+                  alignment: Alignment.topRight,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -73,143 +101,120 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                         width: double.infinity,
                         height: 400,
                         decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 94, 93, 93),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.image,color: ColorTheme.wight,
-                      size: 66,
-                    ),
-                   
-                  ],
-                ),
-              )
-            else
-              Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 400,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: (){
-                            openImagesPage(
-                              Navigator.of(context),
-                              imgUrls:[image!.path],
-                              index: 0,
-                            );
-                          },
-                          child: Image.file(
-                            width: double.infinity,
-                            height: 100,
-                            fit: BoxFit.fill,
-                            filterQuality: FilterQuality.high,
-                            File(image!.path)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: (){
+                              openImagesPage(
+                                Navigator.of(context),
+                                imgUrls:[image!.path],
+                                index: 0,
+                              );
+                            },
+                            child: Image.file(
+                              width: double.infinity,
+                              height: 100,
+                              fit: BoxFit.fill,
+                              filterQuality: FilterQuality.high,
+                              File(image!.path)),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                   Positioned(
-                      /* top: 18,
-                      right: 20, */
-                      // bottom: 2,
-                      // left: 2,
-                    child: InkWell(
-                      onTap: (){
-                        setState(() {
-                          image = null;
-                        });
-                      },
-                      child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40),
+                     Positioned(
+                        /* top: 18,
+                        right: 20, */
+                        // bottom: 2,
+                        // left: 2,
+                      child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            image = null;
+                          });
+                        },
+                        child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            /* Container(
-              width: MediaQuery.of(context).size.width,
-              height: 300,
-              decoration:  BoxDecoration(
-                // color: Colors.white,
-                // borderRadius: BorderRadius.circular(12),
-                image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: NetworkImage(widget.categories!['images'])
+                  ],
                 ),
+              /* Container(
+                width: MediaQuery.of(context).size.width,
+                height: 300,
+                decoration:  BoxDecoration(
+                  // color: Colors.white,
+                  // borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: NetworkImage(widget.categories!['images'])
+                  ),
+                ),
+              ), */
+              const SizedBox(
+                height: 22  ,
               ),
-            ), */
-            const SizedBox(
-              height: 22  ,
-            ),
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Name',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  Text(
-                    '${widget.categories!['name']}',
-                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                  ),
-                ],
+              const Divider(
+                color: ColorTheme.porder,
+                thickness: 1,
               ),
-            ),  
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Creatged at ',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  Text(
-                    '${widget.categories!['craeted at']}',
-                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(18,0,18,0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Name',
+                      style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                    ),
+                    Text(
+                      widget.categoriesModel.name,
+                      style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                    ),
+                  ],
+                ),
+              ),  
+              const Divider(
+                color: ColorTheme.porder,
+                thickness: 1,
               ),
-            ),  
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Updated At ',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  Text(
-                    '2022/9/9 09:30 pm',
-                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(18,0,18,0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Creatged at ',
+                      style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                    ),
+                    Text(
+                       '${widget.categoriesModel.createdAt}',
+                      style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                    ),
+                  ],
+                ),
+              ),  
+              const Divider(
+                color: ColorTheme.porder,
+                thickness: 1,
               ),
-            ),  
-            Padding(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(18,0,18,0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Updated At ',
+                      style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                    ),
+                    Text(
+                      '2022/9/9 09:30 pm',
+                      style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                    ),
+                  ],
+                ),
+              ),  
+              Padding(
                 padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
                 child: Stack(
                   children: [
@@ -235,103 +240,105 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                   ],
                 ),
               ),
-              Padding(
-                padding:  const EdgeInsets.fromLTRB(22, 0, 22, 00),
-                child: DropdownButtonFormField2(
-                  decoration:  InputDecoration(
-                    disabledBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder:  InputBorder.none,
-                    border: InputBorder.none,
-                    errorStyle:  getRegulerStyle(color: Colors.red,fontSize: 12),
-                  ),
-                  // isExpanded: false,
-                  hint: Text(
-                    'Select Type',
-                    style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 14)
-                  ),
-                  icon: const Icon(
-                    Icons.arrow_right_rounded,
-                    color: ColorTheme.hintText,
-                  ),
-                  iconSize: 30,
-                  buttonHeight: 60,
-                  buttonWidth: double.infinity,
-                  buttonDecoration:BoxDecoration(
-                    color: ColorTheme.backroundInput,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  dropdownPadding: const EdgeInsets.only(left: 20, right: 10),
-                  buttonPadding: const EdgeInsets.only(left: 20, right: 10),
-                  dropdownDecoration: BoxDecoration(
-                    color: ColorTheme.backroundInput,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  items: genderItems  .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                      child: Text(
-                        item,
-                        style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14),
-                      ),
-                    )).toList(),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select type.';
-                      }
-                      return null;
-                    },
-                    onChanged: (value){
-                     
-                    },
-                    onSaved: (value) {
-                      selectedValue = value.toString();
-                    },
-                    iconOnClick: const Icon(
-                      Icons.arrow_drop_down_rounded,
+                Padding(
+                  padding:  const EdgeInsets.fromLTRB(22, 0, 22, 00),
+                  child: DropdownButtonFormField2(
+                    decoration:  InputDecoration(
+                      disabledBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder:  InputBorder.none,
+                      border: InputBorder.none,
+                      errorStyle:  getRegulerStyle(color: Colors.red,fontSize: 12),
+                    ),
+                    // isExpanded: false,
+                    hint: Text(
+                      'Select Type',
+                      style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 14)
+                    ),
+                    icon: const Icon(
+                      Icons.arrow_right_rounded,
                       color: ColorTheme.hintText,
                     ),
+                    iconSize: 30,
+                    buttonHeight: 60,
+                    buttonWidth: double.infinity,
+                    buttonDecoration:BoxDecoration(
+                      color: ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    dropdownPadding: const EdgeInsets.only(left: 20, right: 10),
+                    buttonPadding: const EdgeInsets.only(left: 20, right: 10),
+                    dropdownDecoration: BoxDecoration(
+                      color: ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    items: genderItems  .map((item) => DropdownMenuItem<String>(
+                      value: item,
+                        child: Text(
+                          item,
+                          style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14),
+                        ),
+                      )).toList(),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select type.';
+                        }
+                        return null;
+                      },
+                      onChanged: (value){
+                       
+                      },
+                      onSaved: (value) {
+                        selectedValue = value.toString();
+                      },
+                      iconOnClick: const Icon(
+                        Icons.arrow_drop_down_rounded,
+                        color: ColorTheme.hintText,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height:22, 
+                  ),
+                 InkWell(
+                  onTap: ()async{
+                    /* if(formKye.currentState!.validate()){
+                      formKye.currentState!.save();
+                    } */
+                      await postData(context);
+                  },
+                  child: FormFeilds.buttonFormField(
+                    widthtButton: double.infinity,
+                    heightButton: 50,
+                    // dPadding: false,
+                    title: 'Done',
+                    colorButton: ColorTheme.primary, 
                   ),
                 ),
                 const SizedBox(
-                  height:22, 
+                  height: 10,
                 ),
-              InkWell(
-                onTap: ()async{
-                  /* if(formKye.currentState!.validate()){
-                    formKye.currentState!.save();
-                  } */
-                    await postData(context);
-                },
-                child: FormFeilds.buttonFormField(
-                  widthtButton: double.infinity,
-                  heightButton: 50,
-                  // dPadding: false,
-                  title: 'Done',
-                  colorButton: ColorTheme.primary, 
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-   Future<void> deleteImage()async{
+   /* Future<void> deleteImage()async{
     try{
       await FirebaseStorage.instance.refFromURL(widget.categories!['images']).delete();
     }catch(e){
       print(e);
       throw " image Not Deleted ";
     }
-   }
+   } */
 
   postData(context)async{
-    try{
-    if (image != null){
-      await FirebaseStorage.instance.refFromURL(widget.categories!['images']).delete();
+    var editItemCategories = FirebaseFirestore.instance.collection('categories');
+    try{  
+    if (formKye.currentState!.validate() && image != null){
+      await FirebaseStorage.instance.refFromURL("${widget.categoriesModel.image}").delete();
 
       print("==++++++++++++++==");
       print('printDeleteImage');
@@ -352,28 +359,36 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
       await refSorage.putFile(file);
 
       var uri =  await refSorage.getDownloadURL();
-
-      await editData.doc(widget.id).update({
-          "image": uri,
-          "name": nameController.text,
-          "updated at ": formattedDateTime(),
-          // "craeted at": null,
-          "type": selectedValue ,
-        }).then((value) {
+      CategoriesModel category = CategoriesModel(
+        createdAt: widget.categoriesModel.createdAt,
+        id: widget.categoriesModel.id,
+        idDoc: widget.categoriesModel.idDoc,
+        // start update 
+        image: uri,
+        name: nameController.text, 
+        type: "selectedValue!",
+        updatedAt: now.toIso8601String(),
+      );
+      await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson()).then((value) {
           setState(() {
             image = null;
           });
           print('url: $uri');
         });
       Navigator.pop(context);
-    }else{
+    }else if(formKye.currentState!.validate()){
+       CategoriesModel category = CategoriesModel(
+        createdAt: widget.categoriesModel.createdAt,
+        id: widget.categoriesModel.id,
+        idDoc: widget.categoriesModel.idDoc,
+        image: widget.categoriesModel.image,
+        // start update 
+        name: nameController.text, 
+        type: "selectedValue!", 
+        updatedAt: now.toIso8601String(),
+      );
       FormFeilds.showLoading(context);
-      await editData.doc(widget.id).update({
-        "name": nameController.text.isEmpty ? widget.categories!['name'] : nameController.text,
-        "updated at ": formattedDateTime(),
-        // "craeted at": null,
-        "type": selectedValue ?? widget.categories!['type'] ,
-      }).then((value) {
+      await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson()).then((value) {
         setState(() {
           image = null;
         });
@@ -382,7 +397,6 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
     }
     }catch(e){
        print(e);
-      throw " image Not Deleted ";
     }
   } 
 
