@@ -97,14 +97,14 @@ class _ProductWidgetState extends State<ProductWidget> {
               ),
               Text(
                 '${salePRoducts[index]['name']}',
-                style: getBoldStyle(color: ColorTheme.white,fontSize: 18),
+                style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
               ),
               const SizedBox(
                 height: 12,
               ),
               Text(
                 'Price ${salePRoducts[index]['price']} LE',
-                style: getBoldStyle(color: ColorTheme.white,fontSize: 18),
+                style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
               ),
             ],
           ),
