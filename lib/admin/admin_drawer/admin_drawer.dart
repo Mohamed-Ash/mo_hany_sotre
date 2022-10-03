@@ -32,7 +32,7 @@ class AdminDrawer extends StatelessWidget{
                     ),
                     Text(
                       'products',
-                      style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),
+                      style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 18),
                     ),
                   ],
                 ),
@@ -55,7 +55,7 @@ class AdminDrawer extends StatelessWidget{
                       ),
                       Text(
                         'offers',
-                        style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),
+                        style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 18),
                       ),
                     ],
                   ),
@@ -89,7 +89,7 @@ class AdminDrawer extends StatelessWidget{
                       ),
                       Text(
                         'shipping',
-                        style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),
+                        style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 18),
                       ),
                     ],
                   ),
@@ -101,7 +101,7 @@ class AdminDrawer extends StatelessWidget{
                Padding(
                 padding: const EdgeInsets.fromLTRB(2,0,22,0),
                 child: InkWell(
-                  onTap: () => Navigator.pushNamed(context, categoriePage),
+                  onTap: () => Navigator.pushNamed(context, categoriesPage),
                   borderRadius: BorderRadius.circular(8),
                   highlightColor: Colors.transparent,
                   child: Row(
@@ -113,7 +113,7 @@ class AdminDrawer extends StatelessWidget{
                       ),
                       Text(
                         'Categories',
-                        style: getSemiBoldStyle(color: ColorTheme.white,fontSize: 18),
+                        style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 18),
                       ),
                     ],
                   ),
