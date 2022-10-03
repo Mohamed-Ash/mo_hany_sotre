@@ -245,7 +245,8 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   }
   
   postData(context)async{
-    CollectionReference postDat = FirebaseFirestore.instance.collection('categories');
+    var postDat = FirebaseFirestore.instance.collection('categories').doc();
+    // var postidDoc = FirebaseFirestore.instance.collection('categories').doc();
     
     if (formKye.currentState!.validate() && image != null){
       FormFeilds.showLoading(context);
@@ -266,13 +267,14 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
       var uri =  await refSorage.getDownloadURL();
       int id = await NextIdHelper.getNextId("categories");
       CategoriesModel category = CategoriesModel(
+        idDoc:postDat.id,
         id: id, 
         image: uri,
         name: nameController.text, 
         type: selectedValue!, 
         createdAt: now.toIso8601String(),
       );
-      await postDat.add(category.toJson()).then((value) {
+      await postDat.set(category.toJson()).then((value) {
         setState(() {
           image = null;
           nameController.clear();
