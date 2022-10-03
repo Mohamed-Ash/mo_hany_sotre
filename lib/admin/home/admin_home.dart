@@ -10,7 +10,7 @@ class AdminHome extends AdminInterface{
   PreferredSizeWidget? get appBar => AppBar(
     title: Text(
       'Dashbord',
-      style: getBoldStyle(color: ColorTheme.white,fontSize: 22),
+      style: getBoldStyle(color: ColorTheme.wight,fontSize: 22),
     ),
   );
   @override
