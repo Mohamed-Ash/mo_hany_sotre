@@ -396,6 +396,6 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
   } 
 
   String formattedDateTime() {
-      return "${now.day} ${month[now.month]} ${now.year} ${now.hour}:${now.minute}";
+    return "${now.day} ${month[now.month]} ${now.year} ${now.hour}:${now.minute}";
   }
 } 
