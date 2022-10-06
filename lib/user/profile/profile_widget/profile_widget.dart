@@ -24,7 +24,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   void initState() {
     super.initState();
-    getData(context);
+    // getData(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -170,7 +170,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               InkWell(
                 borderRadius: BorderRadius.circular(8),
                 onTap: (){
-                  Navigator.pushNamed(context, adminHome);
+                  Navigator.pushNamed(context, categoriesPage);
                 },
                 child: FormFeilds.buttonFormField(
                   dPadding: false,
@@ -188,7 +188,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     await FirebaseAuth.instance.signOut();
     Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
   }
-  getData(context)async {
+/*   getData(context)async {
       if( users == user!.uid  ){
         InkWell(
           borderRadius: BorderRadius.circular(8),
@@ -221,7 +221,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         usersidd.add(element.data());
       });
     }
-  }
+  } */
 
   showLoading(context){
     return showDialog(
