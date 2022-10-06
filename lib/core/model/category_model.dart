@@ -1,6 +1,6 @@
 class CategoriesModel{
   final int? id;
-  final String? idDoc;
+  final String idDoc;
   final String name;
   final String? image;
   final String type;
@@ -9,7 +9,7 @@ class CategoriesModel{
 
   CategoriesModel({
     this.id,
-    this.idDoc,
+    required this.idDoc,
     this.image,
     required this.name,
     required this.type,
