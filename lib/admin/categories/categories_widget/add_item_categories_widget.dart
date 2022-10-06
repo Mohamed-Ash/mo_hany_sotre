@@ -34,9 +34,15 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   
 
   final List<String> genderItems = [
-    'shipping',
+    /* 'shipping',
     'offers',
-    'products',
+    'products', */
+    'Offers',
+    'Products',
+    'Shipping Gta v',
+    'Shipping Red Dead',
+    'Shipping Valorant',
+    'Shipping Steam Gift Godes',
   ];
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -272,7 +278,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
         image: uri,
         name: nameController.text, 
         type: selectedValue!, 
-        createdAt: now.toIso8601String(),
+        createdAt: formattedDateTime(),
       );
       await postDat.set(category.toJson()).then((value) {
         setState(() {
@@ -300,4 +306,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
       );
     }
   } 
+   String formattedDateTime() {
+    return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
+  }
 }

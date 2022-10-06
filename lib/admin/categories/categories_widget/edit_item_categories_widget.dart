@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unnecessary_null_comparison
 
 import 'dart:io';
 import 'dart:math';
@@ -29,7 +29,7 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
   DateTime now =  DateTime.now();
   String? selectedValue;
   
-  final nameController = TextEditingController();
+  var nameController = TextEditingController();
   final formKey =GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   
@@ -42,9 +42,15 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
-
-  // var editData = FirebaseFirestore.instance.collection('categories');
- 
+  @override
+  void initState() {
+    super.initState();
+     if ( widget.categoriesModel.name != null) {
+      nameController = TextEditingController(
+        text: widget.categoriesModel.name,
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
@@ -201,14 +207,38 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                       style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                     ),
                     Text(
-                      '2022/9/9 09:30 pm',
+                      widget.categoriesModel.updatedAt ?? "-:-:-",
                       style: getSemiBoldStyle(color: ColorTheme.wight,),  
                     ),
                   ],
                 ),
               ),  
+              const Divider(
+                color: ColorTheme.porder,
+                thickness: 1,
+              ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                padding: const EdgeInsets.fromLTRB(18,0,18,0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Type',
+                      style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                    ),
+                    Text(
+                      widget.categoriesModel.type,
+                      style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                    ),
+                  ],
+                ),
+              ),  
+              const Divider(
+                color: ColorTheme.porder,
+                thickness: 1,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
                 child: Stack(
                   children: [
                     Container(
@@ -245,8 +275,8 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                     ),
                     // isExpanded: false,
                     hint: Text(
-                      'Select Type',
-                      style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 14)
+                      widget.categoriesModel.name,
+                      style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14),
                     ),
                     icon: const Icon(
                       Icons.arrow_right_rounded,
@@ -388,7 +418,7 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
             nameController.clear();
           });
         });
-        Navigator.pop(context);
+        Navigator.of(context).pop();
       }
     }catch(e){
       print(e);

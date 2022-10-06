@@ -44,6 +44,15 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
          emit(CategoriesErrorState(e.toString()));
       }
     });
+
+    /* on<CategoriesEmptyEvent>((event, emit) async {
+       final getData =  await categoriesRpoSitory.getCategoriesModel();
+       if(getData.isEmpty ){
+        emit(CategoriesEmptyState('categories page is empty Please add a Ctegories'));
+       }else{
+
+       }
+    }); */
   }
 
 

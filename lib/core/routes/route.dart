@@ -9,9 +9,6 @@ import 'package:m_hany_store/admin/product/product_page/add_item_product_page.da
 import 'package:m_hany_store/admin/product/product_page/edit_item_product_page.dart';
 import 'package:m_hany_store/admin/product/product_page/admin_product_page.dart';
 import 'package:m_hany_store/admin/product/product_page/preview_item_product_page.dart';
-import 'package:m_hany_store/admin/shipping/shipping_page/add_item_shipping_page.dart';
-import 'package:m_hany_store/admin/shipping/shipping_page/edit_item_shipping_page.dart';
-import 'package:m_hany_store/admin/shipping/shipping_page/shipping_page.dart';
 import 'package:m_hany_store/core/auth/login/login_page/login_page.dart';
 import 'package:m_hany_store/core/auth/register/register_page/register_page.dart';
 import 'package:m_hany_store/core/page/app_page_layout.dart';
@@ -27,15 +24,15 @@ class Routes{
   Route? generateRoute(RouteSettings settings){
     switch (settings.name) {
       // todo: auth
-      case registerPage:                                        return MaterialPageRoute(builder: (_)=>  const RegisterPage());
+      case registerPage:                                        return MaterialPageRoute(builder: (_)=> const RegisterPage());
       case loginPage:                                           return MaterialPageRoute(builder: (_)=> const LoginPage());
       
       // todo: user
       case appPageLayout:                                       return MaterialPageRoute(builder: (_)=> const AppPageLayout());
-      case previewProductPage:                                  return MaterialPageRoute(builder: (_)=> const PreviewProductPage());
-      case showSalePage:                                        return MaterialPageRoute(builder: (_)=>  PreviewSalePage());
-      case productPagse:                                        return MaterialPageRoute(builder: (_)=>  const ProductPage());
-      case userShippingPage:                                        return MaterialPageRoute(builder: (_)=>  const UserShippingPage());
+      case previewProductPage:                                  return MaterialPageRoute(builder: (_)=> PreviewProductPage());
+      case showSalePage:                                        return MaterialPageRoute(builder: (_)=> PreviewSalePage());
+      case productPagse:                                        return MaterialPageRoute(builder: (_)=> ProductPage());
+  case userShippingPage:                                        return MaterialPageRoute(builder: (_)=> const UserShippingPage());
         
 
 
@@ -57,10 +54,10 @@ class Routes{
       case addItemCategoriesPage:                               return MaterialPageRoute(builder: (_)=> const AddItemCategoriesPage());
 
 
-      case shippingPage:                                        return MaterialPageRoute(builder: (_)=> const ShippingPage());
-      case addItemShippingPage:                                 return MaterialPageRoute(builder: (_)=> const AddItemShippingPage());
+      // case shippingPage:                                        return MaterialPageRoute(builder: (_)=> const ShippingPage());
+      // case addItemShippingPage:                                 return MaterialPageRoute(builder: (_)=> const AddItemShippingPage());
       // case previewItemShippingPage:                             return MaterialPageRoute(builder: (_)=> const PreviewItemShippingPage());
-      case editItemShippingPage:                                return MaterialPageRoute(builder: (_)=> EditItemShippingPage());
+      // case editItemShippingPage:                                return MaterialPageRoute(builder: (_)=> EditItemShippingPage());
       
       
       case offersPage:                                          return MaterialPageRoute(builder: (_)=> const OffersPage());

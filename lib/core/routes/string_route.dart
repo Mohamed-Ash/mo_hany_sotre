@@ -37,8 +37,8 @@ const String addItemProductPage                      = '/add_item_product_page';
 
 
 
-const String shippingPage                            = '/shipping_page';
-const String addItemShippingPage                     = '/add_item_shipping_widget';
+// const String shippingPage                            = '/shipping_page';
+// const String addItemShippingPage                     = '/add_item_shipping_widget';
 const String previewItemShippingPage                 = '/preview_item_shipping_page';
 const String editItemShippingPage                    = '/edit_item_shipping_page';
 
