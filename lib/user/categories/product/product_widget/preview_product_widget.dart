@@ -1,9 +1,9 @@
 // ignore_for_file: constant_identifier_names, avoid_print
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/model/shipping_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
@@ -11,29 +11,9 @@ import 'package:image_preview/image_preview.dart';
 
 // ignore: must_be_immutable
 class PreviewProductWidget extends StatelessWidget {
-
-  List products = [];
-
-  File? file;
-  String text = '';
-  String subject = '';
-  String tetst =  'https://wallpaperaccess.com/full/7070020.jpg';
-  bool videoEnable = false;
-  List<String> imagePaths = [];
-
-  final _imageUrls = <String>[
-    'https://wallpaperaccess.com/full/7070020.jpg',
-    'https://wallpaperaccess.com/full/7070020.jpg',
-    'https://wallpaperaccess.com/full/7070020.jpg',
-  ];
-
-  final _imageOriginalUrls = <String>[
-    'https://wallpaperaccess.com/full/7070020.jpg',
-    'https://wallpaperaccess.com/full/7070020.jpg',
-    'https://wallpaperaccess.com/full/7070020.jpg',
-  ];
-
-  PreviewProductWidget({super.key});
+  final  ShippingModel shippingModel;
+  
+  const PreviewProductWidget({super.key,required this.shippingModel});
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +26,7 @@ class PreviewProductWidget extends StatelessWidget {
               InkWell(
                 onTap: (){
                   openImagesPage(Navigator.of(context),
-                    imgUrls: _imageUrls,
-                    imgOriginalUrls: _imageOriginalUrls,
-                    index: 0,
-                    heroTags: _imageUrls,
+                    imgUrls: [shippingModel.image],
                     onLongPressHandler: (con, url) => debugPrint(url),
                     onPageChanged: (i, widget) async {
                       if (widget != null) return widget;
@@ -60,16 +37,12 @@ class PreviewProductWidget extends StatelessWidget {
                 },
                 child: Container(
                   width: double.infinity,
-                  height: 350,
-                  decoration: const BoxDecoration(
-                    // borderRadius:BorderRadius.circular(8),
-                    //  color: Colors.black,
+                  height: 400,
+                  decoration: BoxDecoration(
                     image: DecorationImage(
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       image: NetworkImage(
-                        // 'https://amayei.nyc3.digitaloceanspaces.com/2020/09/Asala.jpg'
-                        'https://wallpaperaccess.com/full/7070020.jpg'
-                        //'https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/games/fob/1280/V.jpg
+                        shippingModel.image
                       ),
                     ),
                   ),
@@ -102,7 +75,7 @@ class PreviewProductWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Fifa 22',
+                  shippingModel.name,
                   style: getBoldStyle(color: Colors.white,fontSize: 19),
                 ),
                 Container(
@@ -189,13 +162,20 @@ class PreviewProductWidget extends StatelessWidget {
                     style: getRegulerStyle(color: ColorTheme.hintText,),  
                   ),
                   const Spacer(),
-                  Row(
-                    children: [
-                      FormFeilds.containerImage(assetImage: 'assets/images/Rockstar_Games.png',height: 25,width: 25,),
-                      FormFeilds.containerImage(assetImage: 'assets/images/eepic.png',height: 25,width: 25,),
-                      FormFeilds.containerImage(assetImage: 'assets/images/steam.png',height: 25,width: 25,),
-                    ],
+                  Container(
+                  width: 120,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    color: ColorTheme.titleTypePlay,
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  child: Center(
+                    child: Text(
+                      shippingModel.platform,
+                      style: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 16),
+                    ),
+                  ),
+                ),
                 ],
               ),
             ),
@@ -212,12 +192,12 @@ class PreviewProductWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Publisher',
+                    'Region',
                     style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 13),  
                   ),
                   const Spacer(),
                   Text(
-                    'Rockstar Game',
+                    shippingModel.region,
                     style: getSemiBoldStyle(color: ColorTheme.wight,),  
                   ),
                 ],
@@ -264,7 +244,7 @@ class PreviewProductWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(18,0,0,0),
                 child: Text(
-                  '160 LE',
+                  '${shippingModel.price} LE',
                   style: getBoldStyle(color: Colors.white,fontSize: 26),
                 ),
               ),
