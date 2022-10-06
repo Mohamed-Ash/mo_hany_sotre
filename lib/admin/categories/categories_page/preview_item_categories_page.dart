@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:m_hany_store/admin/admin_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
@@ -9,11 +8,10 @@ import 'package:m_hany_store/core/theme/fonts/style.dart';
 class PreviewItemCategoriesPage extends AdminInterface{
   final  CategoriesModel categoriesModel;
 
-  CollectionReference getAllProductSale = FirebaseFirestore.instance.collection('categories');
 /*   final String id;
   final DocumentSnapshot categories; */
 
-  PreviewItemCategoriesPage({super.key,required this.categoriesModel});
+  const PreviewItemCategoriesPage({super.key,required this.categoriesModel});
 
    @override
   Widget buildBody(BuildContext context) {
@@ -30,20 +28,6 @@ class PreviewItemCategoriesPage extends AdminInterface{
               onPressed: () => Navigator.pop(context), 
               icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
             ),
-            /* StreamBuilder(
-              stream: getAllProductSale.snapshots(),
-              builder: (context,AsyncSnapshot<QuerySnapshot>  snapshot){
-                // List<DocumentSnapshot> docs = snapshot.data!.docs;
-                print(categoriesModel.name);
-                if(snapshot.hasData) {
-                  return getData(context);
-                } else if(snapshot.connectionState == ConnectionState.waiting){
-                  return const Center(child:  CircularProgressIndicator(),);
-                } else {
-                  return const Text('error 404');
-                }
-              },
-            ), */
             getData(context),
             const Divider(
               color: ColorTheme.porder,
@@ -58,18 +42,35 @@ class PreviewItemCategoriesPage extends AdminInterface{
   Widget getData(BuildContext context){
     return Column(
       children: [
-        Container(
+       /*  Container(
           width: MediaQuery.of(context).size.width,
           height: 300,
-          decoration:  BoxDecoration(
+          /* decoration:  BoxDecoration(
             // color: Colors.white,
             // borderRadius: BorderRadius.circular(12),
             image: DecorationImage(
               fit: BoxFit.contain,
               image: NetworkImage("${categoriesModel.image}")
             ),
+          ), */
+          child: 
+        ), */
+        SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 300,
+            child: PhysicalModel(
+              clipBehavior: Clip.hardEdge,
+              color: Colors.black,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(12),
+              child:FadeInImage.assetNetwork(
+                placeholder: 'assets/icons/lloading.gif',
+                image: '${categoriesModel.image}',
+                fit: BoxFit.fill,
+                placeholderFit: BoxFit.contain,
+              ),
+            ),
           ),
-        ),
         const SizedBox(
           height: 22  ,
         ),
@@ -127,7 +128,7 @@ class PreviewItemCategoriesPage extends AdminInterface{
                 style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
               ),
               Text(
-                '2022/9/9 09:30 pm',
+                categoriesModel.updatedAt ?? "-:-:-",
                 style: getSemiBoldStyle(color: ColorTheme.wight,),  
               ),
             ],
