@@ -1,85 +1,110 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unnecessary_null_comparison
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_hany_store/admin/shipping/shipping_page/add_item_shipping_page.dart';
 import 'package:m_hany_store/admin/shipping/shipping_page/edit_item_shipping_page.dart';
 import 'package:m_hany_store/admin/shipping/shipping_page/preview_item_shipping_page.dart';
+import 'package:m_hany_store/core/bloc/shipping_bloc/shipping_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
-import 'package:m_hany_store/core/routes/string_route.dart';
+import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/repositories/admin/shipping_repository.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 class ShippingWidget extends StatefulWidget {
-  const ShippingWidget({Key? key}) : super(key: key);
+  final  CategoriesModel categoriesModel;
+  final  ShippingRepository shippingRepository;
+
+  const ShippingWidget({Key? key, required this.categoriesModel,required this.shippingRepository}) : super(key: key);
 
   @override
   State<ShippingWidget> createState() => _ShippingWidgetState();
 }
  
 class _ShippingWidgetState extends State<ShippingWidget> {
-
-  List salePRoducts = [];
-
-  // var ref  = FirebaseFirestore.instance.collection('categories').doc().id; 
-  CollectionReference getAllProductSale = FirebaseFirestore.instance.collection('categories').doc('5144z0GZ5BA4m8riyX4D').collection('shipping');
   // final Query getAllProductSale = FirebaseFirestore.instance.collection('categories').where("titlre", isEqualTo: 'steam');
-    
+  ShippingBloc? shippingBloc;
   @override
   void initState() {
-    getCategories();
     super.initState();
-   
+   shippingBloc = BlocProvider.of<ShippingBloc>(context);
   }
   
   @override
+  void dispose() {
+    shippingBloc!.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 33, 12, 33),
+      padding: const EdgeInsets.fromLTRB(12, 22, 12, 33),
       child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const SizedBox(height: 22,),
-          StreamBuilder(
-            stream: getAllProductSale.snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot>  snapshot) {
-              if(snapshot.hasData) {
-                return Expanded(
-                  child: ListView.separated(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context ,index)=> buildItemProduct(
-                      shipping: snapshot.data!.docs[index],
-                      context: context, 
-                      // index: index, 
-                      id: snapshot.data!.docs[index].id
-                    ), 
-                    separatorBuilder: (context ,index)=> const Divider(
-                      color: ColorTheme.porder,
-                      thickness: 1,
+          BlocBuilder<ShippingBloc,ShippingState>(
+            builder: (context, state) {
+              if(state is ShippingLoadedState){ 
+                if(state.shippingModel.isEmpty || state.shippingModel == null){
+                  return Expanded(
+                    child: Center(
+                      child: Text(
+                        'Products page is empty',
+                        style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),
+                      ),
                     ),
-                    itemCount: snapshot.data!.docs.length,
-                  ),
-                );
-              } else if(snapshot.connectionState == ConnectionState.waiting){
-                return const Center(child:  CircularProgressIndicator(),);
-              } else if(snapshot.connectionState == ConnectionState.none){
-                print('succsess');
-                return Center(child: Text('You do not publish eny shipping',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));
-              }else {
-                return const Text('error 404');
+                  );
+                }else{
+                  return SizedBox(
+                    height: 600,
+                    child: SingleChildScrollView(
+                      physics: const ScrollPhysics(),
+                      child: ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context ,index){
+                          return buildItemProduct(
+                            shipping: state.shippingModel[index],
+                            context: context, 
+                            categoriesModel: widget.categoriesModel
+                          );
+                        },
+                        separatorBuilder: (context ,index) => const SizedBox( height: 10),
+                        itemCount: state.shippingModel.length
+                      ),
+                    ),
+                  ); 
+                }
+              }else if(state is ShippingLoadingState){
+                return const Expanded(child: Center(child:  CircularProgressIndicator(),));
+              }else if(state is ShippingErrorState){
+                return Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,));
+              }else{
+                return Expanded(child: Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),)));
               }
-            },
+            } 
           ),
-          // const Spacer(),
           const SizedBox(height: 22,),
           InkWell(
-            onTap: () => Navigator.pushNamed(context, addItemShippingPage),
+            onTap: () {
+              Navigator.push(
+                  context,MaterialPageRoute(
+                  builder: (context){
+                    return AddItemShippingPage(categoriesModel: widget.categoriesModel,);
+                  }
+                ),
+              );
+            },
             child: FormFeilds.buttonFormField(
-              title: 'Add new shipping',
+              title: 'Add new  ${widget.categoriesModel.type}',
               dPadding: false,
               heightButton: 40,
+              fontSize: 13,
               colorButton: ColorTheme.primary
             ),
           ),
@@ -90,100 +115,115 @@ class _ShippingWidgetState extends State<ShippingWidget> {
 
  Widget buildItemProduct({
     required BuildContext context,
-    // required int index,
-    required String id,
-    required DocumentSnapshot shipping,
+    required ShippingModel shipping,
+    required CategoriesModel categoriesModel,
   }){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          width: 75,
-          height: 75,
-          decoration: BoxDecoration(
-            // color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            image:  DecorationImage(
-              fit: BoxFit.contain,
-                image: NetworkImage(shipping['image'])
+    return Container(
+      width: double.infinity,
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: const Border(
+          bottom: BorderSide(color: ColorTheme.porder,width: 1),
+          left: BorderSide(color: ColorTheme.porder,width: 1),
+          right: BorderSide(color: ColorTheme.porder,width: 1),
+          top: BorderSide(color: ColorTheme.porder,width: 1),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(
+              width: 10,
+            ),
+            SizedBox(
+              width: 75,
+              height: 75,
+              child: PhysicalModel(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                color: Colors.black,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(8),
+                child:FadeInImage.assetNetwork(
+                  placeholder: 'assets/icons/lloading.gif',
+                  image: shipping.image,
+                  fit: BoxFit.fill,
+                  placeholderFit: BoxFit.contain,
+                ),
               ),
             ),
-          ),
-          
-          const SizedBox(width: 18,),
-          Flexible(
-            // flex: 3,
-            child: Text(
-              shipping['name'],
-              style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+          /* Container(
+            width: 75,
+            height: 75,
+            decoration: BoxDecoration(
+              // color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              image:  DecorationImage(
+                fit: BoxFit.contain,
+                  image: NetworkImage(shipping.image)
+                ),
+              ),
+            ), */
+            
+            const SizedBox(width: 18,),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 3,
+              child: Text(
+                shipping.name,
+                style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 13,),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          const Spacer(),
-          // const SizedBox(width: 12,),
-          Row(
-            children: [ 
-              IconButton(
-                onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context){
-                      return PreviewItemShippingPage(id, shipping);
-                    }
-                  ),
-                ),
-                icon: FormFeilds.containerImage(assetImage: 'assets/images/eye.png',height: 18,width: 18),
-              ),
-              IconButton(
-                // onPressed: () => Navigator.pushNamed(context, editItemCategoriesPage,arguments: id),
-                onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context){
-                      return  EditItemShippingPage(shipping: shipping,id: id,);
-                    }
-                  ),
-                ),
-                icon: FormFeilds.containerImage(assetImage: 'assets/images/edit.png',height: 18,width: 18),
-              ),
-              IconButton(
-                onPressed: (){
-                  FormFeilds.mesgDelete(
-                    context, 
-                    'Are you sure to delete?',
-                    InkWell(
-                      onTap: () async {
-                        await FirebaseStorage.instance.refFromURL(shipping['image']).delete();
-                        await getAllProductSale.doc(id).delete();
-                        // ignore: use_build_context_synchronously
-                        Navigator.of(context).pop();
-                      },
-                      child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
+            const Spacer(),
+            Row(
+              children: [ 
+                IconButton(
+                  onPressed: () => Navigator.push(
+                    context, MaterialPageRoute(
+                      builder: (context){
+                        return PreviewItemShippingPage(shippingModel: shipping,);
+                      }
                     ),
-                  );
-                }, 
-                icon: FormFeilds.containerImage(assetImage: 'assets/images/delete.png',height: 18,width: 18),
-              ),
-            ],
-          ),
-      ],
+                  ),
+                  icon: FormFeilds.containerImage(assetImage: 'assets/images/eye.png',height: 18,width: 18),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.push(
+                    context, MaterialPageRoute(
+                      builder: (context){
+                        return  EditItemShippingPage(shippingModel: shipping, categoriesModel: widget.categoriesModel,);
+                      }
+                    ),
+                  ),
+                  icon: FormFeilds.containerImage(assetImage: 'assets/images/edit.png',height: 18,width: 18),
+                ),
+                IconButton(
+                  onPressed: (){
+                    FormFeilds.mesgDelete(
+                      context, 
+                      'Are you sure to delete?',
+                      InkWell(
+                        onTap: () async {
+                          widget.shippingRepository.deleteShippingByCategory(
+                            collectionIdDoc:widget.categoriesModel.idDoc,
+                            idDoc: shipping.idDoc,
+                            type: widget.categoriesModel.type,
+                            refFromURL: shipping.image
+                          );
+                          Navigator.of(context).pop();
+                        },
+                        child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
+                      ),
+                    );
+                  }, 
+                  icon: FormFeilds.containerImage(assetImage: 'assets/images/delete.png',height: 18,width: 18),
+                ),
+              ],
+            ),
+        ],
+      ),
     );
   }
-
-
-  Future<void> getCategories() async {
- 
-
-
-    QuerySnapshot responseBody  = await getAllProductSale.get();
-    for(var element in responseBody.docs){
-      setState(() {
-        salePRoducts.add(element.data());
-      });
-        /* salePRoducts.add(element.id);
-        print('====================');
-        print(salePRoducts); */
-    }
-  }
-
-  
 }

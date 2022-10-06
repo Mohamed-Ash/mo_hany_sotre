@@ -1,25 +1,27 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unnecessary_null_comparison
 
 import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/model/shipping_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
-import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
 // ignore: must_be_immutable
 class EditItemShippingWidget extends StatefulWidget {
-  String? id;
-  DocumentSnapshot? shipping;
+  final  ShippingModel shippingModel;
 
-  EditItemShippingWidget({super.key,this.shipping,this.id});
+  final  CategoriesModel categoriesModel;
+  
+
+  const EditItemShippingWidget({super.key,required this.shippingModel, required this.categoriesModel});
 
   
   @override
@@ -30,40 +32,52 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
   
   XFile? image;
   DateTime now =  DateTime.now();
-  String? selectedValue;
   
   var nameController = TextEditingController();
+  var priceController = TextEditingController();
+  var regionController = TextEditingController();
+  var platformController = TextEditingController();
+
   final formKey =GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
 
-  final formKye = GlobalKey<FormState>();
   
-
-  final List<String> genderItems = [
-    'shipping',
-    'offers',
-    'products',
-  ];
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
-  CollectionReference postDat = FirebaseFirestore.instance.collection('categories').doc('5144z0GZ5BA4m8riyX4D').collection('shipping');
-
  @override
   void initState() {
     super.initState();
-    if (widget.shipping != null) {
+    if ( widget.shippingModel.name != null) {
       nameController = TextEditingController(
-        text: widget.shipping!['name'],
+        text: widget.shippingModel.name,
       );
     }
+    if(widget.shippingModel.price != null){
+      priceController = TextEditingController(
+        text: widget.shippingModel.price,
+      );
+    }
+    if(widget.shippingModel.region != null){
+      regionController = TextEditingController(
+        text: widget.shippingModel.region,
+
+      );
+    }
+    if(widget.shippingModel.platform != null){
+      platformController = TextEditingController(
+        text: widget.shippingModel.platform,
+        
+      );
+    }
+      
   }
 
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.fromLTRB(8, 33, 8, 8),
         child: Column(
           children: [
              if (image == null)
@@ -157,172 +171,127 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
               ),
             ), */
             const SizedBox(
-              height: 22  ,
-            ),
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
+              height: 22,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+              child: Stack(
                 children: [
-                  Text(
-                    'Name',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  Text(
-                    '${widget.shipping!['name']}',
-                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                  ),
-                ],
-              ),
-            ),  
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Creatged at ',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  Text(
-                    '${widget.shipping!['craetedAt']}',
-                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                  ),
-                ],
-              ),
-            ),  
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Updated At ',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                  ),
-                  Text(
-                    '${widget.shipping!['updatedAt']}',
-                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                  ),
-                ],
-              ),
-            ),  
-            Padding(
-                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color:  ColorTheme.backroundInput,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    FormFeilds.textField(
-                      controller: nameController, 
-                      keyboardType: TextInputType.text, 
-                      hintText: 'Add Name',
-                      validator:(validate){
-                        if(validate == null || validate.isEmpty){
-                          return 'please add Name';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:  const EdgeInsets.fromLTRB(22, 0, 22, 00),
-                child: DropdownButtonFormField2(
-                  decoration:  InputDecoration(
-                    disabledBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder:  InputBorder.none,
-                    border: InputBorder.none,
-                    errorStyle:  getRegulerStyle(color: Colors.red,fontSize: 12),
                   ),
-                  // isExpanded: false,
-                  hint: Text(
-                    widget.shipping!['type'],
-                    style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14)
-                  ),
-                  icon: const Icon(
-                    Icons.arrow_right_rounded,
-                    color: ColorTheme.hintText,
-                  ),
-                  iconSize: 30,
-                  buttonHeight: 60,
-                  buttonWidth: double.infinity,
-                  buttonDecoration:BoxDecoration(
-                    color: ColorTheme.backroundInput,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  dropdownPadding: const EdgeInsets.only(left: 20, right: 10),
-                  buttonPadding: const EdgeInsets.only(left: 20, right: 10),
-                  dropdownDecoration: BoxDecoration(
-                    color: ColorTheme.backroundInput,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  items: genderItems  .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                      child: Text(
-                        item,
-                        style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14),
-                      ),
-                    )).toList(),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select type.';
+                  FormFeilds.textField(
+                    controller: nameController, 
+                    keyboardType: TextInputType.text, 
+                    hintText: 'Add Name',
+                    validator:(validate){
+                      if(validate == null || validate.isEmpty){
+                        return 'please add Name';
                       }
                       return null;
                     },
-                    onChanged: (value){
-                     
-                    },
-                    onSaved: (value) {
-                      selectedValue = value.toString();
-                    },
-                    iconOnClick: const Icon(
-                      Icons.arrow_drop_down_rounded,
-                      color: ColorTheme.hintText,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height:22, 
-                ),
-              InkWell(
-                onTap: ()async{
-                  /* if(formKye.currentState!.validate()){
-                    formKye.currentState!.save();
-                  } */
-                    await postData(context);
-                },
-                child: FormFeilds.buttonFormField(
-                  widthtButton: double.infinity,
-                  heightButton: 50,
-                  // dPadding: false,
-                  title: 'Done',
-                  colorButton: ColorTheme.primary, 
-                ),
+                  FormFeilds.textField(
+                    controller: regionController, 
+                    keyboardType: TextInputType.text, 
+                    hintText: 'Add Region',
+                    validator:(validate){
+                      if(validate == null || validate.isEmpty){
+                        return 'please add Region';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  FormFeilds.textField(
+                    controller: platformController, 
+                    keyboardType: TextInputType.text, 
+                    hintText: 'Add platform',
+                    validator:(validate){
+                      if(validate == null || validate.isEmpty){
+                        return 'please add platform';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  FormFeilds.textField(
+                    controller: priceController, 
+                    keyboardType: TextInputType.number, 
+                    hintText: 'Add price',
+                    validator:(validate){
+                      if(validate == null || validate.isEmpty){
+                        return 'please add price';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+                height:22, 
+              ),
+            InkWell(
+              onTap: ()async{
+                await postData(context);
+              },
+              child: FormFeilds.buttonFormField(
+                widthtButton: double.infinity,
+                heightButton: 50,
+                // dPadding: false,
+                title: 'Done',
+                colorButton: ColorTheme.primary, 
+              ),
+            ),
           ],
         ),
       ),
@@ -337,11 +306,15 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       throw " image Not Deleted ";
     }
    } */
+  String formattedDateTime() {
+      return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
+  }
 
   postData(context)async{
-    
+    var postDat =  FirebaseFirestore.instance.collection('categories').doc(widget.categoriesModel.idDoc).collection(widget.categoriesModel.type);
     try{
     if (image != null){
+      await FirebaseStorage.instance.refFromURL(widget.shippingModel.image).delete();
       print("==++++++++++++++==");
       print('printDeleteImage');
      
@@ -361,8 +334,29 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       await refSorage.putFile(file);
 
       var uri =  await refSorage.getDownloadURL();
+        ShippingModel shippingModel = ShippingModel(
+          colorPlatform:'',
+          colorTextPlatform:'',
+          createdAt: widget.categoriesModel.createdAt,
+          name: nameController.text, 
+          image: uri, 
+          region:regionController.text , 
+          price: priceController.text, 
+          platform: platformController.text ,
+          idDoc: postDat.id,
+          updatedAt: formattedDateTime(),
+        );
+        await postDat.doc(widget.shippingModel.idDoc).update(shippingModel.toJson()).then((value){
+        setState(() {
+          image = null;
 
-      await postDat.doc(widget.id).update({
+          nameController.clear();
+          regionController.clear();
+          priceController.clear();
+        });
+        print('url: $uri');
+      });
+      /* await postDat.doc(widget.).update({
           "image": uri,
           "name": nameController.text.isEmpty ? widget.shipping!['type'] : nameController.text,
           "updatedAt": formattedDateTime(),
@@ -374,11 +368,35 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
             nameController.clear();
           });
           print('url: $uri');
-        });
+        }); */
       Navigator.pop(context);
     }else{
       FormFeilds.showLoading(context);
-      await postDat.doc(widget.id).update({
+      ShippingModel shippingModel = ShippingModel(
+        colorPlatform:'',
+        colorTextPlatform:'',
+        name: nameController.text, 
+        createdAt: widget.categoriesModel.createdAt,
+        image: widget.shippingModel.image, 
+        region:regionController.text , 
+        price: priceController.text, 
+        platform: platformController.text,
+        idDoc: postDat.id,
+        updatedAt: formattedDateTime(),
+      );
+      await postDat.doc(widget.shippingModel.idDoc).update(shippingModel.toJson()).then((value){
+        setState(() {
+          image = null;
+
+          nameController.clear();
+          regionController.clear();
+          priceController.clear();
+          platformController.clear();
+        });
+        print('============');
+        print('updated success');
+      });
+      /* await postDat.doc(widget.shippingModel.idDoc).update({
         "name": nameController.text.isEmpty ? widget.shipping!['name'] : nameController.text,
         "updatedAt": formattedDateTime(),
         // "craetedAt": null,
@@ -388,16 +406,13 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
           nameController.clear();
           image = null;
         });
-      });
+      }); */
       Navigator.pop(context);
     }
     }catch(e){
-       print(e);
-      throw " image Not Deleted ";
+       print(e.toString());
     }
   } 
 
-  String formattedDateTime() {
-      return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
-  }
+ 
 }

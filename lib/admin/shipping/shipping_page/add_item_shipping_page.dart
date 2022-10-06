@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/admin/admin_interface.dart';
 import 'package:m_hany_store/admin/shipping/shipping_widget/add_item_shipping_widget.dart';
+import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 class AddItemShippingPage extends AdminInterface{
-  const AddItemShippingPage({super.key});
+  final  CategoriesModel categoriesModel;
+  const AddItemShippingPage({super.key,required this.categoriesModel});
 
   @override
   PreferredSizeWidget? get appBar => AppBar(
@@ -17,7 +19,7 @@ class AddItemShippingPage extends AdminInterface{
 
   @override
   Widget buildBody(BuildContext context) {
-    return const AddItemShippingWidget();
+    return  AddItemShippingWidget(categoriesModel: categoriesModel);
   }
 
 }

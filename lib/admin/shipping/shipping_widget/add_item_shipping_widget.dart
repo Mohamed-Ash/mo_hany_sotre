@@ -3,18 +3,21 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/model/shipping_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
 class AddItemShippingWidget extends StatefulWidget {
-  const AddItemShippingWidget({Key? key}) : super(key: key);
+  final  CategoriesModel categoriesModel;
+  const AddItemShippingWidget({Key? key, required this.categoriesModel}) : super(key: key);
 
   @override
   State<AddItemShippingWidget> createState() => _AddItemShippingWidgetState();
@@ -26,21 +29,38 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   String? selectedValue;
   bool isSelect = false ;
 
+  late Color colorTextPlatform; // Color for picker in dialog using onChanged
+  late Color colorPlatform; // Color for picker in dialog using onChanged
+
+
+
   final ImagePicker _picker = ImagePicker();
   final nameController = TextEditingController();
   final regionController = TextEditingController();
   final platformController = TextEditingController();
+  final priceController = TextEditingController();
   final formKye = GlobalKey<FormState>();
   
 
   final List<String> genderItems = [
-    'shipping',
-    'offers',
-    'products',
+    'Offers',
+    'Products',
+    'Shipping Gta v',
+    'Shipping Red Dead',
+    'Shipping Valorant',
+    'Shipping Steam Gift Godes',
   ];
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
- 
+
+
+  @override
+  void initState() {
+    super.initState();
+    colorTextPlatform = Colors.red;
+    colorPlatform = Colors.black;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -48,7 +68,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
         key: formKye,
         child: Column(
           children: [
-            const SizedBox(height: 55,),
+            const SizedBox(height: 22,),
             if (image == null)
               InkWell(
                 onTap: () async {
@@ -152,7 +172,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                   ],
                 ),
               ),
-                            Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
                 child: Stack(
                   children: [
@@ -178,7 +198,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                   ],
                 ),
               ),
-                            Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
                 child: Stack(
                   children: [
@@ -194,6 +214,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                       controller: platformController, 
                       keyboardType: TextInputType.text, 
                       hintText: 'Add platform',
+                      // hintTextColor: dialogPickerColor,
                       validator:(validate){
                         if(validate == null || validate.isEmpty){
                           return 'please add platform';
@@ -205,67 +226,83 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                 ),
               ),
               Padding(
-                padding:  const EdgeInsets.fromLTRB(22, 0, 22, 00),
-                child: DropdownButtonFormField2(
-                  decoration:  InputDecoration(
-                    disabledBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder:  InputBorder.none,
-                    border: InputBorder.none,
-                    errorStyle:  getRegulerStyle(color: Colors.red,fontSize: 12),
-                  ),
-                  // isExpanded: false,
-                  hint: Text(
-                    'Select Type',
-                    style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 14)
-                  ),
-                  icon: const Icon(
-                    Icons.arrow_right_rounded,
-                    color: ColorTheme.hintText,
-                  ),
-                  iconSize: 30,
-                  buttonHeight: 60,
-                  buttonWidth: double.infinity,
-                  buttonDecoration:BoxDecoration(
-                    color: ColorTheme.backroundInput,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  dropdownPadding: const EdgeInsets.only(left: 20, right: 10),
-                  buttonPadding: const EdgeInsets.only(left: 20, right: 10),
-                  dropdownDecoration: BoxDecoration(
-                    color: ColorTheme.backroundInput,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  items: genderItems  .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                      child: Text(
-                        item,
-                        style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14),
+                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color:  ColorTheme.backroundInput,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    )).toList(),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select type.';
-                      }
-                      return null;
-                    },
-                    onChanged: (value){
-                      setState(() {
-                        isSelect = !isSelect;
-                      });
-                    },
-                    onSaved: (value) {
-                      selectedValue = value.toString();
-                    },
-                    iconOnClick: const Icon(
-                      Icons.arrow_drop_down_rounded,
-                      color: ColorTheme.hintText,
                     ),
-                  ),
+                    FormFeilds.textField(
+                      controller: priceController, 
+                      keyboardType: TextInputType.number, 
+                      hintTextColor: colorTextPlatform,
+                      hintText: 'Add price',
+                      validator:(validate){
+                        if(validate == null || validate.isEmpty){
+                          return 'please add price';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height:22, 
-                ),
+              ),
+              const SizedBox(
+                height:33, 
+              ),
+              ListTile(  
+              title:  Text(
+                'Click this color to choose color Text Platform',
+                style:  getBoldStyle(color: ColorTheme.wight,),
+              ),
+              trailing: ColorIndicator(
+                width: 44,
+                height: 44,
+                borderRadius: 4,
+                color: colorTextPlatform,
+                onSelectFocus: false,
+                onSelect: () async {
+                  final Color dd = colorTextPlatform;
+                  if (!(await colorTextform(context))) {
+                    setState(() {
+                      colorTextPlatform = dd;
+                    });
+                  }
+                },
+              ),
+            ),
+              const SizedBox(
+                height:33, 
+              ),
+              ListTile(  
+              title:  Text(
+                'Click this color to choose color Platform',
+                style:  getBoldStyle(color: ColorTheme.wight,),
+              ),
+              trailing: ColorIndicator(
+                width: 44,
+                height: 44,
+                borderRadius: 4,
+                color: colorPlatform,
+                onSelectFocus: false,
+                onSelect: () async {
+                  final Color ss = colorPlatform;
+                  if (!(await colorpPlatform(context))) {
+                    setState(() {
+                      colorPlatform = ss;
+                    });
+                  }
+                },
+              ),
+            ),
+              const SizedBox(
+                height:33, 
+              ),
               InkWell(
                 onTap: ()async{
                   if(formKye.currentState!.validate()){
@@ -284,14 +321,16 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
               const SizedBox(
                 height: 10,
               ),
+             
           ],
         ),
       ),
     );
   }
-  
+
   postData(context)async{
-    CollectionReference postDat = FirebaseFirestore.instance.collection('categories').doc('5144z0GZ5BA4m8riyX4D').collection('shipping');
+    // CollectionReference postDat = FirebaseFirestore.instance.collection('categories').doc('5144z0GZ5BA4m8riyX4D').collection('shipping');
+    var postDat =  FirebaseFirestore.instance.collection('categories').doc(widget.categoriesModel.idDoc).collection(widget.categoriesModel.type).doc();
     
     if (image != null){
       FormFeilds.showLoading(context);
@@ -304,13 +343,39 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
 
       nameimage = "$random$nameimage";
 
-      var refSorage = FirebaseStorage.instance.ref("shipping").child(nameimage); 
+      var refSorage = FirebaseStorage.instance.ref(widget.categoriesModel.idDoc).child(nameimage); 
       print('=========================================');
       print(nameimage);
+
       await refSorage.putFile(file);
 
       var uri =  await refSorage.getDownloadURL();
-      await postDat.add({
+
+      
+      ShippingModel shipping = ShippingModel(
+        colorPlatform: colorPlatform as String,
+        colorTextPlatform: colorTextPlatform as String,
+        name: '0xFFC81A1A',
+        image: uri, 
+        idDoc: postDat.id,
+        region: regionController.text,
+        price: priceController.text, 
+        platform: platformController.text,
+        createdAt: formattedDateTime(),
+        updatedAt: '-:-:-:-',
+      );
+        await postDat.set(shipping.toJson()).then((value){
+          setState(() {
+            image = null;
+
+            nameController.clear();
+            regionController.clear();
+            platformController.clear();
+            priceController.clear();
+          });
+          print('url: $uri');
+        });
+      /* await postDat.add({
         "image": uri,
         "name": nameController.text,
         "craetedAt": formattedDateTime(),
@@ -328,10 +393,9 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
           platformController.clear();
         });
         print('url: $uri');
-      });
+      }); */
       Navigator.pop(context);
     }else{
-      // Navigator.pop(context);
       FormFeilds.showMyDialog(
         context, 
         'please choose image', 
@@ -353,4 +417,107 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
     return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
   }
 
+  Future<bool> colorTextform(context) async {
+    return ColorPicker(
+      borderColor: ColorTheme.wight,
+      color: colorTextPlatform,
+      onColorChanged: (Color color) => setState(() => colorTextPlatform = color),
+      width: 40,
+      height: 40,
+      borderRadius: 4,
+      spacing: 5,
+      runSpacing: 5,
+      wheelDiameter: 155,
+      heading: Text(
+        'Select color',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      subheading: Text(
+        'Select color shade',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      wheelSubheading: Text(
+        'Selected color and its shades',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      showMaterialName: true,
+      showColorName: true,
+      colorNameTextStyle:getBoldStyle(color: ColorTheme.wight,),
+      colorCodePrefixStyle: getBoldStyle(color: ColorTheme.wight,),
+      colorCodeTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      pickerTypeTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      showColorCode: true,
+      materialNameTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      
+      copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+        longPressMenu: true,
+      ),
+      pickersEnabled: const <ColorPickerType, bool>{
+        ColorPickerType.both: false,
+        ColorPickerType.primary: false,
+        ColorPickerType.accent: false,
+        ColorPickerType.bw: false,
+        ColorPickerType.custom: false,
+        ColorPickerType.wheel: true,
+      },
+      // customColorSwatchesAndNames: colorsNameMap, /// value color
+    ).showPickerDialog(
+      context,
+      backgroundColor: ColorTheme.darkBackroundPage,
+      actionsPadding: const EdgeInsets.all(16),
+      constraints: const BoxConstraints(minHeight: 380, minWidth: 300, maxWidth: 320),
+    );
+  }
+
+  Future<bool> colorpPlatform(context) async {
+    return ColorPicker(
+      borderColor: ColorTheme.wight,
+      color: colorPlatform,
+      onColorChanged: (Color color) => setState(() => colorPlatform = color),
+      width: 40,
+      height: 40,
+      borderRadius: 4,
+      spacing: 5,
+      runSpacing: 5,
+      wheelDiameter: 155,
+      heading: Text(
+        'Select color',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      subheading: Text(
+        'Select color shade',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      wheelSubheading: Text(
+        'Selected color and its shades',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      showMaterialName: true,
+      showColorName: true,
+      colorNameTextStyle:getBoldStyle(color: ColorTheme.wight,),
+      colorCodePrefixStyle: getBoldStyle(color: ColorTheme.wight,),
+      colorCodeTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      pickerTypeTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      showColorCode: true,
+      materialNameTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      
+      copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+        longPressMenu: true,
+      ),
+      pickersEnabled: const <ColorPickerType, bool>{
+        ColorPickerType.both: false,
+        ColorPickerType.primary: false,
+        ColorPickerType.accent: false,
+        ColorPickerType.bw: false,
+        ColorPickerType.custom: false,
+        ColorPickerType.wheel: true,
+      },
+      // customColorSwatchesAndNames: colorsNameMap, /// value color
+    ).showPickerDialog(
+      context,
+      backgroundColor: ColorTheme.darkBackroundPage,
+      actionsPadding: const EdgeInsets.all(16),
+      constraints: const BoxConstraints(minHeight: 380, minWidth: 300, maxWidth: 320),
+    );
+  }
 }
