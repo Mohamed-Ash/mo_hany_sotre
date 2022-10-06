@@ -74,7 +74,7 @@ class AdminDrawer extends StatelessWidget{
               const SizedBox(
                 height: 20,
               ),
-              Padding(
+              /* Padding(
                 padding: const EdgeInsets.fromLTRB(2,0,22,0),
                 child: InkWell(
                   onTap: () => Navigator.pushNamed(context, shippingPage),
@@ -94,7 +94,7 @@ class AdminDrawer extends StatelessWidget{
                     ],
                   ),
                 ),
-              ),
+              ), */
               const SizedBox(
                 height: 20,
               ),
