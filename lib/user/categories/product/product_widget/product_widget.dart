@@ -32,114 +32,123 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-      child: BlocBuilder<ShippingBloc,ShippingState>(
-        builder:(context, state) {
-          if(state is ShippingLoadedState){
-            return GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 2/3,
-                crossAxisCount: 2,
-                crossAxisSpacing: 1,
-                mainAxisSpacing: 1,
-              ),
-              itemBuilder: (context,index) => getAllproducts(
-                context: context,
-                categoriesModel: widget.categoriesModel, 
-                shipping: state.shippingModel[index],
-              ),
-              itemCount: state.shippingModel.length,
-            );
-          }else if(state is ShippingLoadingState){
-            return const Center(child: CircularProgressIndicator(),);
-          }else if(state is ShippingErrorState){
-            return Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,));
-          }else{
-            return Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));  
-          }
-        }
+    return SingleChildScrollView(
+      physics: const ScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            height: 8,
+          ),
+          BlocBuilder<ShippingBloc,ShippingState>(
+            builder: (context, state) {
+               if(state is ShippingLoadedState){
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 2/3,
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 2,
+                  ),
+                  itemBuilder: (context,index) {
+                    return getAllproducts(
+                       context: context,
+                      categoriesModel: widget.categoriesModel, 
+                      shipping: state.shippingModel[index],
+                    );
+                  } ,
+                  itemCount: state.shippingModel.length,
+                );
+              }else if(state is ShippingLoadingState){
+                return const Center(child: CircularProgressIndicator(),);
+              }else if(state is ShippingErrorState){
+                return Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,));
+              }else{
+                return Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));  
+              }     
+            },
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
       ),
-      /* child: ListView.builder(
-        itemBuilder:(contextn,index) =>getAllproducts(context, index),
-        itemCount: salePRoducts.length, 
-      ), */
     );
   }
 
- /*  getProducts()async {
-    QuerySnapshot responseBody  = await getAllProduct.get();
-    for(var element in responseBody.docs){
-      setState(() {
-        salePRoducts.add(element.data());
-      });
-    }
-  }
- */ 
-   getAllproducts({
+  Widget getAllproducts({
     required BuildContext context,
     required CategoriesModel categoriesModel,
     required ShippingModel shipping,
    }){
-    return InkWell(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context){
-              return PreviewProductPage(shippingModel: shipping,);
-            }
-          ),
-        );
-      },
-      child: Stack(
-        children: [
-          Container(
-            width: 160,
-            height: 280,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: ColorTheme.hintText
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: InkWell(
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context){
+                return PreviewProductPage(shippingModel: shipping,);
+              }
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 160,
-                height: 180,
-                decoration: BoxDecoration(
-                  borderRadius:BorderRadius.circular(8),
-                  //  color: Colors.black,
-                  image:   DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(
-                      shipping.image
-                      // "https://wallpaperaccess.com/full/7070020.jpg"
+          );
+        },
+        child: Stack(
+          children: [
+            Container(
+              width: 175,
+              height: 270,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: ColorTheme.darkAppBar
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  width: 175,
+                  height: 180,
+                  decoration: BoxDecoration(
+                    borderRadius:BorderRadius.circular(8),
+                    image:   DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(
+                        shipping.image
+                      ),
                     ),
                   ),
                 ),
-                // child: Text( "${products[index]['info']}"),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Text(
-                shipping.name,
-                style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Text(
-                'Price ${shipping.price} LE',
-                style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                  child: Text(
+                    shipping.name,
+                    style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
+                  ),
+                ),
+                const SizedBox(
+                  height: 6,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                  child: Text(
+                    'Price ${shipping.price} LE',
+                    style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -78,18 +78,11 @@ class PreviewProductWidget extends StatelessWidget {
                   shippingModel.name,
                   style: getBoldStyle(color: Colors.white,fontSize: 19),
                 ),
-                Container(
-                  width: 120,
-                  height: 25,
-                  decoration: BoxDecoration(
-                    color: ColorTheme.titleTypePlay,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Sports',
-                      style: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 16),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18,0,0,0),
+                  child: Text(
+                    '${shippingModel.price} LE',
+                    style: getBoldStyle(color: Colors.white,fontSize: 26),
                   ),
                 ),
               ],
@@ -130,7 +123,6 @@ class PreviewProductWidget extends StatelessWidget {
               ),
             ],
           ),
-         
           const SizedBox(
             height: 15,
           ),
@@ -152,13 +144,20 @@ class PreviewProductWidget extends StatelessWidget {
               ),  
             ),
           ),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(18,18,18,0),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(2,2,2,2),
+            child: Divider(
+              color: ColorTheme.primary,
+              thickness: 1,
+            ),
+          ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18,0,18,0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Accounts Available On',
+                    'Platform',
                     style: getRegulerStyle(color: ColorTheme.hintText,),  
                   ),
                   const Spacer(),
@@ -166,7 +165,7 @@ class PreviewProductWidget extends StatelessWidget {
                   width: 120,
                   height: 25,
                   decoration: BoxDecoration(
-                    color: ColorTheme.titleTypePlay,
+                    color: Color(shippingModel.colorPlatform),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
@@ -180,7 +179,7 @@ class PreviewProductWidget extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.fromLTRB(12,12,12,12),
+              padding: EdgeInsets.fromLTRB(2,2,2,2),
               child: Divider(
                 color: ColorTheme.primary,
                 thickness: 1,
@@ -196,40 +195,25 @@ class PreviewProductWidget extends StatelessWidget {
                     style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 13),  
                   ),
                   const Spacer(),
-                  Text(
-                    shippingModel.region,
-                    style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                  Container(
+                    width: 120,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      color: Color(shippingModel.colorPlatform),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Text(
+                        shippingModel.region,
+                          style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),  
             const Padding(
-              padding: EdgeInsets.fromLTRB(12,12,12,12),
-              child: Divider(
-                color: ColorTheme.primary,
-                thickness: 1,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Platform',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 13),  
-                  ),
-                  const Spacer(),
-                 FormFeilds.containerImage(assetImage: 'assets/images/windows.png',height: 15,width: 15,),
-                 const SizedBox(
-                  width: 2,
-                 ),
-                 FormFeilds.containerImage(assetImage: 'assets/images/apple.png',height: 15,width: 15,),
-                ],
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(12,12,12,12),
+              padding: EdgeInsets.fromLTRB(2,2,2,2),
               child: Divider(
                 color: ColorTheme.primary,
                 thickness: 1,
@@ -238,49 +222,17 @@ class PreviewProductWidget extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18,0,0,0),
-                child: Text(
-                  '${shippingModel.price} LE',
-                  style: getBoldStyle(color: Colors.white,fontSize: 26),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: (){
-                      createButtonSheet(context);
-                    },
-                    child: FormFeilds.buttonFormField(
-                      title: 'Buy Now',
-                      colorButton: ColorTheme.primary, 
-                      fontSize: 15,
-                      widthtButton: 100,
-                      dPadding: false,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  InkWell(
-                    onTap: () {
-                    },
-                    child: FormFeilds.containerImage(
-                      assetImage: 'assets/images/shopping.png',
-                      height:35,
-                      width: 35,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                ],
-              ),
-            ],
+          InkWell(
+            onTap: (){
+              Navigator.pushNamed(context, checkoutpage);
+            },
+            child: FormFeilds.buttonFormField(
+              title: 'Buy Now',
+              colorButton: ColorTheme.primary, 
+              fontSize: 15,
+              // widthtButton: 100,
+              dPadding: true,
+            ),
           ),
           const SizedBox(
             height: 33,
