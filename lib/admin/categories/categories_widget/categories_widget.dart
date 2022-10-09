@@ -31,6 +31,11 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
     categoriesBloc = BlocProvider.of<CategoriesBloc>(context);
   }
   @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    categoriesBloc = BlocProvider.of<CategoriesBloc>(context);
+  }
+  @override
   void dispose() {
     categoriesBloc!.close();
     super.dispose();
@@ -42,7 +47,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
       child: Column(
         children: [
           BlocConsumer<CategoriesBloc,CategoriesState>(
-            bloc:  BlocProvider.of<CategoriesBloc>(context),
+            bloc:  context.read<CategoriesBloc>(),
             listener: (context, state) {},
             builder: (context, state) {
               if(state is GetCategoriesLoadedState){
@@ -96,7 +101,6 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
               colorButton: ColorTheme.primary
             ),
           ),
-          // const SelectableText('  ')
         ],
       ),
     );
@@ -200,20 +204,19 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                 ),
                 IconButton(
                   onPressed: (){
-                    FormFeilds.mesgDelete(
-                      context, 
-                      'Are you sure to delete?',
-                      InkWell(
-                        onTap: () async {
-                          setState(() {
+                    setState(() {  
+                      FormFeilds.mesgDelete(
+                        context, 
+                        'Are you sure to delete?',
+                        InkWell(
+                          onTap: () async {
                             deleteItemCatecories(categoriesModel,);
                             Navigator.of(context).pop();
-                          });
-                        },
-                        child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
-                      ),
-                      // FormFeilds.buttonFormField(title: 'cancel')
-                    );
+                          },
+                          child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
+                        ),
+                      );
+                    });
                   }, 
                   icon: FormFeilds.containerImage(assetImage: 'assets/images/delete.png',height: 18,width: 18),
                 ),
