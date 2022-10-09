@@ -10,12 +10,14 @@ import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/model/shipping_model.dart';
 import 'package:m_hany_store/core/repositories/admin/shipping_repository.dart';
+import 'package:m_hany_store/core/repositories/common/search_repository.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 class ShippingWidget extends StatefulWidget {
-  final  CategoriesModel categoriesModel;
-  final  ShippingRepository shippingRepository;
+  final CategoriesModel categoriesModel;
+  final ShippingRepository shippingRepository;
+  
 
   const ShippingWidget({Key? key, required this.categoriesModel,required this.shippingRepository}) : super(key: key);
 
@@ -24,8 +26,8 @@ class ShippingWidget extends StatefulWidget {
 }
  
 class _ShippingWidgetState extends State<ShippingWidget> {
-  // final Query getAllProductSale = FirebaseFirestore.instance.collection('categories').where("titlre", isEqualTo: 'steam');
   ShippingBloc? shippingBloc;
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +41,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 22, 12, 33),
       child: Column(
@@ -212,6 +214,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                             type: widget.categoriesModel.type,
                             refFromURL: shipping.image
                           );
+                          widget.shippingRepository.deleteSearchByCategory(idDoc:  shipping.idDoc,);
                           Navigator.of(context).pop();
                         },
                         child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
