@@ -10,7 +10,7 @@ class AddItemShippingPage extends AdminInterface{
   const AddItemShippingPage({super.key,required this.categoriesModel});
 
   @override
-  PreferredSizeWidget? get appBar => AppBar(
+  PreferredSizeWidget? appBar(BuildContext context) => AppBar(
     title: Text(
       'Dashbord',
       style: getBoldStyle(color: ColorTheme.wight,fontSize: 22),
