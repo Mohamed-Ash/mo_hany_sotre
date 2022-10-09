@@ -5,7 +5,7 @@ abstract class AdminInterface extends LayoutInterface{
   const AdminInterface({super.key});
 
   @override
-  PreferredSizeWidget? get appBar => null;
+  PreferredSizeWidget?  appBar(BuildContext context) => null;
 
   @override
   Color? get  backgroundColor => null ;
