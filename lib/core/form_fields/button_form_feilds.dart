@@ -75,9 +75,11 @@ class FormFeilds{
     Color hintTextColor = ColorTheme.hintText,
     InputBorder border = InputBorder.none, 
     String? Function(String?)? validator,
+    void Function(String)? onChanged,
     EdgeInsets contentPadding = const EdgeInsets.all(12),
     double cursorHeight = 22, 
     Widget? suffixIcon,
+    Widget? prefixIcon,
     String? initialValue
     }){
     return TextFormField(
@@ -99,6 +101,7 @@ class FormFeilds{
         decorationThickness: 0,
       ),
       validator: validator,
+      onChanged: onChanged,
       keyboardAppearance: Brightness.dark,
       decoration: InputDecoration(
         // contentPadding: const EdgeInsets.fromLTRB(12, 22, 0, -10),
@@ -108,6 +111,7 @@ class FormFeilds{
         errorStyle: getRegulerStyle(color: Colors.red,fontSize: 12),
         hintText: hintText,
         suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
         hintStyle: getBoldStyle(color: hintTextColor, dDecoration: TextDecoration.none,),
         border: InputBorder.none,
         focusedBorder: InputBorder.none,
