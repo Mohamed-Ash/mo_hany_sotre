@@ -10,7 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/model/search_model.dart';
 import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
@@ -240,7 +242,6 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                     FormFeilds.textField(
                       controller: priceController, 
                       keyboardType: TextInputType.number, 
-                      hintTextColor: colorTextPlatform,
                       hintText: 'Add price',
                       validator:(validate){
                         if(validate == null || validate.isEmpty){
@@ -331,6 +332,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   postData(context)async{
     // CollectionReference postDat = FirebaseFirestore.instance.collection('categories').doc('5144z0GZ5BA4m8riyX4D').collection('shipping');
     var postDat =  FirebaseFirestore.instance.collection('categories').doc(widget.categoriesModel.idDoc).collection(widget.categoriesModel.type).doc();
+    var postSearch =  FirebaseFirestore.instance.collection('Search').doc(postDat.id);
     
     if (image != null){
       FormFeilds.showLoading(context);
@@ -343,7 +345,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
 
       nameimage = "$random$nameimage";
 
-      var refSorage = FirebaseStorage.instance.ref(widget.categoriesModel.idDoc).child(nameimage); 
+      var refSorage = FirebaseStorage.instance.ref(widget.categoriesModel.type).child(nameimage); 
       print('=========================================');
       print(nameimage);
 
@@ -351,11 +353,25 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
 
       var uri =  await refSorage.getDownloadURL();
 
+      SearchModel searchModel = SearchModel(
+        colorPlatform: colorPlatform.value,
+        colorTextPlatform: colorTextPlatform.value,
+        name: nameController.text,
+        image: uri, 
+        idDoc: postDat.id,
+        region: regionController.text,
+        price: priceController.text, 
+        platform: platformController.text,
+        createdAt: formattedDateTime(),
+        updatedAt: '-:-:-:-',
+      );
+      
+      await postSearch.set(searchModel.toJson());
       
       ShippingModel shipping = ShippingModel(
-        colorPlatform: colorPlatform as String,
-        colorTextPlatform: colorTextPlatform as String,
-        name: '0xFFC81A1A',
+        colorPlatform: colorPlatform.value,
+        colorTextPlatform: colorTextPlatform.value,
+        name: nameController.text,
         image: uri, 
         idDoc: postDat.id,
         region: regionController.text,
@@ -375,26 +391,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
           });
           print('url: $uri');
         });
-      /* await postDat.add({
-        "image": uri,
-        "name": nameController.text,
-        "craetedAt": formattedDateTime(),
-        "updatedAt":'-:-:-:-',
-        "type": selectedValue,
-        "saleEnds": '',
-        "region": regionController.text,
-        "platForm": platformController.text,
-      }).then((value) {
-        setState(() {
-          image = null;
-
-          nameController.clear();
-          regionController.clear();
-          platformController.clear();
-        });
-        print('url: $uri');
-      }); */
-      Navigator.pop(context);
+     Navigator.pushNamed(context, shippingPage);
     }else{
       FormFeilds.showMyDialog(
         context, 

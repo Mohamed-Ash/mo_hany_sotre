@@ -10,7 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/model/search_model.dart';
 import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:path/path.dart';
 
@@ -312,6 +314,8 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
 
   postData(context)async{
     var postDat =  FirebaseFirestore.instance.collection('categories').doc(widget.categoriesModel.idDoc).collection(widget.categoriesModel.type);
+    var postSearch =  FirebaseFirestore.instance.collection('Search');
+
     try{
     if (image != null){
       await FirebaseStorage.instance.refFromURL(widget.shippingModel.image).delete();
@@ -334,9 +338,23 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       await refSorage.putFile(file);
 
       var uri =  await refSorage.getDownloadURL();
+        SearchModel searchModel =SearchModel(
+          colorPlatform:0xFFF44336,
+          colorTextPlatform:0xFFF44336,
+          createdAt: widget.categoriesModel.createdAt,
+          name: nameController.text, 
+          image: uri, 
+          region:regionController.text , 
+          price: priceController.text, 
+          platform: platformController.text ,
+          idDoc: postDat.id,
+          updatedAt: formattedDateTime(),
+        );
+        await postSearch.doc(widget.shippingModel.idDoc).update(searchModel.toJson());
+        
         ShippingModel shippingModel = ShippingModel(
-          colorPlatform:'',
-          colorTextPlatform:'',
+          colorPlatform:0xFFF44336,
+          colorTextPlatform:0xFFF44336,
           createdAt: widget.categoriesModel.createdAt,
           name: nameController.text, 
           image: uri, 
@@ -372,9 +390,23 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       Navigator.pop(context);
     }else{
       FormFeilds.showLoading(context);
+      SearchModel searchModel =SearchModel(
+       colorPlatform: 0xFFF44336,
+        colorTextPlatform: 0xFFF44336,
+        name: nameController.text, 
+        createdAt: widget.categoriesModel.createdAt,
+        image: widget.shippingModel.image, 
+        region:regionController.text , 
+        price: priceController.text, 
+        platform: platformController.text,
+        idDoc: postDat.id,
+        updatedAt: formattedDateTime(),
+      );
+      await postSearch.doc(widget.shippingModel.idDoc).update(searchModel.toJson());
+
       ShippingModel shippingModel = ShippingModel(
-        colorPlatform:'',
-        colorTextPlatform:'',
+        colorPlatform: 0xFFF44336,
+        colorTextPlatform: 0xFFF44336,
         name: nameController.text, 
         createdAt: widget.categoriesModel.createdAt,
         image: widget.shippingModel.image, 
@@ -407,7 +439,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
           image = null;
         });
       }); */
-      Navigator.pop(context);
+      Navigator.pushNamed(context, shippingPage);
     }
     }catch(e){
        print(e.toString());
