@@ -9,7 +9,7 @@ part 'categories_state.dart';
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   CategoriesRpoSitory categoriesRpoSitory;
   // List<CategoriesModel> categoriesModel;
-  CategoriesBloc({required this.categoriesRpoSitory,}) : super(CategoriesInitial()) {
+  CategoriesBloc({required this.categoriesRpoSitory,}) : super(CategoriesInitial()){
     on<CategoriesEvent>((event, emit) {});
     /* on<GetCategoriesLoadingEvent>((event, emit) => emit(CategoriesLoadingState()));
     on<GetAllCategoriesEvent>((event, emit) => emit(GetCategoriesState(categoriesModel)));
@@ -21,13 +21,13 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       await Future.delayed(const Duration(seconds: 1));
       try {
        await categoriesRpoSitory.creteCtegories(
-        idDoc: event.idDoc,
-          id: event.id,
-          name: event.name, 
-          image: event.image,
-          type: event.type, 
-          createdAt: event.createdAt, 
-          updatedAt: event.updatedAt,
+        idDoc: event.idDoc!,
+          id: event.id!,
+          name: event.name!, 
+          image: event.image!,
+          type: event.type!, 
+          createdAt: event.createdAt!, 
+          updatedAt: event.updatedAt!,
         );
       } catch (e) {
         emit(CategoriesErrorState(e.toString()));
@@ -38,8 +38,19 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       emit(CategoriesLoadingState());
       await Future.delayed(const Duration(seconds: 1));
       try {
-        final getData =  await categoriesRpoSitory.getCategoriesModel();
+        final getData = await categoriesRpoSitory.getCategoriesModel();
         emit(GetCategoriesLoadedState(getData));
+      } catch (e) {
+         emit(CategoriesErrorState(e.toString()));
+      }
+    });
+
+    on<DeleteCategoriesEvent>((event, emit) async {
+      emit(CategoriesLoadingState());
+      await Future.delayed(const Duration(seconds: 1));
+      try {
+        
+        emit(DeleteCategoriesState());
       } catch (e) {
          emit(CategoriesErrorState(e.toString()));
       }
