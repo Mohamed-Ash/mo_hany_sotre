@@ -9,7 +9,7 @@ import 'package:m_hany_store/core/model/shipping_model.dart';
 class ShippingRepository{
   CategoriesModel? categoriesModel;
   
-  final categoriesRepo = FirebaseFirestore.instance.collection('categories');
+  final shippingRepo = FirebaseFirestore.instance.collection('categories');
 
   Future<void> createShippingByCategory({
     required int id,
@@ -23,7 +23,7 @@ class ShippingRepository{
     required String updatedAt,
   })async{
     try{
-       await categoriesRepo.add({
+       await shippingRepo.add({
         "id": id,
         "id_doc":idDoc,
         "name": name,
@@ -44,6 +44,28 @@ class ShippingRepository{
   }
 
   Future<List<ShippingModel>> getShippingModel({ required String idDoc,required String type})async{
+    List<ShippingModel> shippingModelList = [];
+    try{
+
+     var  shippingRepo = await FirebaseFirestore.instance.collection('categories').doc(idDoc).collection(type).get();
+      // ShippingModel shippingModel;
+      for (var element in shippingRepo.docs) {
+        shippingModelList.add(ShippingModel.formJson(element.data()));
+      }
+
+      return shippingModelList;
+    
+    }on FirebaseException catch (e){
+      if(kDebugMode){
+        print('failed with error getShippingModel ${e.code} ${e.message}');
+      }
+      return shippingModelList;
+    } catch(e) {
+      throw Exception(e.toString());
+    }
+  } 
+  
+  Future<List<ShippingModel>> getSearchModel({ required String idDoc,required String type})async{
     List<ShippingModel> shippingModelList = [];
     try{
 
@@ -133,4 +155,20 @@ class ShippingRepository{
       throw Exception(e.toString());
     }
   }
+
+    Future<void> deleteSearchByCategory({
+    required idDoc,
+  })async{
+    try{
+      var  shippingRepo =  FirebaseFirestore.instance.collection('Search').doc(idDoc);
+      shippingRepo.delete();
+    }on FirebaseException catch (e){
+      if(kDebugMode){
+        print('failed with error creteCtegories ${e.code} ${e.message}');
+      }
+    }catch(e){
+      throw Exception(e.toString());
+    }
+  }
+  
 }
