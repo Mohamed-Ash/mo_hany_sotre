@@ -5,7 +5,7 @@ import 'package:m_hany_store/core/layout/layout_interface.dart';
   const UserInterface({Key? key}) : super(key: key);
 
   @override
-  PreferredSizeWidget? get appBar => null;
+  PreferredSizeWidget? appBar(BuildContext context) => null;
 
   @override
   Color? get  backgroundColor => null ;
