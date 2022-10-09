@@ -57,6 +57,7 @@ class CategoriesRpoSitory{
       final categoriesRepo = await FirebaseFirestore.instance.collection('categories').get();
 
       for (var element in categoriesRepo.docs) {
+        
         categoriesModelLsit.add(CategoriesModel.fromJson(element.data()));
       }
       print('=================== ');
@@ -67,6 +68,21 @@ class CategoriesRpoSitory{
       }
       return categoriesModelLsit ;
     } catch(e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> deleteSearchByCategory({
+    required idDoc,
+  })async{
+    try{
+      var  shippingRepo =  FirebaseFirestore.instance.collection('Search').doc(idDoc);
+      shippingRepo.delete();
+    }on FirebaseException catch (e){
+      if(kDebugMode){
+        print('failed with error creteCtegories ${e.code} ${e.message}');
+      }
+    }catch(e){
       throw Exception(e.toString());
     }
   }
