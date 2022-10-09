@@ -3,15 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/cubit/layout_cubit.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:m_hany_store/user/user_interface.dart';
 
 class AppPageLayout extends UserInterface{
+  // BuildContext? context;
+  
   const AppPageLayout({Key? key}) : super(key: key);
-
+  
   @override
-  PreferredSizeWidget? get appBar => AppBar( 
+  PreferredSizeWidget? appBar(BuildContext context) => AppBar( 
     leading: const  Text(''),
     elevation: 2,
     // backgroundColor: ColorTheme.primary,
@@ -19,11 +22,24 @@ class AppPageLayout extends UserInterface{
       statusBarColor:  Colors.transparent,
     ),
     title: Text('M HANY STORE',style: getBoldStyle(color: ColorTheme.wight,fontSize: 18)), 
+    actions: [
+      IconButton(
+        onPressed: (){
+          Navigator.pushNamed(context, searchPage);
+        }, 
+        icon: const Icon(Icons.search_sharp,color: ColorTheme.wight,),
+      ),
+      IconButton(
+        onPressed: (){
+        }, 
+        icon: const Icon(Icons.notifications_outlined,color: ColorTheme.wight,),
+      ),
+    ],
   );
 
   
   @override
-  Widget buildBody(BuildContext context) {
+  Widget buildBody(context) {
     return BlocProvider(
       create: (context) => LayoutCubit(),
       child: BlocBuilder<LayoutCubit, LayoutState>(
@@ -87,5 +103,8 @@ class AppPageLayout extends UserInterface{
         },
       ),
     );
+  }
+  buildS ( context){
+    Navigator.pushNamed(context, adminHome);
   }
 }
