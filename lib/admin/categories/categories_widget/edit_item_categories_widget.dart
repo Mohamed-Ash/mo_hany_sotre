@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unnecessary_null_comparison
+// ignore_for_file: avoid_print, unnecessary_null_comparison, prefer_if_null_operators
 
 import 'dart:io';
 import 'dart:math';
@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
@@ -29,17 +30,18 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
   DateTime now =  DateTime.now();
   String? selectedValue;
   
-  var nameController = TextEditingController();
   final formKey =GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-  
-
   final List<String> genderItems = [
-    'shipping',
-    'offers',
-    'products',
+    'Offers',
+    'Products',
+    'Shipping Gta v',
+    'Shipping Red Dead',
+    'Shipping Valorant',
+    'Shipping Steam Gift Godes',
   ];
   
+  var nameController = TextEditingController();
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
   @override
@@ -51,6 +53,7 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
@@ -86,7 +89,6 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                         Icons.image,color: ColorTheme.wight,
                         size: 66,
                       ),
-                     
                     ],
                   ),
                 )
@@ -123,10 +125,6 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                       ),
                     ),
                      Positioned(
-                        /* top: 18,
-                        right: 20, */
-                        // bottom: 2,
-                        // left: 2,
                       child: InkWell(
                         onTap: (){
                           setState(() {
@@ -138,18 +136,6 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                     ),
                   ],
                 ),
-              /* Container(
-                width: MediaQuery.of(context).size.width,
-                height: 300,
-                decoration:  BoxDecoration(
-                  // color: Colors.white,
-                  // borderRadius: BorderRadius.circular(12),
-                  image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: NetworkImage(widget.categories!['images'])
-                  ),
-                ),
-              ), */
               const SizedBox(
                 height: 22  ,
               ),
@@ -275,7 +261,7 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                     ),
                     // isExpanded: false,
                     hint: Text(
-                      widget.categoriesModel.name,
+                      widget.categoriesModel.type,
                       style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14),
                     ),
                     icon: const Icon(
@@ -295,7 +281,7 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                       color: ColorTheme.backroundInput,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    items: genderItems  .map((item) => DropdownMenuItem<String>(
+                    items: genderItems.map((item) => DropdownMenuItem<String>(
                       value: item,
                         child: Text(
                           item,
@@ -348,19 +334,10 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
     );
   }
 
-   /* Future<void> deleteImage()async{
-    try{
-      await FirebaseStorage.instance.refFromURL(widget.categories!['images']).delete();
-    }catch(e){
-      print(e);
-      throw " image Not Deleted ";
-    }
-   } */
-
   postData(context)async{
     var editItemCategories = FirebaseFirestore.instance.collection('categories');
     try{  
-      if (formKey.currentState!.validate() && image != null){
+      if (image != null){
         await FirebaseStorage.instance.refFromURL("${widget.categoriesModel.image}").delete();
 
         print("==++++++++++++++==");
@@ -389,18 +366,14 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
           // start update 
           image: uri,
           name: nameController.text, 
-          type: selectedValue!,
-          updatedAt: now.toIso8601String(),
+          type: selectedValue! == null ? widget.categoriesModel.type : selectedValue!, 
+          updatedAt: formattedDateTime(),
         );
-        await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson()).then((value) {
-          setState(() {
-            image = null;
-            nameController.clear();
-          });
-            print('url: $uri');
-        });
-        Navigator.pop(context);
-      } else if(formKey.currentState!.validate()){
+        await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson());
+
+        Navigator.pushNamed(context, categoriesPage);
+
+      } else {
         CategoriesModel category = CategoriesModel(
           createdAt: widget.categoriesModel.createdAt,
           id: widget.categoriesModel.id,
@@ -408,17 +381,12 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
           image: widget.categoriesModel.image,
           // start update 
           name: nameController.text, 
-          type: selectedValue!, 
-          updatedAt: now.toIso8601String(),
+          type: selectedValue! == null ? widget.categoriesModel.type : selectedValue!, 
+          updatedAt: formattedDateTime(),
         );
         FormFeilds.showLoading(context);
-        await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson()).then((value) {
-          setState(() {
-            image = null;
-            nameController.clear();
-          });
-        });
-        Navigator.of(context).pop();
+        await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson());
+        Navigator.pushNamed(context, categoriesPage);
       }
     }catch(e){
       print(e);
