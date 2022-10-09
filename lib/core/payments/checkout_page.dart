@@ -7,7 +7,7 @@ class CheckoutPage extends UserInterface{
   const CheckoutPage({super.key});
 
   @override
-  PreferredSizeWidget? get appBar => AppBar(
+  PreferredSizeWidget? appBar(BuildContext context) => AppBar(
     elevation: 0,
     leading: const Text(''),
     title: Text(
