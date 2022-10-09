@@ -4,8 +4,8 @@ class ShippingModel{
   final int? id; 
   final String? idDoc; ///document id
   final String name;
-  final String colorPlatform;
-  final String colorTextPlatform;
+  final int colorPlatform;
+  final int colorTextPlatform;
   final String image;
   final String region;
   final String price;
