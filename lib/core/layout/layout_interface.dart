@@ -3,7 +3,7 @@ import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 
 // ignore: must_be_immutable
 abstract class LayoutInterface extends StatelessWidget{
-  PreferredSizeWidget? get  appBar => null;
+  PreferredSizeWidget?   appBar(BuildContext context) => null;
 
   Widget buildBody(BuildContext context);
 
@@ -19,7 +19,7 @@ abstract class LayoutInterface extends StatelessWidget{
     return Scaffold(
       
       backgroundColor: ColorTheme.darkBackroundPage,  
-      appBar:appBar,
+      appBar:appBar(context),
       drawer:buildDrawer,
       body: buildBody(context),
     );
