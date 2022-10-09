@@ -8,6 +8,7 @@ const String previewProductPage = '/preview_product_page';
 const String showSalePage = '/show_sale_page';
 const String productPagse = '/preview_sale_page';
 const String userShippingPage = '/user_shipping_page';
+const String searchPage = '/search_page';
 
 
 
@@ -37,7 +38,7 @@ const String addItemProductPage                      = '/add_item_product_page';
 
 
 
-// const String shippingPage                            = '/shipping_page';
+const String shippingPage                            = '/shipping_page';
 // const String addItemShippingPage                     = '/add_item_shipping_widget';
 const String previewItemShippingPage                 = '/preview_item_shipping_page';
 const String editItemShippingPage                    = '/edit_item_shipping_page';
