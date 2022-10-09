@@ -96,6 +96,11 @@ class GetShippingLoadedEvent extends ShippingEvent{
  @override
   List<Object> get props => [];
 }
+class GetSearchLoadedEvent extends ShippingEvent{
+ 
+ @override
+  List<Object> get props => [];
+}
 
 class ShippingLoadingEvent extends ShippingEvent{
  

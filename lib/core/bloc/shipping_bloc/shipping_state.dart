@@ -27,6 +27,14 @@ class ShippingLoadedState extends ShippingState {
   @override
   List<Object> get props => [shippingModel];
 }
+class SearchLoadedState extends ShippingState {
+  List<ShippingModel> shippingModel = [];
+
+  SearchLoadedState(this.shippingModel);
+
+  @override
+  List<Object> get props => [shippingModel];
+}
 
 class ShippingErrorState extends ShippingState {
   final String error;
@@ -45,3 +53,5 @@ class UpdateSippingState extends ShippingState{
   @override
   List<Object> get props => [];
 }
+
+
