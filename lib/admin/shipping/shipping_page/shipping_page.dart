@@ -7,14 +7,15 @@ import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/repositories/admin/shipping_repository.dart';
 
 class ShippingPage extends AdminInterface{
-  final  CategoriesModel categoriesModel;
-  const ShippingPage({super.key, required this.categoriesModel});
+  CategoriesModel? categoriesModel;
+  ShippingPage({super.key, this.categoriesModel});
 
   @override
   Widget buildBody(BuildContext context) {
     return  BlocProvider(
-      create: (context) => ShippingBloc(shippingRepository: ShippingRepository(),categoriesModel: categoriesModel)..add(GetShippingLoadedEvent()),
-      child: ShippingWidget(categoriesModel: categoriesModel,shippingRepository: ShippingRepository()),
+      lazy: false,
+      create: (context) => ShippingBloc(shippingRepository: ShippingRepository(),categoriesModel: categoriesModel!)..add(GetShippingLoadedEvent()),
+      child: ShippingWidget(categoriesModel: categoriesModel!,shippingRepository: ShippingRepository()),
     );
   }
 }
