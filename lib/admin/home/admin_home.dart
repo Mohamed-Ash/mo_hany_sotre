@@ -6,7 +6,7 @@ import 'package:m_hany_store/core/theme/fonts/style.dart';
 class AdminHome extends AdminInterface{
   const AdminHome({super.key});
   @override
-  PreferredSizeWidget? get appBar => AppBar(
+  PreferredSizeWidget? appBar(BuildContext context) => AppBar(
     
     title: Text(
       'Dashbord',
