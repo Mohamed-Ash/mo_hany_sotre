@@ -251,28 +251,34 @@ class FormFeilds{
     );
   }
    
-  static showMyDialog(
-    context,String message,
-    List<Widget>? actions
-  ){
+  static showMyDialog({
+   required final BuildContext context,
+    required final String message,
+    List<Widget>? actions,
+    bool tabButtonRequired = false,
+  }){
     return showDialog(
       context: context,
-      barrierDismissible: true, // user must tap button!
+      barrierDismissible: tabButtonRequired, /// user must tap button!
       // barrierColor: ColorTheme.hintText,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: ColorTheme.hintText,
-          actions: const[],
-
-          content: Text(message,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14)),
+          icon: FormFeilds.containerImage(assetImage: 'assets/images/uploaded_done.png'),
+          backgroundColor: ColorTheme.darkAppBar,
+          actions: actions,
+          alignment: Alignment.center,
+          // contentPadding: EdgeInsets.fromLTRB(left, top, right, bottom) ,
+          title: Text(message,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14)),
+          // content: Text(message,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14)),
         );
       },
     );
   }
-   static mesgDelete(
+
+   static deleteMessage(
     context,
     String message,
-    Widget buttinDelete,
+    Widget buttonDelete,
     // Widget buttonCancel,
   ){
     return showDialog(
@@ -280,12 +286,12 @@ class FormFeilds{
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: ColorTheme.hintText,
+          backgroundColor: ColorTheme.darkAppBar,
           actions: [
-            buttinDelete,
+            buttonDelete,
           ],
-      
-          content: Text(message,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14)),
+          icon: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png'),
+          title: Text(message,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14)),
         );
       },
     );
@@ -333,83 +339,4 @@ class FormFeilds{
       return 160.0;
     }
   }
- /*  static Widget drobdown(){
-    return DropdownButtonHideUnderline(
-      child: DropdownButton2(
-        isExpanded: true,
-        hint: Row(
-          children: const [
-            Icon(
-              Icons.list,
-              size: 16,
-              color: Colors.yellow,
-            ),
-            SizedBox(
-              width: 4,
-            ),
-            Expanded(
-              child: Text(
-                'Select Item',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.yellow,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        items: items.map((item) => DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        )).toList(),
-        value: selectedValue,
-        onChanged: (value) {
-          setState(() {
-            selectedValue = value as String;
-          });
-        },
-        icon: const Icon(
-          Icons.arrow_forward_ios_outlined,
-        ),
-        iconSize: 14,
-        iconEnabledColor: Colors.yellow,
-        iconDisabledColor: Colors.grey,
-        buttonHeight: 50,
-        buttonWidth: 160,
-        buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-        buttonDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: Colors.black26,
-          ),
-          color: Colors.redAccent,
-        ),
-        buttonElevation: 2,
-        itemHeight: 40,
-        itemPadding: const EdgeInsets.only(left: 14, right: 14),
-        dropdownMaxHeight: 200,
-        dropdownWidth: 200,
-        dropdownPadding: null,
-        dropdownDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: Colors.redAccent,
-        ),
-        dropdownElevation: 8,
-        scrollbarRadius: const Radius.circular(40),
-        scrollbarThickness: 6,
-        scrollbarAlwaysShow: true,
-        offset: const Offset(-20, 0),
-      ),
-    );
-  } */
 }
