@@ -189,7 +189,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                 ),
                 IconButton(
                   onPressed: (){
-                    FormFeilds.mesgDelete(
+                    FormFeilds.deleteMessage(
                       context, 
                       'Are you sure to delete?',
                       InkWell(
