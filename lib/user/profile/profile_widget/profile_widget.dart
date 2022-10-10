@@ -154,12 +154,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0 , 20, 22, 15),
+              padding: const EdgeInsets.fromLTRB(0 , 33, 22, 33),
               child: InkWell(
                 onTap: () => logOut(context),
                 child: Text(
                   'Log out',
-                  style: getBoldStyle(color: ColorTheme.wight, dDecoration: TextDecoration.none,),
+                  style: getBoldStyle(color: ColorTheme.primary,fontSize: 18, dDecoration: TextDecoration.none,),
                 ),
               ),
             ),
