@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:m_hany_store/core/model/search_model.dart';
 
@@ -31,7 +30,7 @@ class SearchRepository{
       });
     } on FirebaseException catch (e){
       if(kDebugMode){
-        print('failed with error creteCtegories ${e.code} ${e.message}');
+        debugPrint('failed with error creteCtegories ${e.code} ${e.message}');
       }
     }catch(e){
       throw Exception(e.toString());
@@ -52,7 +51,7 @@ class SearchRepository{
     
     }on FirebaseException catch (e){
       if(kDebugMode){
-        print('failed with error getShippingModel ${e.code} ${e.message}');
+        debugPrint('failed with error getShippingModel ${e.code} ${e.message}');
       }
       return searchModelList;
     } catch(e) {
@@ -67,7 +66,7 @@ class SearchRepository{
       shippingRepo.delete();
     }on FirebaseException catch (e){
       if(kDebugMode){
-        print('failed with error creteCtegories ${e.code} ${e.message}');
+        debugPrint('failed with error creteCtegories ${e.code} ${e.message}');
       }
     }catch(e){
       throw Exception(e.toString());

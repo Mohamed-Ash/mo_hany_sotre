@@ -6,8 +6,10 @@ import 'package:m_hany_store/core/bloc/shipping_bloc/shipping_bloc.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/repositories/admin/shipping_repository.dart';
 
+// ignore: must_be_immutable
 class ShippingPage extends AdminInterface{
   CategoriesModel? categoriesModel;
+
   ShippingPage({super.key, this.categoriesModel});
 
   @override

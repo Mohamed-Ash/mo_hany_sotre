@@ -299,15 +299,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       ),
     );
   }
-/* 
-   Future<void> deleteImage()async{
-    try{
-      await FirebaseStorage.instance.refFromURL(widget.shipping!['image']).delete();
-    }catch(e){
-      print(e);
-      throw " image Not Deleted ";
-    }
-   } */
+
   String formattedDateTime() {
       return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
   }
@@ -319,8 +311,6 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
     try{
     if (image != null){
       await FirebaseStorage.instance.refFromURL(widget.shippingModel.image).delete();
-      print("==++++++++++++++==");
-      print('printDeleteImage');
      
       FormFeilds.showLoading(context);
 
@@ -333,8 +323,6 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       nameimage = "$random$nameimage";
 
       var refSorage = FirebaseStorage.instance.ref("shipping").child(nameimage); 
-      print('=========================================');
-      print(nameimage);
       await refSorage.putFile(file);
 
       var uri =  await refSorage.getDownloadURL();
@@ -372,21 +360,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
           regionController.clear();
           priceController.clear();
         });
-        print('url: $uri');
       });
-      /* await postDat.doc(widget.).update({
-          "image": uri,
-          "name": nameController.text.isEmpty ? widget.shipping!['type'] : nameController.text,
-          "updatedAt": formattedDateTime(),
-          // "craetedAt": null,
-          "type": selectedValue ?? widget.shipping!['type'],
-        }).then((value) {
-          setState(() {
-            image = null;
-            nameController.clear();
-          });
-          print('url: $uri');
-        }); */
       Navigator.pop(context);
     }else{
       FormFeilds.showLoading(context);
@@ -425,26 +399,11 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
           priceController.clear();
           platformController.clear();
         });
-        print('============');
-        print('updated success');
       });
-      /* await postDat.doc(widget.shippingModel.idDoc).update({
-        "name": nameController.text.isEmpty ? widget.shipping!['name'] : nameController.text,
-        "updatedAt": formattedDateTime(),
-        // "craetedAt": null,
-        "type": selectedValue ?? widget.shipping!['type'] ,
-      }).then((value) {
-        setState(() {
-          nameController.clear();
-          image = null;
-        });
-      }); */
       Navigator.pushNamed(context, shippingPage);
     }
     }catch(e){
        print(e.toString());
     }
   } 
-
- 
 }

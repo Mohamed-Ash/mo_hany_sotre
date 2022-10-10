@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, unrelated_type_equality_checks
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +17,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   List usersidd = [];
   final user = FirebaseAuth.instance.currentUser;
   final Query users = FirebaseFirestore.instance.collection('admin').where("admin", isEqualTo: 'adminId');
-  // var users = FirebaseFirestore.instance.collection("admin");
   
   @override
   void initState() {
     super.initState();
-    // getData(context);
   }
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -184,44 +181,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       ),
     );
   }
+
   logOut(context)async{
     await FirebaseAuth.instance.signOut();
     Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
   }
-/*   getData(context)async {
-      if( users == user!.uid  ){
-        InkWell(
-          borderRadius: BorderRadius.circular(8),
-          onTap: (){
-            Navigator.pushNamed(context, adminHome);
-          },
-          child: FormFeilds.buttonFormField(
-            title: 'Go to dashboard',
-            colorButton: ColorTheme.primary
-          ),
-        );
-      }else{
-        null ;
-      }
-      print(user!.uid);
-      print('===========================');
-
-    /* QuerySnapshot queryDocumentSnapshot = await users.get();
-     List<QueryDocumentSnapshot> listdocs =  queryDocumentSnapshot.docs;
-      listdocs.forEach((element) {
-      print(element.data());
-      print('===========================');
-        
-      }); */
-  }
-  Future<void> getCategories() async {
-    QuerySnapshot responseBody  = await users.get();
-    for(var element in responseBody.docs){
-      setState(() {
-        usersidd.add(element.data());
-      });
-    }
-  } */
 
   showLoading(context){
     return showDialog(

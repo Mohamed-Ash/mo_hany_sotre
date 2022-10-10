@@ -1,6 +1,5 @@
-// ignore_for_file: avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/model/authentication/user.dart';
 
 class AuthRepository{
@@ -26,7 +25,7 @@ class AuthRepository{
     try{
       await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     } catch(e){
-      print(e);
+      debugPrint(e.toString());
     }
   }
   
@@ -37,7 +36,7 @@ class AuthRepository{
     try{
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     }catch(e){
-      print(e);  
+      debugPrint(e.toString());  
     }
   }
 
@@ -45,7 +44,7 @@ class AuthRepository{
   try{
     await Future.wait([_firebaseAuth.signOut()]);
   }catch (e){
-    print(e);
+    debugPrint(e.toString());
   }
  }
 }

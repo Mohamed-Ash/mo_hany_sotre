@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print, unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -81,7 +81,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                   );
                 }
               }else if(state is CategoriesLoadingState){
-                return  const Expanded(child: Center(child: CircularProgressIndicator(),));
+                return  const Expanded(child: Center(child: CircularProgressIndicator(color: ColorTheme.primary),));
               }else if(state is CategoriesErrorState){
                 return Expanded(child: Center(child: Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,))));
               }else {
@@ -230,10 +230,10 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
 
   Future<void> deleteItemCatecories(CategoriesModel categoriesModel)async{
     try{
-      await getAllProductSale.doc(categoriesModel.idDoc).delete().then((value) => print('deleted ==+++'));
+      await getAllProductSale.doc(categoriesModel.idDoc).delete().then((value) => debugPrint('deleted ==+++'));
       await FirebaseStorage.instance.refFromURL("${categoriesModel.image}").delete();
     }catch(e){
-      print('[delete Item Catecories method is] [error] [$e]');
+      debugPrint('[delete Item Catecories method is] [error] [$e]');
     }
   }
 }

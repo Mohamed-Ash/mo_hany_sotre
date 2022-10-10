@@ -36,7 +36,7 @@ class Routes{
       case showSalePage:                                        return MaterialPageRoute(builder: (_)=> PreviewSalePage());
       case productPagse:                                        return MaterialPageRoute(builder: (_)=> ProductPage());
       case userShippingPage:                                    return MaterialPageRoute(builder: (_)=> const UserShippingPage());
-      case searchPage:                                          return MaterialPageRoute(builder: (_)=> SearchPage());
+      case searchPage:                                          return MaterialPageRoute(builder: (_)=> const SearchPage());
         
 
 

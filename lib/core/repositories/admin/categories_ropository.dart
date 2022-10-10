@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -28,28 +27,12 @@ class CategoriesRpoSitory{
         "updated_at": updatedAt,
       });
     } on FirebaseException catch (e){
-      if(kDebugMode){
-        print('failed with error creteCtegories ${e.code} ${e.message}');
-      }
+      debugPrint('failed with error creteCtegories ${e.code} ${e.message}');
     } catch(e) {
       throw Exception(e.toString());
     }
   }
-  /* addEmp(CategoriesModel categories) {
-    categoriesRepo.add(categories.toJson());
-  }
 
-  Future<List<CategoriesModel>>  getAllCategories()async{
-    var categories = await categoriesRepo.get();
-    var cat = categories.docs.map((e) => CategoriesModel.fromJson(e.data())).toList();
-    return cat;
-  }
-
-  Future<List<CategoriesModel>>  getCategoriesShipping()async{
-    var categories = await categoriesRepo.where('type',isEqualTo: 'shipping').get();
-    var cat = categories.docs.map((e) => CategoriesModel.fromJson(e.data())).toList();
-    return cat;
-  } */
   Future<List<CategoriesModel>> getCategoriesModel() async{
     List<CategoriesModel> categoriesModelLsit = [];
     try{
@@ -60,12 +43,10 @@ class CategoriesRpoSitory{
         
         categoriesModelLsit.add(CategoriesModel.fromJson(element.data()));
       }
-      print('=================== ');
+      debugPrint('=================== ');
       return categoriesModelLsit;
     }on FirebaseException catch (e){
-      if(kDebugMode){
-        print('failed with error getCategoriesModel ${e.code} ${e.message}');
-      }
+      debugPrint('failed with error getCategoriesModel ${e.code} ${e.message}');
       return categoriesModelLsit ;
     } catch(e) {
       throw Exception(e.toString());
@@ -79,9 +60,7 @@ class CategoriesRpoSitory{
       var  shippingRepo =  FirebaseFirestore.instance.collection('Search').doc(idDoc);
       shippingRepo.delete();
     }on FirebaseException catch (e){
-      if(kDebugMode){
-        print('failed with error creteCtegories ${e.code} ${e.message}');
-      }
+      debugPrint('failed with error creteCtegories ${e.code} ${e.message}');
     }catch(e){
       throw Exception(e.toString());
     }

@@ -269,8 +269,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               const SizedBox(height: 12,),
               InkWell(
                 onTap: ()async {
-                  UserCredential cred = await signInWithGoogle(context);
-                  print(cred.toString());                
+                 await signInWithGoogle(context);
                 },
                 child: FormFeilds.continueWith(
                   title: 'Continue with google',
@@ -313,7 +312,6 @@ class _LoginWidgetState extends State<LoginWidget> {
           ]
         );
       }
-      print(credential.user!.emailVerified);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Navigator.of(context).pop();

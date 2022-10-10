@@ -46,7 +46,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           BlocBuilder<CategoriesBloc, CategoriesState>(
             builder: (context, state) {
               if(state is CategoriesLoadingState){
-                return  const Center(child: CircularProgressIndicator(),);
+                return  const Center(child: CircularProgressIndicator(color: ColorTheme.primary),);
               } else if(state is GetCategoriesLoadedState){
                 return GridView.builder(
                   shrinkWrap: true,

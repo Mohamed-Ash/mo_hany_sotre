@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
@@ -26,11 +28,11 @@ class SsearchWidgetState extends State<SearchWidget> {
        setState(() {
          getAllSearch.add(element.data()) ;
        });  
-        print(element.data());
+        debugPrint(element.data().toString());
       }
 
     }catch(e){
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -85,7 +87,7 @@ class SsearchWidgetState extends State<SearchWidget> {
                 ),
               );
             }else if (snapshot.connectionState == ConnectionState.waiting){
-              return const Center( child: CircularProgressIndicator(),);
+              return const Center( child: CircularProgressIndicator(color: ColorTheme.primary),);
             } else{
               return Expanded(child: Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),)));
             }

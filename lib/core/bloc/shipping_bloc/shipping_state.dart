@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'shipping_bloc.dart';
 
 abstract class ShippingState extends Equatable {
@@ -8,17 +10,14 @@ abstract class ShippingState extends Equatable {
 }
 
 class ShippingInitial extends ShippingState {
-    @override
+  @override
   List<Object> get props => [];
-
 }
 
 class ShippingLoadingState extends ShippingState {
   @override
   List<Object> get props => [];
 }
-
-// ignore: must_be_immutable
 class ShippingLoadedState extends ShippingState {
   List<ShippingModel> shippingModel = [];
 

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +10,6 @@ import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/model/shipping_model.dart';
 import 'package:m_hany_store/core/repositories/admin/shipping_repository.dart';
-import 'package:m_hany_store/core/repositories/common/search_repository.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
@@ -83,7 +82,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                   ); 
                 }
               }else if(state is ShippingLoadingState){
-                return const Expanded(child: Center(child:  CircularProgressIndicator(),));
+                return const Expanded(child: Center(child:  CircularProgressIndicator(color: ColorTheme.primary),));
               }else if(state is ShippingErrorState){
                 return Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,));
               }else{
@@ -154,19 +153,6 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                 ),
               ),
             ),
-          /* Container(
-            width: 75,
-            height: 75,
-            decoration: BoxDecoration(
-              // color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              image:  DecorationImage(
-                fit: BoxFit.contain,
-                  image: NetworkImage(shipping.image)
-                ),
-              ),
-            ), */
-            
             const SizedBox(width: 18,),
             Flexible(
               fit: FlexFit.tight,

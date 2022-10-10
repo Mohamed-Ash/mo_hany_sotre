@@ -56,7 +56,7 @@ class _UserShippingWidgetState extends State<UserShippingWidget> {
                   ),
                 );
               } else if(snapshot.connectionState == ConnectionState.waiting){
-                return const Center(child:  CircularProgressIndicator(),);
+                return const Center(child:  CircularProgressIndicator(color: ColorTheme.primary),);
               } else if(snapshot.connectionState == ConnectionState.none){
                 print('succsess');
                 return Center(child: Text('You do not publish eny shipping',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));

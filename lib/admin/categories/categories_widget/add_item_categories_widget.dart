@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'dart:io';
 import 'dart:math';
 
@@ -266,8 +265,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
       nameimage = "$random$nameimage";
 
       var refSorage = FirebaseStorage.instance.ref("categories").child(nameimage); 
-      print('=========================================');
-      print(nameimage);
+
       await refSorage.putFile(file);
 
       var uri =  await refSorage.getDownloadURL();
@@ -285,7 +283,6 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
           image = null;
           nameController.clear();
         });
-        print('url: $uri');
       });
       Navigator.pop(context);
     }else{

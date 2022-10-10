@@ -62,7 +62,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   itemCount: state.shippingModel.length,
                 );
               }else if(state is ShippingLoadingState){
-                return const Center(child: CircularProgressIndicator(),);
+                return const Center(child: CircularProgressIndicator(color: ColorTheme.primary),);
               }else if(state is ShippingErrorState){
                 return Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,));
               }else{

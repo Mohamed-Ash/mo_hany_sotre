@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,46 +21,6 @@ class _AddItemProductPageState extends State<AddItemProductPage> {
   final  priceController = TextEditingController();
   final  nameController = TextEditingController();
   final formKye = GlobalKey<FormState>();
-
-  /* postimage()async{
-    final testgetImage = await _picker.pickImage(source: ImageSource.gallery);
-    if(testgetImage!= null ) {
-      File file = File(testgetImage.path);
-      var nameimage = basename(testgetImage.path);
-      var refstorage = FirebaseStorage.instance.ref(nameimage);
-      await refstorage.putFile(file);
-      print('=========================================');
-      print(nameimage);
-      print(testgetImage);
-    }
-      // var url = refstorage.getDownloadURL();
-  
-      // print( 'url ::: $url');
-  
-  
-      // String imageName =  basename(image!.path);
-    // CollectionReference postDat = FirebaseFirestore.instance.collection('product');
-    //start upload
-    // Reference  firebaseStorageRef = FirebaseStorage.instance.ref(imageName); 
-    // await firebaseStorageRef.putFile(file);
-    
-    // var url = await firebaseStorageRef.getDownloadURL();
-
-    print(url);
-    // print(imageName);
-    
-   /*  if (image != null) {
-      await postDat.doc('111111').set({
-        "image":imageName,
-        "info":"sss",
-        "sale":false,
-      }).then((value) =>
-        setState(() {
-          image = null;
-        }),
-      );
-    }*/
-  } */
 
   @override
   Widget build(BuildContext context) {
@@ -132,18 +91,6 @@ class _AddItemProductPageState extends State<AddItemProductPage> {
                       ),
                     ),
                   ),
-                 /*  Positioned(
-                    height: -8,
-                    right: -9,
-                    child:  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          image = null;
-                        });
-                      },
-                      icon: const Icon(Icons.cancel,color: Colors.red,size: 55,)
-                    ),
-                  ), */
                 ],
               ),
               const SizedBox(
@@ -232,16 +179,6 @@ class _AddItemProductPageState extends State<AddItemProductPage> {
             const SizedBox(
               height: 10,
             ),
-           /*  ElevatedButton.icon(
-              onPressed: () async{
-               await postimage();
-              },
-              label: const Text('fire store & storage'),
-              icon: const Icon(Icons.close),
-            ), */
-            const SizedBox(
-              height: 10,
-            ),
           ],
         ),
       ),
@@ -273,19 +210,5 @@ class _AddItemProductPageState extends State<AddItemProductPage> {
         image = null;
       }),
     );
-    print(postDat);
-    print('=========================================');
-    /* final testgetImage = await _picker.pickImage(source: ImageSource.gallery);
-    if(testgetImage!= null ) {
-      File file = File(testgetImage.path);
-      var nameimage = basename(testgetImage.path);
-      var refstorage = FirebaseStorage.instance.ref(nameimage);
-      await refstorage.putFile(file);
-      print('=========================================');
-      print(nameimage);
-      print(testgetImage);
-  }
-    print(url);
-    print('========================================='); */
   } 
 }
