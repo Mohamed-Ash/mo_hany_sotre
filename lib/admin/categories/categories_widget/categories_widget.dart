@@ -157,17 +157,6 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                 ),
               ),
             ),
-            /*  Container(
-              width: 75,
-              height: 75,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                image:  DecorationImage(
-                  fit: BoxFit.contain,
-                  image: NetworkImage("${categoriesModel.image}")
-                ),
-              ),
-            ), */
             const SizedBox(width: 18,),
             Flexible(
               fit: FlexFit.tight,
@@ -205,13 +194,14 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                 IconButton(
                   onPressed: (){
                     setState(() {  
-                      FormFeilds.mesgDelete(
+                      FormFeilds.deleteMessage(
                         context, 
                         'Are you sure to delete?',
                         InkWell(
                           onTap: () async {
-                            deleteItemCatecories(categoriesModel,);
-                            Navigator.of(context).pop();
+                            deleteItemCatecories(categoriesModel,).then((value) {
+                              Navigator.pushNamedAndRemoveUntil(context, categoriesPage, (route) => false);
+                            });
                           },
                           child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
                         ),
