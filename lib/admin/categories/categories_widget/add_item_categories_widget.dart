@@ -10,6 +10,7 @@ import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/helper/next_id_helper.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
@@ -33,9 +34,6 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   
 
   final List<String> genderItems = [
-    /* 'shipping',
-    'offers',
-    'products', */
     'Offers',
     'Products',
     'Shipping Gta v',
@@ -46,12 +44,6 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
- /*  @override
-  void initState() {
-    selectedValue = null ; 
-    nameController.clear(); 
-    super.initState();
-  } */
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -86,7 +78,6 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                       Icons.image,color: ColorTheme.wight,
                       size: 66,
                     ),
-                   
                   ],
                 ),
               )
@@ -123,17 +114,14 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                     ),
                   ),
                    Positioned(
-                      /* top: 18,
-                      right: 20, */
-                      // bottom: 2,
-                      // left: 2,
                       child: InkWell(
                         onTap: (){
                           setState(() {
                             image = null;
                           });
                         },
-                        child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40)),
+                        child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40),
+                      ),
                     ) ,
                 ],
               ),
@@ -173,7 +161,6 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                     border: InputBorder.none,
                     errorStyle: getRegulerStyle(color: Colors.red,fontSize: 12),
                   ),
-                  // isExpanded: false,
                   hint: Text(
                     'Select Type',
                     style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 14)
@@ -231,6 +218,7 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
                     formKye.currentState!.save();
                     await postData(context);
                   }
+                  // testDyalog(context);
                 },
                 child: FormFeilds.buttonFormField(
                   widthtButton: double.infinity,
@@ -251,7 +239,6 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   
   postData(context)async{
     var postDat = FirebaseFirestore.instance.collection('categories').doc();
-    // var postidDoc = FirebaseFirestore.instance.collection('categories').doc();
     
     if (formKye.currentState!.validate() && image != null){
       FormFeilds.showLoading(context);
@@ -283,16 +270,30 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
           image = null;
           nameController.clear();
         });
-      });
-      Navigator.pop(context);
-    }else{
-      // Navigator.pop(context);
+      });//Product uploaded successfully
       FormFeilds.showMyDialog(
-        context, 
-        'please fill fileds',
-         [
+       context:  context, 
+        message: 'Product uploaded successfully',
+        actions: [ 
           TextButton(
-            onPressed: ()=>Navigator.of(context).pop(), 
+            onPressed: (){
+              Navigator.pushNamedAndRemoveUntil(context, categoriesPage, (route) => false);
+            },
+            child: Text(
+              'Okay',
+              style: getBoldStyle(color: ColorTheme.wight,
+              )
+            ),
+          ),
+        ],
+      );
+    }else{
+      FormFeilds.showMyDialog(
+        context: context, 
+        message: 'please fill fileds',
+        actions: [
+          TextButton(
+            onPressed: ()=> Navigator.of(context).pop(), 
             child: Text(
               'Okay',
               style: getBoldStyle(color: ColorTheme.wight,
@@ -305,5 +306,21 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   } 
    String formattedDateTime() {
     return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
+  }
+  Future testDyalog(BuildContext context){
+    return FormFeilds.showMyDialog(
+       context:  context, 
+        message: 'Product uploaded successfully',
+        actions: [ 
+          TextButton(
+            onPressed: (){}, //=> Navigator.of(context).pop(), 
+            child: Text(
+              'Okay',
+              style: getBoldStyle(color: ColorTheme.wight,
+              )
+            ),
+          ),
+        ],
+      );
   }
 }
