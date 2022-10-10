@@ -391,9 +391,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       if (e.code == 'weak-password') {
         Navigator.of(context).pop();
         FormFeilds.showMyDialog(
-          context,
-          'The password provided is too weak.',
-           [
+          context: context,
+          message: 'The password provided is too weak.',
+          actions: [
             TextButton(
               onPressed: ()=>Navigator.of(context).pop(), 
               child: Text(
@@ -408,9 +408,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       } else if (e.code == 'email-already-in-use') {
         Navigator.of(context).pop();
         FormFeilds.showMyDialog(
-          context,
-          'The account already exists for that email.',
-           [
+          context: context,
+          message: 'The account already exists for that email.',
+          actions: [
             TextButton(
               onPressed: ()=>Navigator.of(context).pop(), 
               child: Text(
