@@ -34,8 +34,6 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   late Color colorTextPlatform; // Color for picker in dialog using onChanged
   late Color colorPlatform; // Color for picker in dialog using onChanged
 
-
-
   final ImagePicker _picker = ImagePicker();
   final nameController = TextEditingController();
   final regionController = TextEditingController();
@@ -133,19 +131,16 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                       ),
                     ),
                   ),
-                   Positioned(
-                      /* top: 18,
-                      right: 20, */
-                      // bottom: 2,
-                      // left: 2,
-                      child: InkWell(
-                        onTap: (){
-                          setState(() {
-                            image = null;
-                          });
-                        },
-                        child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40)),
-                    ) ,
+                  Positioned(
+                    child: InkWell(
+                      onTap: (){
+                        setState(() {
+                          image = null;
+                        });
+                      },
+                      child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40),
+                    ),
+                  ),
                 ],
               ),
               Padding(
@@ -277,52 +272,51 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                 },
               ),
             ),
-              const SizedBox(
-                height:33, 
-              ),
-              ListTile(  
-              title:  Text(
-                'Click this color to choose color Platform',
-                style:  getBoldStyle(color: ColorTheme.wight,),
-              ),
-              trailing: ColorIndicator(
-                width: 44,
-                height: 44,
-                borderRadius: 4,
-                color: colorPlatform,
-                onSelectFocus: false,
-                onSelect: () async {
-                  final Color ss = colorPlatform;
-                  if (!(await colorpPlatform(context))) {
-                    setState(() {
-                      colorPlatform = ss;
-                    });
-                  }
-                },
+            const SizedBox(
+              height:33, 
+            ),
+            ListTile(  
+            title:  Text(
+              'Click this color to choose color Platform',
+              style:  getBoldStyle(color: ColorTheme.wight,),
+            ),
+            trailing: ColorIndicator(
+              width: 44,
+              height: 44,
+              borderRadius: 4,
+              color: colorPlatform,
+              onSelectFocus: false,
+              onSelect: () async {
+                final Color ss = colorPlatform;
+                if (!(await colorpPlatform(context))) {
+                  setState(() {
+                    colorPlatform = ss;
+                  });
+                }
+              },
+            ),
+          ),
+            const SizedBox(
+              height:33, 
+            ),
+            InkWell(
+              onTap: ()async{
+                if(formKye.currentState!.validate()){
+                  formKye.currentState!.save();
+                  await postData(context);
+                }
+              },
+              child: FormFeilds.buttonFormField(
+                widthtButton: double.infinity,
+                heightButton: 50,
+                // dPadding: false,
+                title: 'Done',
+                colorButton: ColorTheme.primary, 
               ),
             ),
-              const SizedBox(
-                height:33, 
-              ),
-              InkWell(
-                onTap: ()async{
-                  if(formKye.currentState!.validate()){
-                    formKye.currentState!.save();
-                    await postData(context);
-                  }
-                },
-                child: FormFeilds.buttonFormField(
-                  widthtButton: double.infinity,
-                  heightButton: 50,
-                  // dPadding: false,
-                  title: 'Done',
-                  colorButton: ColorTheme.primary, 
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-             
+            const SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),
@@ -394,9 +388,9 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
      Navigator.pushNamed(context, shippingPage);
     }else{
       FormFeilds.showMyDialog(
-        context, 
-        'please choose image', 
-        [
+        context: context, 
+        message: 'please choose image', 
+        actions: [
           TextButton(
             onPressed: ()=>Navigator.of(context).pop(), 
             child: Text(
