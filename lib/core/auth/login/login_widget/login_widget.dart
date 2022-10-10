@@ -298,9 +298,9 @@ class _LoginWidgetState extends State<LoginWidget> {
       }else{
         Navigator.pop(context);
         FormFeilds.showMyDialog(
-          context, 
-          'please confirem your email',
-          [
+          context: context, 
+          message: 'please confirem your email',
+          actions: [
             TextButton(
               onPressed: ()=>Navigator.of(context).pop(), 
               child: Text(
@@ -316,9 +316,9 @@ class _LoginWidgetState extends State<LoginWidget> {
       if (e.code == 'user-not-found') {
         Navigator.of(context).pop();
         FormFeilds.showMyDialog(
-          context, 
-          'No user found for that email.',
-           [
+          context: context, 
+          message: 'No user found for that email.',
+          actions: [
             TextButton(
               onPressed: ()=>Navigator.of(context).pop(), 
               child: Text(
@@ -333,9 +333,9 @@ class _LoginWidgetState extends State<LoginWidget> {
       } else if (e.code == 'wrong-password') {
         Navigator.of(context).pop();
         FormFeilds.showMyDialog(
-          context, 
-          'Wrong password provided for that user.',
-           [
+          context: context, 
+          message: 'Wrong password provided for that user.',
+          actions: [
             TextButton(
               onPressed: ()=>Navigator.of(context).pop(), 
               child: Text(
