@@ -5,11 +5,12 @@ import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 ThemeData getAppThemeData(){
   return ThemeData(
     // scaffoldBackgroundColor:  ColorTheme.backgroundColorPage,
+    canvasColor: Colors.transparent,
     appBarTheme: const AppBarTheme(
       backgroundColor: ColorTheme.darkBackroundPage,
       systemOverlayStyle: SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.light,
-        statusBarColor:  Colors.red,
+        statusBarColor:  Colors.transparent,
         statusBarBrightness: Brightness.light
       ),
     ),
