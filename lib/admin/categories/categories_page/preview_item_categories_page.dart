@@ -6,7 +6,7 @@ import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 // ignore: must_be_immutable
 class PreviewItemCategoriesPage extends AdminInterface{
-  final  CategoriesModel categoriesModel;
+  final  CategoryModel categoriesModel;
 
 /*   final String id;
   final DocumentSnapshot categories; */
@@ -16,30 +16,126 @@ class PreviewItemCategoriesPage extends AdminInterface{
    @override
   Widget buildBody(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 33,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+         /*  const SizedBox(
+            height: 33,
+          ),
+          IconButton(
+            onPressed: () => Navigator.pop(context), 
+            icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          ), */
+          const SizedBox(height: 33,),
+          SizedBox(
+            width:  MediaQuery.of(context).size.width,
+            height: 400, 
+            child: PhysicalModel(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              color: Colors.black,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(8),
+              child: categoriesModel.image!.isNotEmpty? FadeInImage.assetNetwork(
+                placeholder: 'assets/icons/lloading.gif',
+                image: '${categoriesModel.image}',
+                fit: BoxFit.fill,
+                placeholderFit: BoxFit.contain,
+              ) : Image.asset('assets/images/no_image_available.jpg'),
             ),
-            IconButton(
-              onPressed: () => Navigator.pop(context), 
-              icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          ),
+          const SizedBox(
+            height: 22  ,
+          ),
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Name',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                ),
+                Text(
+                  categoriesModel.name,
+                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                ),
+              ],
             ),
-            getData(context),
-            const Divider(
-              color: ColorTheme.porder,
-              thickness: 1,
+          ),  
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Creatged at ',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                ),
+                Text(
+                  '${categoriesModel.createdAt}',
+                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                ),
+              ],
             ),
-          ],
-        ),
+          ),  
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Updated At ',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                ),
+                Text(
+                  categoriesModel.updatedAt ?? "-:-:-",
+                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                ),
+              ],
+            ),
+          ),  
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'type ',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                ),
+                Text(
+                  categoriesModel.type,
+                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                ),
+              ],
+            ),
+          ),  
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+        ],
       ),
     );
   }
 
-  Widget getData(BuildContext context){
+  /* Widget getData(BuildContext context){
     return Column(
       children: [
        /*  Container(
@@ -56,21 +152,37 @@ class PreviewItemCategoriesPage extends AdminInterface{
           child: 
         ), */
         SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 300,
+            width:  MediaQuery.of(context).size.width,
+            height: 400, 
             child: PhysicalModel(
-              clipBehavior: Clip.hardEdge,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               color: Colors.black,
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(12),
-              child:FadeInImage.assetNetwork(
+              borderRadius: BorderRadius.circular(8),
+              child: categoriesModel.image!.isNotEmpty? FadeInImage.assetNetwork(
                 placeholder: 'assets/icons/lloading.gif',
                 image: '${categoriesModel.image}',
                 fit: BoxFit.fill,
                 placeholderFit: BoxFit.contain,
-              ),
+              ) : Image.asset('assets/images/no_image_available.jpg'),
             ),
           ),
+        /* SizedBox(
+          width:  MediaQuery.of(context).size.width,
+          height: 400, 
+          child: PhysicalModel(
+            clipBehavior: Clip.hardEdge,
+            color: Colors.black,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(12),
+            child:categoriesModel.image!.isNotEmpty? FadeInImage.assetNetwork(
+              placeholder: 'assets/icons/lloading.gif',
+              image: '${categoriesModel.image}',
+              fit: BoxFit.fill,
+              placeholderFit: BoxFit.contain,
+            ) : Image.asset('assets/images/no_image_available.jpg'),
+          ), */
+        // ),
         const SizedBox(
           height: 22  ,
         ),
@@ -156,5 +268,5 @@ class PreviewItemCategoriesPage extends AdminInterface{
         ),  
       ],
     );
-  }
+  } */
 }
