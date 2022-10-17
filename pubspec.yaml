@@ -53,9 +53,10 @@ dependencies:
   cloud_firestore_odm: ^1.0.0-dev.33
   intl: ^0.17.0
   dropdown_button2: ^1.8.2
-  flutter_facebook_auth: ^4.4.1+1
+  # flutter_facebook_auth: ^4.4.1+1
   infinite_scroll_pagination: ^3.2.0
   flex_color_picker: ^2.6.1
+  flutter_launcher_icons: ^0.10.0
   # dropdown_button2: ^1.8.2
   
 dev_dependencies:
@@ -124,14 +125,19 @@ fonts:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  
 flutter_launcher_name:
   name: "m.Hany Store"
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logoo.png"
 
 flutter_native_splash:
   color: "#FFFFFF"
-  image: "assets/images/m_hany.png"
+  image: "assets/images/logoo.png"
 
   android_12:
     color: "#FFFFFF"
-    image: "assets/images/m_hany.png"
+    image: "assets/images/logoo.png"
