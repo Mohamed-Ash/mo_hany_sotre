@@ -1,15 +1,15 @@
-class CategoriesModel{
-  final int? id;
-  final String idDoc;
+// ignore_for_file: avoid_print
+
+class CategoryModel{
+  final int id;
   final String name;
   final String? image;
   final String type;
   final String? createdAt;
   final String? updatedAt;
 
-  CategoriesModel({
-    this.id,
-    required this.idDoc,
+  CategoryModel({
+    required this.id,
     this.image,
     required this.name,
     required this.type,
@@ -18,9 +18,9 @@ class CategoriesModel{
   });
 
 
-  factory CategoriesModel.fromJson(Map<String,dynamic> json){
-    return CategoriesModel(
-      idDoc: json['id_doc'],
+  factory CategoryModel.fromJson(Map<String,dynamic> json){
+    print(json);
+    return CategoryModel(
       id: json['id'],
       image: json['image'], 
       name: json['name'], 
@@ -32,7 +32,6 @@ class CategoriesModel{
 
   Map<String, dynamic> toJson() =>{
     'id' : id,
-    "id_doc":idDoc,
     'name': name,
     'image': image,
     'type': type,
