@@ -13,3 +13,4 @@ class DataLoadedState<T> extends DataState {
   final List<T> data;
   const DataLoadedState({required this.data});
 }
+
