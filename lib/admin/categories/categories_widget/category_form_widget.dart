@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/helper/next_id_helper.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
@@ -15,14 +15,20 @@ import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
-class AddItemCategoriesWidget extends StatefulWidget {
-  const AddItemCategoriesWidget({Key? key}) : super(key: key);
+class CategoryFormWidget extends StatefulWidget {
+
+  final ApiDataBloc<CategoryModel> categoryBloc;
+
+  const CategoryFormWidget({
+    Key? key,
+    required this.categoryBloc,
+  }) : super(key: key);
 
   @override
-  State<AddItemCategoriesWidget> createState() => _AddItemCategoriesWidgetState();
+  State<CategoryFormWidget> createState() => _CategoryFormWidgetState();
 }
 
-class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
+class _CategoryFormWidgetState extends State<CategoryFormWidget> {
   XFile? image;
   DateTime now =  DateTime.now();
   String? selectedValue;
@@ -238,8 +244,6 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
   }
   
   postData(context)async{
-    var postDat = FirebaseFirestore.instance.collection('categories').doc();
-    
     if (formKye.currentState!.validate() && image != null){
       FormFeilds.showLoading(context);
 
@@ -257,25 +261,33 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
 
       var uri =  await refSorage.getDownloadURL();
       int id = await NextIdHelper.getNextId("categories");
-      CategoriesModel category = CategoriesModel(
-        idDoc:postDat.id,
+      CategoryModel category = CategoryModel(
         id: id, 
         image: uri,
         name: nameController.text, 
         type: selectedValue!, 
         createdAt: formattedDateTime(),
       );
-      await postDat.set(category.toJson()).then((value) {
+      
+      widget.categoryBloc.add(StoreDataEvent(data: category.toJson()));
+      
+     /*  await postDat.set(category.toJson()).then((value) {
         setState(() {
-          image = null;
           nameController.clear();
+          image = null;
         });
-      });//Product uploaded successfully
+      }); */
+      //Product uploaded successfully
       FormFeilds.showMyDialog(
        context:  context, 
-        message: 'Product uploaded successfully',
+        message: 'category uploaded successfully',
         actions: [ 
-          TextButton(
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, categoriesPage);
+            },
+            child: FormFeilds.buttonFormField(title: 'Back to categories',colorButton: ColorTheme.primary)),
+         /*  TextButton(
             onPressed: (){
               Navigator.pushNamedAndRemoveUntil(context, categoriesPage, (route) => false);
             },
@@ -284,13 +296,13 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
               style: getBoldStyle(color: ColorTheme.wight,
               )
             ),
-          ),
+          ), */
         ],
       );
     }else{
       FormFeilds.showMyDialog(
         context: context, 
-        message: 'please fill fileds',
+        message: 'please choose image',//'please fill fields', 
         actions: [
           TextButton(
             onPressed: ()=> Navigator.of(context).pop(), 
@@ -303,24 +315,9 @@ class _AddItemCategoriesWidgetState extends State<AddItemCategoriesWidget> {
         ]
       );
     }
-  } 
+  }
+
    String formattedDateTime() {
     return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
-  }
-  Future testDyalog(BuildContext context){
-    return FormFeilds.showMyDialog(
-       context:  context, 
-        message: 'Product uploaded successfully',
-        actions: [ 
-          TextButton(
-            onPressed: (){}, //=> Navigator.of(context).pop(), 
-            child: Text(
-              'Okay',
-              style: getBoldStyle(color: ColorTheme.wight,
-              )
-            ),
-          ),
-        ],
-      );
   }
 }
