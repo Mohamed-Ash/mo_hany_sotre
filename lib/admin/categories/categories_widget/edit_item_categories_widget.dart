@@ -3,12 +3,12 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
@@ -18,8 +18,10 @@ import 'package:path/path.dart';
 
 // ignore: must_be_immutable
 class EditItemCategoriesWidget extends StatefulWidget {
-  final CategoriesModel categoriesModel;
-  const EditItemCategoriesWidget({super.key, required this.categoriesModel});
+  final CategoryModel categoriesModel;
+  final ApiDataBloc<CategoryModel> categoryBloc;
+
+  const EditItemCategoriesWidget({super.key, required this.categoriesModel,required this.categoryBloc});
   
   @override
   State<EditItemCategoriesWidget> createState() => _EditItemCategoriesWidgetState();
@@ -335,7 +337,7 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
   }
 
   postData(context)async{
-    var editItemCategories = FirebaseFirestore.instance.collection('categories');
+    // var editItemCategories = FirebaseFirestore.instance.collection('categories');
     try{  
       if (image != null){
         await FirebaseStorage.instance.refFromURL("${widget.categoriesModel.image}").delete();
@@ -359,25 +361,32 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
         await refSorage.putFile(file);
 
         var uri =  await refSorage.getDownloadURL();
-        CategoriesModel category = CategoriesModel(
+        CategoryModel category = CategoryModel(
           createdAt: widget.categoriesModel.createdAt,
           id: widget.categoriesModel.id,
-          idDoc: widget.categoriesModel.idDoc,
           // start update 
           image: uri,
           name: nameController.text, 
           type: selectedValue! == null ? widget.categoriesModel.type : selectedValue!, 
           updatedAt: formattedDateTime(),
         );
-        await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson());
+        widget.categoryBloc.add(UpdateDataEvent(id: widget.categoriesModel.id, data: category.toJson()));
 
-        Navigator.pushNamed(context, categoriesPage);
-
+        FormFeilds.showMyDialog(
+        context:  context, 
+          message: 'category Updated successfully',
+          actions: [ 
+            InkWell(
+              onTap: () {
+                 Navigator.of(context).pushReplacementNamed(categoriesPage, arguments: widget.categoriesModel);
+              },
+              child: FormFeilds.buttonFormField(title: 'Back to categories',colorButton: ColorTheme.primary)),
+          ],
+        );
       } else {
-        CategoriesModel category = CategoriesModel(
+        CategoryModel category = CategoryModel(
           createdAt: widget.categoriesModel.createdAt,
           id: widget.categoriesModel.id,
-          idDoc: widget.categoriesModel.idDoc,
           image: widget.categoriesModel.image,
           // start update 
           name: nameController.text, 
@@ -385,8 +394,19 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
           updatedAt: formattedDateTime(),
         );
         FormFeilds.showLoading(context);
-        await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson());
-        Navigator.pushNamed(context, categoriesPage);
+        widget.categoryBloc.add(UpdateDataEvent(id: widget.categoriesModel.id, data: category.toJson()));
+        // await editItemCategories.doc(widget.categoriesModel.idDoc).update(category.toJson());
+        FormFeilds.showMyDialog(
+          context:  context, 
+          message: 'category Updated successfully',
+          actions: [ 
+            InkWell(
+              onTap: (){
+                Navigator.pushNamedAndRemoveUntil(context, categoriesPage, (route) => false);
+              },
+              child: FormFeilds.buttonFormField(title: 'Back to categories',colorButton: ColorTheme.primary)),
+          ],
+        );
       }
     }catch(e){
       print(e);
