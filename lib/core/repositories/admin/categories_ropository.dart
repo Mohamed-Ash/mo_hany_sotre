@@ -1,4 +1,4 @@
-
+/* 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
@@ -33,15 +33,15 @@ class CategoriesRpoSitory{
     }
   }
 
-  Future<List<CategoriesModel>> getCategoriesModel() async{
-    List<CategoriesModel> categoriesModelLsit = [];
+  Future<List<CategoryModel>> getCategoriesModel() async{
+    List<CategoryModel> categoriesModelLsit = [];
     try{
     
       final categoriesRepo = await FirebaseFirestore.instance.collection('categories').get();
 
       for (var element in categoriesRepo.docs) {
         
-        categoriesModelLsit.add(CategoriesModel.fromJson(element.data()));
+        categoriesModelLsit.add(CategoryModel.fromJson(element.data()));
       }
       debugPrint('=================== ');
       return categoriesModelLsit;
@@ -65,4 +65,4 @@ class CategoriesRpoSitory{
       throw Exception(e.toString());
     }
   }
-}
+} */
