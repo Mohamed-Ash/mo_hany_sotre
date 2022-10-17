@@ -14,9 +14,9 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
-  List usersidd = [];
+  // List usersidd = [];
   final user = FirebaseAuth.instance.currentUser;
-  final Query users = FirebaseFirestore.instance.collection('admin').where("admin", isEqualTo: 'adminId');
+  final Query users = FirebaseFirestore.instance.collection('admin').where("adminId", isEqualTo: 'uO7W8tArnkTNDR6lJ6yOK553vXt2');
   
   @override
   void initState() {
@@ -31,6 +31,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Image.network("${user!.photoURL}"),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 15, 15),
               child: Text(
@@ -38,7 +39,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 style: getBoldStyle(color: ColorTheme.wight),
               ),
             ),
-            Container(// 01002581739
+            Container(
               width: double.infinity,
               // height: 60,
               decoration: BoxDecoration(
@@ -53,7 +54,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       onTap: (){
                       },
                       child: FormFeilds.rowTextIcon(
-                        isIconImage: false,
+                        isImage: false,
                         text: 'Personal info', 
                         iconData: Icons.arrow_back_ios_new_rounded,
                         iconSize: 16,
@@ -63,11 +64,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       padding: EdgeInsets.all(10.0),
                       child: Divider(
                         color: ColorTheme.primary,
-                        thickness: 2.32,
+                        thickness: 1,
                       ),
                     ),
                     FormFeilds.rowTextIcon(
-                      isIconImage: false,
+                      isImage: false,
                       // firstIconData: Icons.favorite_border_rounded,
                       // firstIconImage: 'assets/icons/purse.png',
                       text:  'Liprary',
@@ -77,7 +78,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       padding: EdgeInsets.all(10.0),
                       child: Divider(
                         color: ColorTheme.primary,
-                        thickness: 2.32,
+                        thickness: 1,
                       ),
                     ),
                   ],
@@ -102,36 +103,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                 child: Column(
                   children: [
-                    Row(
-                      children:  [
-                        const Icon(
-                          Icons.language_outlined,
-                          color: ColorTheme.wight,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'اللغة',
-                          style: getBoldStyle(color: ColorTheme.wight, dDecoration: TextDecoration.none,),
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(33, 0, 0, 0),
-                          child: Text(
-                            'English',
-                            style: getBoldStyle(color: ColorTheme.wight, dDecoration: TextDecoration.none,),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Divider(
-                        color: ColorTheme.primary,
-                        thickness: 2.32,
-                      ),
-                    ),
                     FormFeilds.rowTextIcon(
-                      isIconImage: false,
+                      isImage: false,
                       text: 'Contact us',
                       iconData: Icons.arrow_back_ios_new_rounded,
                     ),
@@ -144,7 +117,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     ),
                     InkWell(
                       child: FormFeilds.rowTextIcon(
-                        isIconImage: false,
+                        isImage: false,
                         text: '',
                         iconData: Icons.arrow_back_ios_new_rounded,
                       ),
@@ -163,7 +136,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ),
               ),
             ),
-            // if(user!.uid == "li5Z4IpPpISLgbvMO3wrbakNx9p2")
+            if(user!.uid == 'uO7W8tArnkTNDR6lJ6yOK553vXt2')
               InkWell(
                 borderRadius: BorderRadius.circular(8),
                 onTap: (){
@@ -174,8 +147,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   title: 'Go to dashboard',
                   colorButton: ColorTheme.primary
                 ),
-              ),
-            const SizedBox(height: 20),
+              ) 
+            else
+              const SizedBox(height: 20),
           ],
         ),
       ),
@@ -185,25 +159,5 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   logOut(context)async{
     await FirebaseAuth.instance.signOut();
     Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
-  }
-
-  showLoading(context){
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          backgroundColor: Colors.transparent,
-          // title: Text('please waite'),
-          content:  SizedBox(
-            height: 50,
-            child:  Center(
-              child:  CircularProgressIndicator(
-                color: ColorTheme.primary,
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 }
