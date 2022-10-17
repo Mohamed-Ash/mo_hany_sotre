@@ -15,8 +15,8 @@ class LayoutCubit extends Cubit<LayoutState> {
   int currentIndex = 0 ;
 
   List<Widget> screen = [
-    const HomePage(),
-    const SalePage(),
+    HomePage(),
+    SalePage(),
     const ProfilePage(),
   ] ;
 
