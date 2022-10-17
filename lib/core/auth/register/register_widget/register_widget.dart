@@ -18,6 +18,9 @@ class RegisterWidget extends StatefulWidget {
 }
 
 class _RegisterWidgetState extends State<RegisterWidget> {
+  bool showPassword = true;
+  bool showConfirmPassword = true;
+
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -26,8 +29,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   final user = FirebaseAuth.instance.currentUser;
   final userCredential =  UserCredential; 
   final formKye = GlobalKey<FormState>();
-  bool showPassword = true;
-  bool showConfirmPassword = true;
   
   @override
   Widget build(BuildContext context) {
@@ -39,41 +40,26 @@ class _RegisterWidgetState extends State<RegisterWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    'welcome to',
-                    style: getBoldStyle(
-                      color: ColorTheme.primary,
-                      dDecoration: TextDecoration.none,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'M.Hany store',
-                      style: getBoldStyle(
-                        color: ColorTheme.primary,
-                        fontSize: 20, 
-                        dDecoration: TextDecoration.none
-                    ),
-                  ),
-                ],
+              Text(
+                'welcome to M.Hany store',
+                style: getBoldStyle(
+                  color: ColorTheme.wight,
+                  dDecoration: TextDecoration.none,
+                  fontSize: 25,
+                ),
               ),
               const SizedBox(
                 height: 22,
               ),
-              Text(
+             /*  Text(
                 'Name',
                 style: getSemiBoldStyle(
-                  color: ColorTheme.primary,
+                  color: ColorTheme.wight,
                   fontSize: 14
                 ),
               ),
               const SizedBox(
-                height: 18,
+                height: 24,
               ),
               Stack(
                 children: [
@@ -97,19 +83,19 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     },
                   ),
                 ],
-              ),
+              ), */
               const SizedBox(
-                height: 8,
+                height: 24,
               ),
               Text(
                'Email',
                 style: getSemiBoldStyle(
-                  color: ColorTheme.primary,
+                  color: ColorTheme.wight,
                   fontSize: 14
                 ),
               ),
               const SizedBox(
-                height: 18,
+                height: 24,
               ),
               Stack(
                 children: [
@@ -139,17 +125,17 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 ],
               ),
                const SizedBox(
-                height: 18,
+                height: 24,
               ),
               Text(
                 'Password',
                 style: getSemiBoldStyle(
-                  color: ColorTheme.primary,
+                  color: ColorTheme.wight,
                   fontSize: 14
                 ),
               ),
               const SizedBox(
-                height: 18,
+                height: 24,
               ),
               Stack(
                 children: [
@@ -184,20 +170,20 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       }, 
                       icon: showPassword == true
                         ? FormFeilds.containerImage(assetImage: 'assets/icons/eye.png') 
-                        : FormFeilds.containerImage(assetImage: 'assets/icons/eye_closed.png') 
+                        : FormFeilds.containerImage(assetImage: 'assets/icons/closed_eye.png') 
                     ),
                   ),
                 ],
               ),
                 const SizedBox(
-                height: 18,
+                height: 24,
               ),
               Text(
                'Confirm Password',
                 style: getSemiBoldStyle(
-                  color: ColorTheme.primary,
+                  color: ColorTheme.wight,
                   fontSize: 14
-                ),
+                ),  
               ),
               const SizedBox(
                 height: 18,
@@ -239,7 +225,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       }, 
                       icon: showConfirmPassword == true
                         ? FormFeilds.containerImage(assetImage: 'assets/icons/eye.png') 
-                        : FormFeilds.containerImage(assetImage: 'assets/icons/eye_closed.png') 
+                        : FormFeilds.containerImage(assetImage: 'assets/icons/closed_eye.png') 
                     ),
                   ),
                 ],
@@ -254,10 +240,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     if(formKye.currentState!.validate()){
                       buildResister(context);
                     }
-                    // print(User.emailVerified);
-                    //  print(serCredential.user!.emailVerified);
-                    //   if(  serCredential.user!.emailVerified == false){}
-                    // Navigator.pushNamed(context, appPageLayout);
                   },
                   child: FormFeilds.buttonFormField(
                     title: 'Create New Accounte',
@@ -341,15 +323,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 ],
               ),
               // const SizedBox(height: 18,),
-              FormFeilds.continueWith(
+            /*   FormFeilds.continueWith(
                 title: 'Continue with facebook',
                 assetImage: 'assets/images/facebook.png',
-              ),
+              ), */
               // const SizedBox(height: 22,),
               InkWell(
                 onTap: ()async {
                   UserCredential cred = await signInWithGoogle(context);
-                    
                   print(cred.toString());                
                 },
                 child: FormFeilds.continueWith(
@@ -442,7 +423,12 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      Navigator.pushNamed(context, appPageLayout);
+
+      if (credential.idToken == null) {
+        Navigator.pushNamedAndRemoveUntil(context, loginPage, (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, appPageLayout, (route) => false);
+      }
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
   }
