@@ -1,4 +1,4 @@
-part of 'categories_bloc.dart';
+/* part of 'categories_bloc.dart';
 
 abstract class CategoriesEvent extends Equatable {}
 
@@ -52,4 +52,4 @@ class GetAllCategoriesEvent extends CategoriesEvent{
 class GetCategoriesLoadingEvent extends CategoriesEvent{
   @override
   List<Object?> get props => [];
-}
+} */

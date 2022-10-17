@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+/* // ignore_for_file: must_be_immutable
 
 part of 'categories_bloc.dart';
 
@@ -32,7 +32,7 @@ class CategoriesErrorState extends CategoriesState {
 
 class GetCategoriesLoadedState extends CategoriesState {
 
-  List<CategoriesModel> categoriesModel = [];
+  List<CategoryModel> categoriesModel = [];
   
   GetCategoriesLoadedState(this.categoriesModel);
 
@@ -42,4 +42,4 @@ class GetCategoriesLoadedState extends CategoriesState {
 class DeleteCategoriesState extends CategoriesState{
   @override
   List<Object?> get props => [];
-}
+} */

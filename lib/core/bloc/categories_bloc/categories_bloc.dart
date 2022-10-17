@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+/* import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/repositories/admin/categories_ropository.dart';
@@ -54,7 +54,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       } catch (e) {
          emit(CategoriesErrorState(e.toString()));
       }
-    });
+    }); */
 
     /* on<CategoriesEmptyEvent>((event, emit) async {
        final getData =  await categoriesRpoSitory.getCategoriesModel();
@@ -64,7 +64,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
 
        }
     }); */
-  }
+  
 
 
 
@@ -109,4 +109,4 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
 
     }
   } */
-}
+// }
