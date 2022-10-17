@@ -1,87 +1,85 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_hany_store/core/bloc/shipping_bloc/shipping_bloc.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
-import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:m_hany_store/user/categories/product/product_page/preview_product_page.dart';
 
 // ignore: must_be_immutable
 class ProductWidget extends StatefulWidget {
-  final CategoriesModel categoriesModel;
-  const ProductWidget({Key? key,required this.categoriesModel}) : super(key: key);
+  final ApiDataBloc<ItemModel> itemBloc;
+  final CategoryModel categoriesModel;
+  const ProductWidget({
+    Key? key,
+    required this.categoriesModel,
+    required this.itemBloc
+  }) : super(key: key);
 
   @override
   State<ProductWidget> createState() => _ProductWidgetState();
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
-  List salePRoducts = [];
-
-  /* CollectionReference getAllProduct = FirebaseFirestore.instance
-    .collection('categories')
-    .doc('CKPdS9g0VfCDCr2XUbfN')
-    .collection('red dead'); */
-    
-  @override
-  void initState() {
-    BlocProvider.of<ShippingBloc>(context);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const ScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 8,
-          ),
-          BlocBuilder<ShippingBloc,ShippingState>(
-            builder: (context, state) {
-               if(state is ShippingLoadedState){
-                return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 2/3,
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 2,
-                    mainAxisSpacing: 2,
-                  ),
-                  itemBuilder: (context,index) {
-                    return getAllproducts(
-                       context: context,
-                      categoriesModel: widget.categoriesModel, 
-                      shipping: state.shippingModel[index],
-                    );
-                  } ,
-                  itemCount: state.shippingModel.length,
-                );
-              }else if(state is ShippingLoadingState){
-                return const Center(child: CircularProgressIndicator(color: ColorTheme.primary),);
-              }else if(state is ShippingErrorState){
-                return Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,));
-              }else{
-                return Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));  
-              }     
-            },
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-        ],
+    return  Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: BlocBuilder(
+        bloc: widget.itemBloc,
+        builder: (context, state) {
+          if(state is DataLoadedState){
+            if (state.data == null || state.data.isEmpty) {
+              return Center(
+                child: Text(
+                  'This page will be up and running soon',
+                  style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
+                ),
+              );
+            }else{
+              return SingleChildScrollView(
+                physics: const ScrollPhysics(),
+                child: Column(
+                  children: [
+                    // const SizedBox(height: 30),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 2/3,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
+                      ),
+                      itemBuilder: (context,index) {
+                        return getAllproducts(
+                          context: context,
+                          itemModel: state.data[index],
+                        );
+                      } ,
+                      itemCount: state.data.length,
+                    ),
+                  ],
+                ),
+              );
+            }
+          }else if(state is DataLoadingState){
+            return const Center(child: CircularProgressIndicator(color: ColorTheme.primary));
+          }else{
+            return Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),));  
+          }     
+        },
       ),
     );
   }
 
   Widget getAllproducts({
     required BuildContext context,
-    required CategoriesModel categoriesModel,
-    required ShippingModel shipping,
+    required ItemModel itemModel,
    }){
     return Padding(
       padding: const EdgeInsets.all(2.0),
@@ -91,7 +89,7 @@ class _ProductWidgetState extends State<ProductWidget> {
             context,
             MaterialPageRoute(
               builder: (context){
-                return PreviewProductPage(shippingModel: shipping,);
+                return PreviewProductPage(itemModel: itemModel,);
               }
             ),
           );
@@ -120,7 +118,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     image:   DecorationImage(
                       fit: BoxFit.fill,
                       image: NetworkImage(
-                        shipping.image
+                        itemModel.image
                       ),
                     ),
                   ),
@@ -131,7 +129,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                   child: Text(
-                    shipping.name,
+                    itemModel.name,
                     style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
                   ),
                 ),
@@ -141,7 +139,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                   child: Text(
-                    'Price ${shipping.price} LE',
+                    'Price ${itemModel.price} LE',
                     style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
                   ),
                 ),
