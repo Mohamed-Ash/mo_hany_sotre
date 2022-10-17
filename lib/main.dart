@@ -10,8 +10,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
   runApp( App(routes: Routes(),));
   
 }
