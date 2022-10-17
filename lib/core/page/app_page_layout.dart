@@ -48,56 +48,89 @@ class AppPageLayout extends UserInterface{
           return Scaffold(
             appBar: null,
             body: cubit.screen[cubit.currentIndex],
-            bottomNavigationBar: BottomNavigationBar(
-              onTap: (index){
-                  cubit.changeCurrentIndex(index);
-                },
-              selectedItemColor: ColorTheme.selectIconNavBar,
-              unselectedItemColor: ColorTheme.unSelectIconNavBar,
-              backgroundColor: ColorTheme.darkAppBar,
-              currentIndex: cubit.currentIndex,
-              items:  [
-                BottomNavigationBarItem(
-                  icon: FormFeilds.containerImage(
-                    assetImage: 'assets/images/un_home.png',
-                    height: 25,
-                    width: 25,
+            bottomNavigationBar: Theme(
+              data: Theme.of(context).copyWith(
+                canvasColor: Colors.black,
+                primaryColor: Colors.black,
+                textTheme: Theme.of(context)
+                    .textTheme
+                    .copyWith(caption: const TextStyle(color: Colors.black)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(33),
+                      topLeft: Radius.circular(33),
+                      bottomLeft: Radius.circular(33),
+                      bottomRight: Radius.circular(33),
+                    ),          
                   ),
-                  activeIcon: FormFeilds.containerImage(
-                    assetImage: 'assets/images/home.png',
-                    height: 25,
-                    width: 25,
+                  child: BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    selectedItemColor: Colors.transparent,
+                    enableFeedback: true,
+                    // fixedColor: Colors.transparent,
+                    onTap: (index){
+                      cubit.changeCurrentIndex(index);
+                    },
+                    // selectedItemColor: ColorTheme.darkAppBar,
+                    unselectedItemColor: ColorTheme.unSelectIconNavBar,
+                    landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+                    
+                    backgroundColor: ColorTheme.darkAppBar,
+                    currentIndex: cubit.currentIndex,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    items:  [
+                      BottomNavigationBarItem(
+                        
+                        icon: FormFeilds.containerImage(
+                          assetImage: 'assets/icons/un_select_home.png',
+                          height: 25,
+                          width: 25,
+                        ),
+                        activeIcon: FormFeilds.containerImage(
+                          assetImage: 'assets/icons/icons_home.png',
+                          height: 25,
+                          width: 25,
+                        ),
+                        label: '',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: FormFeilds.containerImage(
+                        assetImage: 'assets/icons/un_select_offer.png',
+                        height: 30,
+                        width: 30,
+                        ),
+                        activeIcon: FormFeilds.containerImage(
+                          assetImage: 'assets/icons/icons_offer.png',
+                          height: 30,
+                          width: 30,
+                        ),
+                        label: '',
+                        
+                      ),
+                      BottomNavigationBarItem(
+                        icon: FormFeilds.containerImage(
+                          assetImage: 'assets/icons/un_select_profile.png',
+                          height: 25,
+                          width: 25,
+                        ),
+                        activeIcon: FormFeilds.containerImage(
+                          assetImage: 'assets/icons/icons_profile.png',
+                          height: 25,
+                          width: 25,
+                        ),
+                        label: ''
+                      ),
+                    ]
                   ),
-                  label: 'Home',
                 ),
-                BottomNavigationBarItem(
-                  icon: FormFeilds.containerImage(
-                  assetImage: 'assets/images/un_discount.png',
-                  height: 30,
-                  width: 30,
-                  ),
-                  activeIcon: FormFeilds.containerImage(
-                    assetImage: 'assets/images/discount.png',
-                    height: 30,
-                    width: 30,
-                  ),
-                  label: 'Sale',
-                  
-                ),
-                BottomNavigationBarItem(
-                  icon: FormFeilds.containerImage(
-                    assetImage: 'assets/images/un_profile.png',
-                    height: 25,
-                    width: 25,
-                  ),
-                  activeIcon: FormFeilds.containerImage(
-                    assetImage: 'assets/images/profile.png',
-                    height: 25,
-                    width: 25,
-                  ),
-                  label: 'Profile'
-                ),
-              ]
+              ),
             ),
           );
         },
