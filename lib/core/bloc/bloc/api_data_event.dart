@@ -7,4 +7,57 @@ abstract class DataEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class DataIndexEvent extends DataEvent{}
+class IndexDataEvent extends DataEvent{
+  final WhereCriteria? where;
+
+  const IndexDataEvent({this.where});
+}
+/* class SearchDataEvent extends DataEvent{
+  final WhereCriteria? where;
+
+  const IndexDataEvent({this.where});
+} */
+
+class DeleteDataEvent extends DataEvent{
+  final int id;
+  final String modelKey;
+  final List<String>? files;
+  // final List<String>? image;
+
+  const DeleteDataEvent({required this.id, this.modelKey = 'id', this.files,});
+}
+
+class UpdateDataEvent extends DataEvent{
+  final int id;
+  final Map<String, dynamic> data;
+  final String modelKey;
+
+  const UpdateDataEvent({
+    required this.id, 
+    required this.data,
+    this.modelKey = 'id',
+  });
+}
+
+class StoreDataEvent extends DataEvent{
+  final Map<String, dynamic> data;
+
+  const StoreDataEvent({
+    required this.data,
+  });
+}
+
+// Query<Map<String, dynamic>> where(
+//   Object field, {
+//   Object? isEqualTo,
+//   Object? isNotEqualTo,
+//   Object? isLessThan,
+//   Object? isLessThanOrEqualTo,
+//   Object? isGreaterThan,
+//   Object? isGreaterThanOrEqualTo,
+//   Object? arrayContains,
+//   List<Object?>? arrayContainsAny,
+//   List<Object?>? whereIn,
+//   List<Object?>? whereNotIn,
+//   bool? isNull,
+// });
