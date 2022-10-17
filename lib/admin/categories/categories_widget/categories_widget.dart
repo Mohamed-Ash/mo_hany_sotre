@@ -1,57 +1,45 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/admin/categories/categories_page/edit_item_categories_page.dart';
 import 'package:m_hany_store/admin/categories/categories_page/preview_item_categories_page.dart';
-import 'package:m_hany_store/admin/shipping/shipping_page/shipping_page.dart';
-import 'package:m_hany_store/core/bloc/categories_bloc/categories_bloc.dart';
+import 'package:m_hany_store/admin/item/item_page/item_page.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
+
 class CategoriesWidget extends StatefulWidget {
-  const CategoriesWidget({Key? key}) : super(key: key);
+
+  final ApiDataBloc<CategoryModel> categoryBloc;
+
+  const CategoriesWidget({
+    Key? key,
+    required this.categoryBloc,
+  }) : super(key: key);
 
   @override
   State<CategoriesWidget> createState() => _CategoriesWidgetState();
 }
 
 class _CategoriesWidgetState extends State<CategoriesWidget> {
-  CategoriesBloc? categoriesBloc;
 
-  CollectionReference<Map<String, dynamic>> getAllProductSale = FirebaseFirestore.instance.collection('categories');
-  @override
-  void initState() {
-    super.initState();
-    categoriesBloc = BlocProvider.of<CategoriesBloc>(context);
-  }
-  @override
-  void setState(VoidCallback fn) {
-    super.setState(fn);
-    categoriesBloc = BlocProvider.of<CategoriesBloc>(context);
-  }
-  @override
-  void dispose() {
-    categoriesBloc!.close();
-    super.dispose();
-  }
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 22, 12, 33),
       child: Column(
         children: [
-          BlocConsumer<CategoriesBloc,CategoriesState>(
-            bloc:  context.read<CategoriesBloc>(),
+          BlocConsumer(
+            bloc: widget.categoryBloc,
             listener: (context, state) {},
             builder: (context, state) {
-              if(state is GetCategoriesLoadedState){
-                if(state.categoriesModel.isEmpty || state.categoriesModel == null){
+              if(state is DataLoadedState){
+                if(state.data == null || state.data.isEmpty){
                   return Expanded(
                     child: Center(
                       child: Text(
@@ -70,20 +58,17 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context ,index) => buildItemProduct(
-                          categoriesModel: state.categoriesModel[index],
-                          context: context, 
-                          getAllProductSale:  getAllProductSale,
+                          categoriesModel: state.data[index],
+                          context: context,
                         ),
                         separatorBuilder: (context ,index) => const SizedBox( height: 10),
-                        itemCount: state.categoriesModel.length,
+                        itemCount: state.data.length,
                       ),
                     ),
                   );
                 }
-              }else if(state is CategoriesLoadingState){
+              }else if(state is DataLoadingState){
                 return  const Expanded(child: Center(child: CircularProgressIndicator(color: ColorTheme.primary),));
-              }else if(state is CategoriesErrorState){
-                return Expanded(child: Center(child: Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,))));
               }else {
                 return Expanded(child: Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),)));
               }
@@ -108,8 +93,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
 
   Widget buildItemProduct({
     required BuildContext context,
-    required CategoriesModel categoriesModel,
-    required CollectionReference<Map<String, dynamic>> getAllProductSale
+    required CategoryModel categoriesModel,
   }){
     return InkWell(
       onTap: (){
@@ -149,12 +133,12 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                 color: Colors.black,
                 shape: BoxShape.rectangle,  
                 borderRadius: BorderRadius.circular(8),
-                child:FadeInImage.assetNetwork(
+                child: categoriesModel.image!.isNotEmpty? FadeInImage.assetNetwork(
                   placeholder: 'assets/icons/lloading.gif',
                   image: "${categoriesModel.image}",
                   fit: BoxFit.fill,
                   placeholderFit: BoxFit.contain,
-                ),
+                ) : Image.asset('assets/images/no_image_available.jpg'),
               ),
             ),
             const SizedBox(width: 18,),
@@ -199,9 +183,11 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                         'Are you sure to delete?',
                         InkWell(
                           onTap: () async {
-                            deleteItemCatecories(categoriesModel,).then((value) {
-                              Navigator.pushNamedAndRemoveUntil(context, categoriesPage, (route) => false);
-                            });
+                            Navigator.of(context).pop();
+                            widget.categoryBloc.add(DeleteDataEvent(id: categoriesModel.id, files: const ['image']));
+                            // deleteItemCatecories(categoriesModel,).then((value) {
+                            //   Navigator.pushNamed(context, categoriesPage,);
+                            // });
                           },
                           child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
                         ),
@@ -218,12 +204,12 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
     );
   }
 
-  Future<void> deleteItemCatecories(CategoriesModel categoriesModel)async{
-    try{
-      await getAllProductSale.doc(categoriesModel.idDoc).delete().then((value) => debugPrint('deleted ==+++'));
-      await FirebaseStorage.instance.refFromURL("${categoriesModel.image}").delete();
-    }catch(e){
-      debugPrint('[delete Item Catecories method is] [error] [$e]');
-    }
-  }
+  // Future<void> deleteItemCatecories(CategoryModel categoriesModel)async{
+  //   try{
+  //     await getAllProductSale.doc(categoriesModel.idDoc).delete().then((value) => debugPrint('deleted ==+++'));
+  //     await FirebaseStorage.instance.refFromURL("${categoriesModel.image}").delete();
+  //   }catch(e){
+  //     debugPrint('[delete Item Catecories method is] [error] [$e]');
+  //   }
+  // }
 }
