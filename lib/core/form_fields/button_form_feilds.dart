@@ -128,7 +128,7 @@ class FormFeilds{
     required IconData iconData,
      IconData? firstIconData,
     Color iconColor = ColorTheme.wight,
-    required bool isIconImage,
+    required bool isImage,
     double iconSize = 16,
   }){
     return Row(
@@ -136,15 +136,14 @@ class FormFeilds{
         Container(
           height: 20,
           width: 20,
-          decoration: isIconImage == true ? BoxDecoration(
+          decoration: isImage == true ? BoxDecoration(
             image: DecorationImage(
               image: AssetImage(firstIconImage!),
             ),
           ): null,
-          child: isIconImage == false ? Icon(
+          child: isImage == false ? Icon(
             firstIconData,
             color: iconColor,
-            // size: iconSize,
           ) : null,
         ),
         const SizedBox(width: 8),
