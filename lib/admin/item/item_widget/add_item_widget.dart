@@ -1,25 +1,32 @@
-// ignore_for_file: avoid_print
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/helper/next_id_helper.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
-import 'package:m_hany_store/core/model/search_model.dart';
-import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
+
 class AddItemShippingWidget extends StatefulWidget {
-  final  CategoriesModel categoriesModel;
-  const AddItemShippingWidget({Key? key, required this.categoriesModel}) : super(key: key);
+  final  CategoryModel categoriesModel;
+  final ApiDataBloc<ItemModel> itemBloc;
+  
+  const AddItemShippingWidget({
+    Key? key, 
+    required this.categoriesModel,
+    required this.itemBloc
+  }) : super(key: key);
 
   @override
   State<AddItemShippingWidget> createState() => _AddItemShippingWidgetState();
@@ -28,20 +35,23 @@ class AddItemShippingWidget extends StatefulWidget {
 class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   XFile? image;
   DateTime now =  DateTime.now();
-  String? selectedValue;
   bool isSelect = false ;
-
-  late Color colorTextPlatform; // Color for picker in dialog using onChanged
-  late Color colorPlatform; // Color for picker in dialog using onChanged
+  Timer? countdownTimer;
+  Duration myDuration = const Duration(days: 5);
+  String name = '';
+  
+  late Color colorTextPlatform;
+  late Color colorPlatform;
 
   final ImagePicker _picker = ImagePicker();
+  final formKye = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final regionController = TextEditingController();
   final platformController = TextEditingController();
   final priceController = TextEditingController();
-  final formKye = GlobalKey<FormState>();
-  
-
+  final offerPriceController = TextEditingController();
+  final dayController = TextEditingController();
+  final hourController = TextEditingController();
   final List<String> genderItems = [
     'Offers',
     'Products',
@@ -53,16 +63,35 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-
   @override
   void initState() {
     super.initState();
     colorTextPlatform = Colors.red;
     colorPlatform = Colors.black;
   }
-
+  void startTimer() {
+    countdownTimer =  Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+  }
+  void setCountDown(){
+    const reduceSecondsBy = 1;
+    setState(() {
+      final seconds = myDuration.inSeconds - reduceSecondsBy;
+      if (seconds < 0) {
+        countdownTimer!.cancel();
+      }else{
+        myDuration = Duration(seconds: seconds);
+      }
+    });
+  }
+ 
   @override
   Widget build(BuildContext context) {
+  /*   String strDigits(int n) => n.toString().padLeft(2, '0');
+    final days = strDigits(myDuration.inDays.remainder(12));
+    final hours = strDigits(myDuration.inHours.remainder(21));
+    final minutes = strDigits(myDuration.inMinutes.remainder(60));
+    final seconds = strDigits(myDuration.inSeconds.remainder(60)); */
+    
     return SingleChildScrollView(
       child: Form(
         key: formKye,
@@ -157,6 +186,9 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                     ),
                     FormFeilds.textField(
                       controller: nameController, 
+                      onChanged: (value) {
+                        name = value;
+                      } ,
                       keyboardType: TextInputType.text, 
                       hintText: 'Add Name',
                       validator:(validate){
@@ -251,6 +283,120 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
               const SizedBox(
                 height:33, 
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                child: InkWell(
+                  onTap: (){
+                    setState(() {
+                      isSelect = !isSelect;
+                    });
+                  },
+                  child: isSelect == false ? Card(
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image:  AssetImage('assets/icons/icons_offer.png'),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'add sale',
+                          style: getBoldStyle(
+                            color: ColorTheme.wight, 
+                            dDecoration: TextDecoration.none,
+                            fontSize: 14
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: ColorTheme.wight,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  )
+                  : Card(
+                    color: ColorTheme.darkAppBar,
+                    child: Column(
+                      children: [
+                        FormFeilds.rowTextIcon(
+                          isImage: true,
+                          firstIconImage: 'assets/icons/icons_offer.png',
+                          text:  'add sale',
+                          iconData: Icons.keyboard_arrow_down,
+                          iconSize: 25,
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 50,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color:  ColorTheme.backroundInput,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: FormFeilds.textField(
+                                  suffixIcon: FormFeilds.containerImage(
+                                    assetImage: 'assets/icons/icons_offer.png',
+                                    height: 30,
+                                    width: 30
+                                  ),
+                                  controller: offerPriceController, 
+                                  keyboardType: TextInputType.number, 
+                                  hintText: 'Add offer price',
+                                ),
+                              ),
+                              const SizedBox(height: 12,),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color:  ColorTheme.backroundInput,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: FormFeilds.textField(
+                                      controller: dayController, 
+                                      keyboardType: TextInputType.number, 
+                                      hintText: 'Add day',
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12,),
+                                  Container(
+                                    height: 50,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color:  ColorTheme.backroundInput,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: FormFeilds.textField(
+                                      controller:hourController, 
+                                      keyboardType: TextInputType.number, 
+                                      hintText: 'Add hour',
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               ListTile(  
               title:  Text(
                 'Click this color to choose color Text Platform',
@@ -296,9 +442,109 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
               },
             ),
           ),
+         /*  BlocBuilder(
+            bloc: widget.categoryBloc,
+            builder: (context, state) {
+              if(state is DataLoadedState<CategoryModel>){
+                return DropdownButton<CategoryModel>(
+                  items: state.data.fold(
+                    [], 
+                    (previousValue, element) {
+                      return previousValue!..add(
+                        DropdownMenuItem(
+                          child: SizedBox(
+                            height: 40,
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                               SizedBox(
+                                  width: 35,
+                                  height: 35,
+                                  child: PhysicalModel(
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    color: Colors.black,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(8),
+                                    child:FadeInImage.assetNetwork(
+                                      placeholder: 'assets/icons/lloading.gif',
+                                      image: element.image!,
+                                      fit: BoxFit.fill,
+                                      placeholderFit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 18,),
+                                Expanded(
+                                  // fit: FlexFit.tight,
+                                  flex: 3,
+                                  child: Text(
+                                    element.name,
+                                    style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 13,),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }), 
+                  onChanged: (value){
+                    setState(() {
+                      selectedCategory = value;
+                    });
+                  }
+                );
+              }else{
+                return const Center(child: CircularProgressIndicator(),);
+              }
+            },
+          ), */
+         /*  DatePickerDialog(
+            initialDate: DateTime.now() , 
+            firstDate: DateTime.now(), 
+            lastDate: DateTime.utc(20213,2,2),
+          ), */
+          /* Column(
+          children: [
             const SizedBox(
-              height:33, 
+              height: 50,
             ),
+            // Step 8
+            /* Text(
+              '$days:$hours:$minutes:$seconds',
+              style: getBoldStyle(color: ColorTheme.wight,fontSize: 33),),
+            const SizedBox(height: 20),
+            // Step 9
+            ElevatedButton(
+              onPressed: startTimer,
+              child: const Text(
+                'Start',
+                style: TextStyle(
+                  fontSize: 30,
+                ),
+              ),
+            ),
+            // Step 10
+            ElevatedButton(
+              onPressed: () {
+                if (countdownTimer == null || countdownTimer!.isActive) {
+                  // stopTimer();
+                }
+              },
+              child: const Text(
+                'Stop',
+                style: TextStyle(
+                  fontSize: 30,
+                ),
+              ),
+            ), */
+          ],
+        ), */
+          const SizedBox(
+            height:33, 
+          ),
             InkWell(
               onTap: ()async{
                 if(formKye.currentState!.validate()){
@@ -309,7 +555,6 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
               child: FormFeilds.buttonFormField(
                 widthtButton: double.infinity,
                 heightButton: 50,
-                // dPadding: false,
                 title: 'Done',
                 colorButton: ColorTheme.primary, 
               ),
@@ -324,68 +569,47 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   }
 
   postData(context)async{
-    // CollectionReference postDat = FirebaseFirestore.instance.collection('categories').doc('5144z0GZ5BA4m8riyX4D').collection('shipping');
-    var postDat =  FirebaseFirestore.instance.collection('categories').doc(widget.categoriesModel.idDoc).collection(widget.categoriesModel.type).doc();
-    var postSearch =  FirebaseFirestore.instance.collection('Search').doc(postDat.id);
-    
     if (image != null){
       FormFeilds.showLoading(context);
-
       var file = File(image!.path);
-
       var nameimage = basename(image!.path);
-
       var random = Random().nextInt(1000000);
-
       nameimage = "$random$nameimage";
-
       var refSorage = FirebaseStorage.instance.ref(widget.categoriesModel.type).child(nameimage); 
-      print('=========================================');
-      print(nameimage);
-
       await refSorage.putFile(file);
-
       var uri =  await refSorage.getDownloadURL();
-
-      SearchModel searchModel = SearchModel(
+      int  id = await NextIdHelper.getNextId('items');
+      ItemModel item = ItemModel(
+        id: id,
+        categoryId: widget.categoriesModel.id,
         colorPlatform: colorPlatform.value,
         colorTextPlatform: colorTextPlatform.value,
         name: nameController.text,
+        nameArry: [name],
         image: uri, 
-        idDoc: postDat.id,
         region: regionController.text,
+        // dayTimeOffer: int.parse(dayController.text) ,
+        // hourTimeOffer: int.parse(hourController.text),
         price: priceController.text, 
+        offerPrice: offerPriceController.text,
+        isOffer: true,
         platform: platformController.text,
         createdAt: formattedDateTime(),
         updatedAt: '-:-:-:-',
       );
-      
-      await postSearch.set(searchModel.toJson());
-      
-      ShippingModel shipping = ShippingModel(
-        colorPlatform: colorPlatform.value,
-        colorTextPlatform: colorTextPlatform.value,
-        name: nameController.text,
-        image: uri, 
-        idDoc: postDat.id,
-        region: regionController.text,
-        price: priceController.text, 
-        platform: platformController.text,
-        createdAt: formattedDateTime(),
-        updatedAt: '-:-:-:-',
+      widget.itemBloc.add(StoreDataEvent(data: item.toJson()));
+      FormFeilds.showMyDialog(
+        context:  context, 
+        message: 'product uploaded successfully',
+        actions: [ 
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushReplacementNamed(shippingPage, arguments: widget.categoriesModel);
+            },
+            child: FormFeilds.buttonFormField(title: 'Back to products',colorButton: ColorTheme.primary)),
+        ],
       );
-        await postDat.set(shipping.toJson()).then((value){
-          setState(() {
-            image = null;
-
-            nameController.clear();
-            regionController.clear();
-            platformController.clear();
-            priceController.clear();
-          });
-          print('url: $uri');
-        });
-     Navigator.pushNamed(context, shippingPage);
     }else{
       FormFeilds.showMyDialog(
         context: context, 

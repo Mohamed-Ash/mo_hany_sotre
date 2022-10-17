@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/admin/admin_interface.dart';
-import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/model/item_model.dart';
+import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
-import '../../../core/theme/colors/color_theme.dart';
 
 // ignore: must_be_immutable
 class PreviewItemShippingPage extends AdminInterface{
-  final  ShippingModel shippingModel;
+  final  ItemModel shippingModel;
 
   // CollectionReference getAllProductSale = FirebaseFirestore.instance.collection('categories').doc(shippingModel.idDoc).collection('shipping');
   
@@ -27,12 +27,12 @@ class PreviewItemShippingPage extends AdminInterface{
               color: Colors.black,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(8),
-              child:FadeInImage.assetNetwork(
+              child: shippingModel.image.isNotEmpty? FadeInImage.assetNetwork(
                 placeholder: 'assets/icons/lloading.gif',
                 image: shippingModel.image,
                 fit: BoxFit.fill,
                 placeholderFit: BoxFit.contain,
-              ),
+              ) : Image.asset('assets/images/no_image_available.jpg'),
             ),
           ),
           /* Container(

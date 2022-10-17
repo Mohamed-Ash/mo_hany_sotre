@@ -2,55 +2,54 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_hany_store/admin/shipping/shipping_page/add_item_shipping_page.dart';
-import 'package:m_hany_store/admin/shipping/shipping_page/edit_item_shipping_page.dart';
-import 'package:m_hany_store/admin/shipping/shipping_page/preview_item_shipping_page.dart';
-import 'package:m_hany_store/core/bloc/shipping_bloc/shipping_bloc.dart';
+import 'package:m_hany_store/admin/item/item_page/add_item_page.dart';
+import 'package:m_hany_store/admin/item/item_page/edit_item_item_page.dart';
+import 'package:m_hany_store/admin/item/item_page/preview_item_page.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
-import 'package:m_hany_store/core/model/shipping_model.dart';
-import 'package:m_hany_store/core/repositories/admin/shipping_repository.dart';
+import 'package:m_hany_store/core/model/item_model.dart';
+import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
-class ShippingWidget extends StatefulWidget {
-  final CategoriesModel categoriesModel;
-  final ShippingRepository shippingRepository;
-  
 
-  const ShippingWidget({Key? key, required this.categoriesModel,required this.shippingRepository}) : super(key: key);
+class ShippingWidget extends StatefulWidget {
+  final CategoryModel categoriesModel;
+  final ApiDataBloc<ItemModel> itemBloc;
+
+  const ShippingWidget({
+    Key? key, 
+    required this.categoriesModel,
+    required this.itemBloc,
+    }) : super(key: key);
 
   @override
   State<ShippingWidget> createState() => _ShippingWidgetState();
 }
  
 class _ShippingWidgetState extends State<ShippingWidget> {
-  ShippingBloc? shippingBloc;
-
-  @override
+ /*  @override
   void initState() {
     super.initState();
-   shippingBloc = BlocProvider.of<ShippingBloc>(context);
+    test();
   }
+ */
   
-  @override
-  void dispose() {
-    shippingBloc!.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context){
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 22, 12, 33),
+      padding: const EdgeInsets.fromLTRB(12, 22, 12, 22),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          BlocBuilder<ShippingBloc,ShippingState>(
+          BlocBuilder(
+            bloc: widget.itemBloc,
             builder: (context, state) {
-              if(state is ShippingLoadedState){ 
-                if(state.shippingModel.isEmpty || state.shippingModel == null){
+              if(state is DataLoadedState){ 
+                if(state.data == null || state.data.isEmpty ){
                   return Expanded(
                     child: Center(
                       child: Text(
@@ -61,7 +60,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                   );
                 }else{
                   return SizedBox(
-                    height: 600,
+                    height: 555,
                     child: SingleChildScrollView(
                       physics: const ScrollPhysics(),
                       child: ListView.separated(
@@ -70,21 +69,18 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context ,index){
                           return buildItemProduct(
-                            shipping: state.shippingModel[index],
+                            itemModel: state.data[index],
                             context: context, 
-                            categoriesModel: widget.categoriesModel
                           );
                         },
                         separatorBuilder: (context ,index) => const SizedBox( height: 10),
-                        itemCount: state.shippingModel.length
+                        itemCount: state.data.length
                       ),
                     ),
                   ); 
                 }
-              }else if(state is ShippingLoadingState){
-                return const Expanded(child: Center(child:  CircularProgressIndicator(color: ColorTheme.primary),));
-              }else if(state is ShippingErrorState){
-                return Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,));
+              }else if(state is DataLoadingState){
+                return const Expanded(child: Center(child: CircularProgressIndicator(color: ColorTheme.primary),));
               }else{
                 return Expanded(child: Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),)));
               }
@@ -96,13 +92,17 @@ class _ShippingWidgetState extends State<ShippingWidget> {
               Navigator.push(
                   context,MaterialPageRoute(
                   builder: (context){
-                    return AddItemShippingPage(categoriesModel: widget.categoriesModel,);
+                    // return AddItemShippingPage(categoriesModel: widget.categoriesModel,);
+                    return AddItemShippingPage(
+                      categoriesModel: widget.categoriesModel,
+                    );
+
                   }
                 ),
               );
             },
             child: FormFeilds.buttonFormField(
-              title: 'Add new  ${widget.categoriesModel.type}',
+              title: 'Add new item',
               dPadding: false,
               heightButton: 40,
               fontSize: 13,
@@ -113,11 +113,20 @@ class _ShippingWidgetState extends State<ShippingWidget> {
       ),
     );
   }
+  
+/*   test(){
+    if (widget.categoriesModel.id == 2) {
+      widget.itemBloc.add(DeleteDataEvent(id: widget.categoriesModel.id, files: const ['image']));
+      print('deeeleeet');
+      print('==========');
+    }else{
 
- Widget buildItemProduct({
+    }
+  } */
+  
+  Widget buildItemProduct({
     required BuildContext context,
-    required ShippingModel shipping,
-    required CategoriesModel categoriesModel,
+    required ItemModel itemModel,
   }){
     return Container(
       width: double.infinity,
@@ -145,12 +154,12 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                 color: Colors.black,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(8),
-                child:FadeInImage.assetNetwork(
+                child: itemModel.image.isNotEmpty? FadeInImage.assetNetwork(
                   placeholder: 'assets/icons/lloading.gif',
-                  image: shipping.image,
+                  image: itemModel.image,
                   fit: BoxFit.fill,
                   placeholderFit: BoxFit.contain,
-                ),
+                ) : Image.asset('assets/images/no_image_available.jpg'),
               ),
             ),
             const SizedBox(width: 18,),
@@ -158,7 +167,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
               fit: FlexFit.tight,
               flex: 3,
               child: Text(
-                shipping.name,
+                itemModel.name,
                 style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 13,),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -171,7 +180,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                   onPressed: () => Navigator.push(
                     context, MaterialPageRoute(
                       builder: (context){
-                        return PreviewItemShippingPage(shippingModel: shipping,);
+                        return PreviewItemShippingPage(shippingModel: itemModel,);
                       }
                     ),
                   ),
@@ -181,7 +190,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                   onPressed: () => Navigator.push(
                     context, MaterialPageRoute(
                       builder: (context){
-                        return  EditItemShippingPage(shippingModel: shipping, categoriesModel: widget.categoriesModel,);
+                        return  EditItemShippingPage(itemModel: itemModel,categoriesModel: widget.categoriesModel,);
                       }
                     ),
                   ),
@@ -189,7 +198,7 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                 ),
                 IconButton(
                   onPressed: (){
-                    FormFeilds.deleteMessage(
+                   /*  FormFeilds.deleteMessage(
                       context, 
                       'Are you sure to delete?',
                       InkWell(
@@ -205,7 +214,20 @@ class _ShippingWidgetState extends State<ShippingWidget> {
                         },
                         child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
                       ),
-                    );
+                    ); */
+                    FormFeilds.deleteMessage(
+                        context, 
+                        'Are you sure to delete?',
+                        InkWell(
+                        onTap: () async {
+                           Navigator.of(context).pushReplacementNamed(shippingPage, arguments: widget.categoriesModel);
+                          widget.itemBloc.add(DeleteDataEvent(id: itemModel.id, files: const ['image']));
+                          // Navigator.push(context, MaterialPageRoute(builder: (_)=> ShippingPage(categoriesModel: widget.categoriesModel,)));
+                        },
+                        child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
+                      ),
+                              // Navigator.push(context, MaterialPageRoute(builder: (_)=> ShippingPage(categoriesModel: widget.categoriesModel,)));
+                      );
                   }, 
                   icon: FormFeilds.containerImage(assetImage: 'assets/images/delete.png',height: 18,width: 18),
                 ),

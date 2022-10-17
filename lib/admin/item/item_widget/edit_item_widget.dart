@@ -3,27 +3,27 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
-import 'package:m_hany_store/core/model/search_model.dart';
-import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
+import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
 // ignore: must_be_immutable
 class EditItemShippingWidget extends StatefulWidget {
-  final  ShippingModel shippingModel;
-
-  final  CategoriesModel categoriesModel;
+  final ApiDataBloc<ItemModel> categoryBloc;
+  final CategoryModel categoriesModel;
+  final ItemModel itemModel;
   
 
-  const EditItemShippingWidget({super.key,required this.shippingModel, required this.categoriesModel});
+  const EditItemShippingWidget({super.key,required this.itemModel,required this.categoryBloc,required this.categoriesModel});
 
   
   @override
@@ -31,14 +31,15 @@ class EditItemShippingWidget extends StatefulWidget {
 }
 
 class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
-  
   XFile? image;
   DateTime now =  DateTime.now();
-  
+  bool isSelect = false ;
+
   var nameController = TextEditingController();
   var priceController = TextEditingController();
   var regionController = TextEditingController();
   var platformController = TextEditingController();
+  var newPriceController = TextEditingController();
 
   final formKey =GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
@@ -50,29 +51,33 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
  @override
   void initState() {
     super.initState();
-    if ( widget.shippingModel.name != null) {
+    if ( widget.itemModel.name != null) {
       nameController = TextEditingController(
-        text: widget.shippingModel.name,
+        text: widget.itemModel.name,
       );
     }
-    if(widget.shippingModel.price != null){
+    if(widget.itemModel.price != null){
       priceController = TextEditingController(
-        text: widget.shippingModel.price,
+        text: widget.itemModel.price,
       );
     }
-    if(widget.shippingModel.region != null){
+    if(widget.itemModel.region != null){
       regionController = TextEditingController(
-        text: widget.shippingModel.region,
+        text: widget.itemModel.region,
 
       );
     }
-    if(widget.shippingModel.platform != null){
+    if(widget.itemModel.platform != null){
       platformController = TextEditingController(
-        text: widget.shippingModel.platform,
+        text: widget.itemModel.platform,
         
       );
     }
-      
+    if(widget.itemModel.platform != null){
+      newPriceController = TextEditingController(
+        text: widget.itemModel.offerPrice,  
+      );  
+    }
   }
 
   @override
@@ -279,12 +284,89 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+              child: InkWell(
+                onTap: (){
+                  setState(() {
+                    isSelect = !isSelect;
+                  });
+                },
+                child: isSelect == false? Row(
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image:  AssetImage('assets/images/discount.png'),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'add sale',
+                      style: getBoldStyle(
+                        color: ColorTheme.wight, 
+                        dDecoration: TextDecoration.none,
+                        fontSize: 14
+                      ),
+                    ),
+                    const Spacer(),
+                    const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: ColorTheme.wight,
+                      size: 16,
+                    ),
+                  ],
+                )
+                : Column(
+                  children: [
+                    FormFeilds.rowTextIcon(
+                      isImage: true,
+                      firstIconImage: 'assets/images/discount.png',
+                      text:  'add sale',
+                      iconData: Icons.keyboard_arrow_down,
+                      iconSize: 25,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color:  ColorTheme.backroundInput,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          FormFeilds.textField(
+                            suffixIcon: FormFeilds.containerImage(
+                              assetImage: 'assets/images/discount.png',
+                              height: 30,
+                              width: 30
+                              ),
+                            controller: newPriceController, 
+                            keyboardType: TextInputType.number, 
+                            hintText: 'Add New price',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(
                 height:22, 
               ),
             InkWell(
               onTap: ()async{
-                await postData(context);
+                postData(context);
               },
               child: FormFeilds.buttonFormField(
                 widthtButton: double.infinity,
@@ -299,111 +381,102 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       ),
     );
   }
-
   String formattedDateTime() {
       return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
   }
 
   postData(context)async{
-    var postDat =  FirebaseFirestore.instance.collection('categories').doc(widget.categoriesModel.idDoc).collection(widget.categoriesModel.type);
-    var postSearch =  FirebaseFirestore.instance.collection('Search');
+    // var postDat =  FirebaseFirestore.instance.collection('categories').doc(widget.categoriesModel.idDoc).collection(widget.categoriesModel.type);
+    // var postSearch =  FirebaseFirestore.instance.collection('Search');
 
     try{
-    if (image != null){
-      await FirebaseStorage.instance.refFromURL(widget.shippingModel.image).delete();
-     
-      FormFeilds.showLoading(context);
+      if (image != null){
+        // await FirebaseStorage.instance.refFromURL(widget.shippingModel.image).delete();
+        print("==++++++++++++++==");
+        print('printDeleteImage');
+      
+        FormFeilds.showLoading(context);
 
-      var file = File(image!.path);
+        var file = File(image!.path);
 
-      var nameimage = basename(image!.path);
+        var nameimage = basename(image!.path);
 
-      var random = Random().nextInt(1000000);
+        var random = Random().nextInt(1000000);
 
-      nameimage = "$random$nameimage";
+        nameimage = "$random$nameimage";
 
-      var refSorage = FirebaseStorage.instance.ref("shipping").child(nameimage); 
-      await refSorage.putFile(file);
+        var refSorage = FirebaseStorage.instance.ref("shipping").child(nameimage); 
+        print('=========================================');
+        print(nameimage);
+        await refSorage.putFile(file);
 
-      var uri =  await refSorage.getDownloadURL();
-        SearchModel searchModel =SearchModel(
-          colorPlatform:0xFFF44336,
-          colorTextPlatform:0xFFF44336,
-          createdAt: widget.categoriesModel.createdAt,
+        var uri =  await refSorage.getDownloadURL();
+          
+          ItemModel shippingModel = ItemModel(
+            colorPlatform:0xFFF44336,
+            categoryId: widget.itemModel.categoryId,
+            colorTextPlatform:0xFFF44336,
+            createdAt: widget.itemModel.createdAt,
+            name: nameController.text, 
+            image: uri, 
+            region:regionController.text, 
+            price: priceController.text, 
+            platform: platformController.text,
+            offerPrice: newPriceController.text,
+            id: widget.itemModel.id,
+            updatedAt: formattedDateTime(),
+          );
+          widget.categoryBloc.add(UpdateDataEvent(id: widget.itemModel.id, data: shippingModel.toJson()));
+        FormFeilds.showMyDialog(
+          context:  context, 
+          message: 'product uploaded successfully',
+          actions: [ 
+            InkWell(
+              onTap: () {
+                // Navigator.pushNamedAndRemoveUntil(context, shippingPage, (route) => false);
+                // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> ShippingPage(categoriesModel: widget.categoriesModel,)), (route) => false);
+                Navigator.pop(context);
+                Navigator.of(context).pushReplacementNamed(shippingPage, arguments: widget.categoriesModel);
+              },
+              child: FormFeilds.buttonFormField(title: 'Back to products',colorButton: ColorTheme.primary)),
+          ],
+        );
+      }else{
+        FormFeilds.showLoading(context);
+        ItemModel itemModel = ItemModel(
+          colorPlatform: 0xFFF44336,
+          categoryId: widget.itemModel.categoryId,
+          colorTextPlatform: 0xFFF44336,
           name: nameController.text, 
-          image: uri, 
-          region:regionController.text , 
+          createdAt: widget.itemModel.createdAt,
+          image: widget.itemModel.image, 
+          region:regionController.text,
+          offerPrice: newPriceController.text, 
           price: priceController.text, 
-          platform: platformController.text ,
-          idDoc: postDat.id,
+          platform: platformController.text,
+          id: widget.itemModel.id,
           updatedAt: formattedDateTime(),
         );
-        await postSearch.doc(widget.shippingModel.idDoc).update(searchModel.toJson());
-        
-        ShippingModel shippingModel = ShippingModel(
-          colorPlatform:0xFFF44336,
-          colorTextPlatform:0xFFF44336,
-          createdAt: widget.categoriesModel.createdAt,
-          name: nameController.text, 
-          image: uri, 
-          region:regionController.text , 
-          price: priceController.text, 
-          platform: platformController.text ,
-          idDoc: postDat.id,
-          updatedAt: formattedDateTime(),
-        );
-        await postDat.doc(widget.shippingModel.idDoc).update(shippingModel.toJson()).then((value){
-        setState(() {
-          image = null;
+        widget.categoryBloc.add(UpdateDataEvent(id: widget.itemModel.id, data: itemModel.toJson()));
 
-          nameController.clear();
-          regionController.clear();
-          priceController.clear();
-        });
-      });
-      Navigator.pop(context);
-    }else{
-      FormFeilds.showLoading(context);
-      SearchModel searchModel =SearchModel(
-       colorPlatform: 0xFFF44336,
-        colorTextPlatform: 0xFFF44336,
-        name: nameController.text, 
-        createdAt: widget.categoriesModel.createdAt,
-        image: widget.shippingModel.image, 
-        region:regionController.text , 
-        price: priceController.text, 
-        platform: platformController.text,
-        idDoc: postDat.id,
-        updatedAt: formattedDateTime(),
+        FormFeilds.showMyDialog(
+        context:  context, 
+        message: 'product uploaded successfully',
+        actions: [ 
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushReplacementNamed(shippingPage, arguments: widget.categoriesModel);
+            },
+            child: FormFeilds.buttonFormField(title: 'Back to products',colorButton: ColorTheme.primary)
+          ),
+        ],
       );
-      await postSearch.doc(widget.shippingModel.idDoc).update(searchModel.toJson());
-
-      ShippingModel shippingModel = ShippingModel(
-        colorPlatform: 0xFFF44336,
-        colorTextPlatform: 0xFFF44336,
-        name: nameController.text, 
-        createdAt: widget.categoriesModel.createdAt,
-        image: widget.shippingModel.image, 
-        region:regionController.text , 
-        price: priceController.text, 
-        platform: platformController.text,
-        idDoc: postDat.id,
-        updatedAt: formattedDateTime(),
-      );
-      await postDat.doc(widget.shippingModel.idDoc).update(shippingModel.toJson()).then((value){
-        setState(() {
-          image = null;
-
-          nameController.clear();
-          regionController.clear();
-          priceController.clear();
-          platformController.clear();
-        });
-      });
-      Navigator.pushNamed(context, shippingPage);
-    }
+      }
     }catch(e){
        print(e.toString());
     }
   } 
+
+ 
 }
