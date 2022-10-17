@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/* import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
-import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/model/item_model.dart';
 
 class ShippingRepository{
-  CategoriesModel? categoriesModel;
+  CategoryModel? categoriesModel;
   
   final shippingRepo = FirebaseFirestore.instance.collection('categories');
 
@@ -39,14 +39,14 @@ class ShippingRepository{
     }
   }
 
-  Future<List<ShippingModel>> getShippingModel({ required String idDoc,required String type})async{
-    List<ShippingModel> shippingModelList = [];
+  Future<List<ItemModel>> getShippingModel({ required String idDoc,required String type})async{
+    List<ItemModel> shippingModelList = [];
     try{
 
      var  shippingRepo = await FirebaseFirestore.instance.collection('categories').doc(idDoc).collection(type).get();
       // ShippingModel shippingModel;
       for (var element in shippingRepo.docs) {
-        shippingModelList.add(ShippingModel.formJson(element.data()));
+        shippingModelList.add(ItemModel.formJson(element.data()));
       }
 
       return shippingModelList;
@@ -59,13 +59,13 @@ class ShippingRepository{
     }
   } 
   
-  Future<List<ShippingModel>> getSearchModel({ required String idDoc,required String type})async{
-    List<ShippingModel> shippingModelList = [];
+  Future<List<ItemModel>> getSearchModel({ required String idDoc,required String type})async{
+    List<ItemModel> shippingModelList = [];
     try{
 
      var  shippingRepo = await FirebaseFirestore.instance.collection('categories').doc(idDoc).collection(type).get();
       for (var element in shippingRepo.docs) {
-        shippingModelList.add(ShippingModel.formJson(element.data()));
+        shippingModelList.add(ItemModel.formJson(element.data()));
       }
 
       return shippingModelList;
@@ -86,8 +86,9 @@ class ShippingRepository{
   })async{
     try{
       var  shippingRepo =  FirebaseFirestore.instance.collection('categories').doc(collectionIdDoc).collection(type).doc(idDoc);
-      shippingRepo.delete();
-      await FirebaseStorage.instance.refFromURL(refFromURL).delete();
+      await shippingRepo.delete().then((value) async{
+        await FirebaseStorage.instance.refFromURL(refFromURL).delete();
+      });
     }on FirebaseException catch (e){
       if(kDebugMode){
         debugPrint('failed with error creteCtegories ${e.code} ${e.message}');
@@ -142,4 +143,4 @@ class ShippingRepository{
     }
   }
   
-}
+} */
