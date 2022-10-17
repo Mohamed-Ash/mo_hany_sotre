@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:m_hany_store/core/routes/route.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
+import 'package:m_hany_store/core/theme/theme_manager.dart';
 
 class App extends StatelessWidget{
   final user = FirebaseAuth.instance.currentUser;
@@ -16,16 +17,7 @@ class App extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: FirebaseAuth.instance.currentUser == null ? loginPage : appPageLayout,
-      theme:   ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: ColorTheme.darkBackroundPage,
-          systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.light,
-            statusBarColor:  Colors.transparent,
-            statusBarBrightness: Brightness.light
-          ),
-        ),
-      ),
+      theme: getAppThemeData(),
       onGenerateRoute: routes.generateRoute,
     );
   }
