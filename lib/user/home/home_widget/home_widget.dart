@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_hany_store/core/bloc/categories_bloc/categories_bloc.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
+import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
-import 'package:m_hany_store/user/categories/product/product_page/product_page.dart';
 
+// ignore: must_be_immutable
 class HomeWidget extends StatefulWidget {
-  const HomeWidget({Key? key}) : super(key: key);
+  late ApiDataBloc<CategoryModel> categoryBloc;
+  
+  HomeWidget({Key? key,required this.categoryBloc}) : super(key: key);
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -15,18 +19,19 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
 
- @override
+ /*  @override
   void initState() {
     super.initState();
-    BlocProvider.of<CategoriesBloc>(context);
-  }
-
+   widget.categoryBloc = ApiDataBloc<CategoryModel>();
+  } */
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: const ScrollPhysics(),
       child: Column(
         children: [
+          
           Container(
             height: 220,
             width: double.infinity,
@@ -36,37 +41,48 @@ class _HomeWidgetState extends State<HomeWidget> {
               image: const DecorationImage(
                 fit: BoxFit.cover,
                 alignment: Alignment.center,
-                image: AssetImage('assets/images/panner.png')
+                image: AssetImage('assets/images/bannar.jpg')
               ),
             ),
           ),
           const SizedBox(
             height: 20,
           ),
-          BlocBuilder<CategoriesBloc, CategoriesState>(
+          BlocBuilder(
+            bloc: widget.categoryBloc,
             builder: (context, state) {
-              if(state is CategoriesLoadingState){
+              if(state is DataLoadingState){
                 return  const Center(child: CircularProgressIndicator(color: ColorTheme.primary),);
-              } else if(state is GetCategoriesLoadedState){
-                return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 2/3,
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 2,
-                    mainAxisSpacing: 2,
-                  ),
-                  itemBuilder: (context,index) {
-                    return buildCategories(
-                      context: context,
-                      categoriesModel: state.categoriesModel[index],
-                    );
-                  } ,
-                  itemCount: state.categoriesModel.length,
-                );
-              } else if(state is CategoriesErrorState){
-                return Text(state.error,style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,));
+              } else if(state is DataLoadedState){
+                if ( state.data.isEmpty) {
+                  return Stack(
+                    children: [
+                      Text(
+                        'page is soon',
+                        style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
+                      ),
+                      FormFeilds.containerImage(assetImage: 'assets/images/coming_soon.png')
+                    ],
+                  );
+                }else{
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 2/3,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                    ),
+                    itemBuilder: (context,index) {
+                      return buildCategories(
+                        context: context,
+                        categoriesModel: state.data[index],
+                      );
+                    } ,
+                    itemCount: state.data.length,
+                  );
+                }
               } else {
                 return Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),);
               }        
@@ -82,17 +98,11 @@ class _HomeWidgetState extends State<HomeWidget> {
   
   Widget buildCategories({
     required BuildContext context,
-    required  CategoriesModel categoriesModel
+    required  CategoryModel categoriesModel
   }){
     return InkWell(
       onTap: (){
-         Navigator.push(
-          context, MaterialPageRoute(
-            builder: (context){
-              return  ProductPage(categoriesModel: categoriesModel,);
-            }
-          ),
-        );
+         Navigator.pushNamed(context, productPagse,arguments: categoriesModel);
       },
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -116,131 +126,3 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 }
-  /* @override
-  void initState() {
-    getCategories();
-    super.initState();
-  } */
-  
-  /* Row(
-                      children: [
-                        Container(
-                          width: 180,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              alignment: Alignment.center,
-                              image: AssetImage('assets/images/steam_gift_codes.jpg') 
-                            ),
-                          ),
-                        ), 
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: 180,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              alignment: Alignment.center,
-                              image: AssetImage('assets/images/valorant.jpg') 
-                            ),
-                          ),
-                        ), 
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, userShippingPage);
-                          },
-                          child: Container(
-                            width: 180,
-                            height: 250,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white,
-                              image: const DecorationImage(
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
-                                image: AssetImage('assets/images/upgrade_gtav.jpg') 
-                              ),
-                            ),
-                          ),
-                        ), 
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: 180,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              alignment: Alignment.center,
-                              image: AssetImage('assets/images/upgrade_red_dead.jpg') 
-                            ),
-                          ),
-                        ), 
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                      Row(
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, productPagse);
-                          },
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            width: 180,
-                            height: 250,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white,
-                              image: const DecorationImage(
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
-                                image: AssetImage('assets/images/steam_games_offers.jpg') 
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                            Container(
-                              width: 180,
-                              height: 250,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.white,
-                                image: const DecorationImage(
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.center,
-                                  image: AssetImage('assets/images/pubg.jpg') 
-                                ),
-                              ),
-                            ),
-                            FormFeilds.containerImage(assetImage: 'assets/images/coming_soon.png',height: 60,width: 60),
-                          ],
-                        ), 
-                      ],
-                    ), */

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_hany_store/core/bloc/categories_bloc/categories_bloc.dart';
-import 'package:m_hany_store/core/repositories/admin/categories_ropository.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
+import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/user/home/home_widget/home_widget.dart';
 import 'package:m_hany_store/user/user_interface.dart';
 
+// ignore: must_be_immutable
 class HomePage extends UserInterface{
-  const HomePage({super.key});
+  late ApiDataBloc<CategoryModel> categoryBloc;
+  // CategoryModel? categoryModel;
+  
+  HomePage({super.key}){
+    categoryBloc = ApiDataBloc<CategoryModel>()..add(const IndexDataEvent());
+  }
 
   @override
   Widget buildBody(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CategoriesBloc(categoriesRpoSitory: CategoriesRpoSitory())..add(GetAllCategoriesEvent()),
-      child: const HomeWidget(),
-    );
+    return HomeWidget(categoryBloc: categoryBloc);
   }
 }
-          // const ProductWidget(),
