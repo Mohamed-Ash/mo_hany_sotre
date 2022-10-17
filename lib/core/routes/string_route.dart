@@ -1,6 +1,8 @@
   // todo : auth
-const String registerPage = '/register_page';
 const String loginPage = '/'; //login_page
+const String registerPage = '/register_page';
+const String resetPasswordPage = '/reset_password_page'; 
+const String checkEmailPage = '/check_email_page'; 
 
   // todo : user
 const String appPageLayout = '/app_page_layout';
