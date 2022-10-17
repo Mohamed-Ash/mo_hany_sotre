@@ -1,4 +1,4 @@
-part of 'shipping_bloc.dart';
+/* part of 'shipping_bloc.dart';
 
 abstract class ShippingEvent extends Equatable {
   const ShippingEvent();
@@ -106,4 +106,4 @@ class ShippingLoadingEvent extends ShippingEvent{
  
  @override
   List<Object> get props => [];
-}
+} */

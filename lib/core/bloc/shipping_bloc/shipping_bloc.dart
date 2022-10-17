@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
+/* import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
-import 'package:m_hany_store/core/model/shipping_model.dart';
+import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/repositories/admin/shipping_repository.dart';
 
 part 'shipping_event.dart';
@@ -9,7 +9,7 @@ part 'shipping_state.dart';
 
 class ShippingBloc extends Bloc<ShippingEvent, ShippingState> {
   ShippingRepository shippingRepository;
-  CategoriesModel categoriesModel;
+  CategoryModel categoriesModel;
 
   ShippingBloc({required this.shippingRepository, required this.categoriesModel}) : super(ShippingInitial()) {
     on<ShippingEvent>((event, emit) {});
@@ -38,7 +38,7 @@ class ShippingBloc extends Bloc<ShippingEvent, ShippingState> {
       await Future.delayed(const Duration(seconds: 1));
       
       try{
-        final getData = await shippingRepository.getShippingModel(idDoc: categoriesModel.idDoc,type: categoriesModel.type);
+        final getData = await shippingRepository.getShippingModel(idDoc: categoriesModel.name,type: categoriesModel.type);
         emit(ShippingLoadedState(getData));
 
       } catch (e){
@@ -79,3 +79,4 @@ class ShippingBloc extends Bloc<ShippingEvent, ShippingState> {
     });
   }
 }
+ */

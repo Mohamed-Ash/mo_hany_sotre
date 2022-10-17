@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+/* // ignore_for_file: must_be_immutable
 
 part of 'shipping_bloc.dart';
 
@@ -19,7 +19,7 @@ class ShippingLoadingState extends ShippingState {
   List<Object> get props => [];
 }
 class ShippingLoadedState extends ShippingState {
-  List<ShippingModel> shippingModel = [];
+  List<ItemModel> shippingModel = [];
 
   ShippingLoadedState(this.shippingModel);
 
@@ -27,7 +27,7 @@ class ShippingLoadedState extends ShippingState {
   List<Object> get props => [shippingModel];
 }
 class SearchLoadedState extends ShippingState {
-  List<ShippingModel> shippingModel = [];
+  List<ItemModel> shippingModel = [];
 
   SearchLoadedState(this.shippingModel);
 
@@ -54,3 +54,4 @@ class UpdateSippingState extends ShippingState{
 }
 
 
+ */
