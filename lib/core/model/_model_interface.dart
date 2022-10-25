@@ -1,3 +1,4 @@
+import 'package:m_hany_store/core/model/admin_model.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
 
@@ -20,5 +21,6 @@ class ModelInterface {
   static const Map<Type, ModelClass> _models = {
     ItemModel:     ModelClass(collection: 'items', factory: ItemModel.formJson),
     CategoryModel: ModelClass(collection: 'categories', factory: CategoryModel.fromJson),
+    AdminModel:    ModelClass(collection: 'admin', factory: AdminModel.fromJson),
   };
 }
