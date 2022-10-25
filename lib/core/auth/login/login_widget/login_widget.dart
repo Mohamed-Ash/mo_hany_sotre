@@ -300,7 +300,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         FormFeilds.showMyDialog(
           context: context, 
           message: 'please confirem your email',
-          actions: [
+          actions: <Widget>[
             TextButton(
               onPressed: ()=> Navigator.of(context).pop(), 
               child: Text(
@@ -318,7 +318,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         FormFeilds.showMyDialog(
           context: context, 
           message: 'No user found for that email.',
-          actions: [
+          actions: <Widget>[
             TextButton(
               onPressed: ()=> Navigator.of(context).pop(), 
               child: Text(
@@ -335,7 +335,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         FormFeilds.showMyDialog(
           context: context, 
           message: 'Wrong password provided for that user.',
-          actions: [
+          actions: <Widget>[
             TextButton(
               onPressed: ()=> Navigator.of(context).pop(), 
               child: Text(
