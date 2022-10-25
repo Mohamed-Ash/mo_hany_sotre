@@ -19,7 +19,7 @@ class IndexDataEvent extends DataEvent{
 } */
 
 class DeleteDataEvent extends DataEvent{
-  final int id;
+  final String id;
   final String modelKey;
   final List<String>? files;
   // final List<String>? image;
@@ -28,7 +28,7 @@ class DeleteDataEvent extends DataEvent{
 }
 
 class UpdateDataEvent extends DataEvent{
-  final int id;
+  final String id;
   final Map<String, dynamic> data;
   final String modelKey;
 
