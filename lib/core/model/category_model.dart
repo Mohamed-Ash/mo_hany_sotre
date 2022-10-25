@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 class CategoryModel{
-  final int id;
+  final String id;
   final String name;
   final String? image;
   final String type;
