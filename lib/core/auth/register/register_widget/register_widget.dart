@@ -374,7 +374,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         FormFeilds.showMyDialog(
           context: context,
           message: 'The password provided is too weak.',
-          actions: [
+          actions: <Widget>[
             TextButton(
               onPressed: ()=>Navigator.of(context).pop(), 
               child: Text(
@@ -391,7 +391,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         FormFeilds.showMyDialog(
           context: context,
           message: 'The account already exists for that email.',
-          actions: [
+          actions: <Widget> [
             TextButton(
               onPressed: ()=>Navigator.of(context).pop(), 
               child: Text(
