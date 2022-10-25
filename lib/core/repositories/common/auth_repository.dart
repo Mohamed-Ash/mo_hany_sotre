@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+/* import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/model/authentication/user.dart';
 
@@ -52,4 +52,4 @@ extension on firebase_auth.User{
   User get toUser{
     return User(id: uid , email: email, name: displayName, photo:  photoURL);
   }
-} 
+}  */
