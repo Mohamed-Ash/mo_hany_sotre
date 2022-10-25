@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
@@ -18,7 +19,7 @@ class ResetPasswordPage extends UserInterface{
     return Padding(
       padding: const EdgeInsets.fromLTRB(22,45,22,0),
       child: Form(
-        // key: formKye,
+        key: formKye,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,7 +63,7 @@ class ResetPasswordPage extends UserInterface{
                   'send an email with instructions to reset your password.',
                   style: getSemiBoldStyle(
                     color: ColorTheme.hintText,
-                    fontSize: 14
+                    fontSize: 12
                   ),
                 ),
                 const SizedBox(
@@ -113,9 +114,9 @@ class ResetPasswordPage extends UserInterface{
                   padding: const EdgeInsets.fromLTRB(33, 0, 33, 0),
                   child: InkWell(
                       onTap: ()async{
-                      // if(formKye.currentState!.validate()){
-                      // }
+                      if(formKye.currentState!.validate()){
                         verify(context);
+                      }
                     },
                     child: FormFeilds.buttonFormField(
                       dPadding: false,
@@ -136,9 +137,9 @@ class ResetPasswordPage extends UserInterface{
   void verify(BuildContext context) async{
     try {
       FormFeilds.showLoading(context);
-      // await FirebaseAuth.instance.sendPasswordResetEmail( email: emailController.text).then(
-      //   (value) => Navigator.pushNamedAndRemoveUntil(context, checkEmailPage, (route) => false));  
-      Navigator.pushNamedAndRemoveUntil(context, checkEmailPage, (route) => false);
+      await FirebaseAuth.instance.sendPasswordResetEmail( email: emailController.text).then(
+        (value) => Navigator.pushNamedAndRemoveUntil(context, checkEmailPage, (route) => false));  
+      // Navigator.pushNamedAndRemoveUntil(context, checkEmailPage, (route) => false);
     } catch (e) {
       print(e.toString());
     }
