@@ -89,7 +89,7 @@ class ResetPasswordPage extends UserInterface{
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    FormFeilds.textField(
+                    FormFeilds.textFormField(
                       controller: emailController, 
                       keyboardType: TextInputType.emailAddress, 
                       hintText: 'hello@company.com',
