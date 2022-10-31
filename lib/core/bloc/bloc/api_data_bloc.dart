@@ -2,9 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:m_hany_store/core/bloc/criteria/where_criteria.dart';
 import 'package:m_hany_store/core/model/_model_interface.dart';
 
-import '../criteria/where_criteria.dart';
 
 part 'api_data_event.dart';
 part 'api_data_state.dart';
@@ -18,9 +18,12 @@ class ApiDataBloc<T> extends Bloc<DataEvent, DataState> {
 
   ApiDataBloc() : super(DataLoadingState()) {
     on<IndexDataEvent>(_index);
+    on<StreamDataEvent>(_getChatMessage);
     on<DeleteDataEvent>(_delete);
+    on<DeleteMessageDataEvent>(_deleteMessage);
     on<UpdateDataEvent>(_update);
     on<StoreDataEvent>(_store);
+    on<StoreMessageDataEvent>(_storeMesage);
 
     ModelClass? modelClass = ModelInterface.getModelClass(type);
     collectionName = modelClass?.collection;
@@ -127,6 +130,73 @@ class ApiDataBloc<T> extends Bloc<DataEvent, DataState> {
     collectionData.add(event.data);
 
     var data = await collectionData.get();
+    List<T> result = [];
+    for (var element in data.docs) {
+      result.add(factory?.call(element.data()));
+    }
+    emit(DataLoadedState<T>(data: result));
+  }
+
+  void _getChatMessage(StreamDataEvent event, Emitter emit) async {
+      emit(DataLoadingState());
+      Query<Map<String, dynamic>> collection;
+      
+    collection = FirebaseFirestore.instance.collection(collectionName!);
+      
+    final collectionData = await collection.orderBy('time_now').get();
+
+    List<T> data = [];
+    for (var element in collectionData.docs) {
+      data.add(factory?.call(element.data()));
+    }
+    emit(DataLoadedState(data: data));
+  }
+
+  void _deleteMessage(DeleteMessageDataEvent event, Emitter emit) async {
+    emit(DataLoadingState());
+   
+    final collectionData = FirebaseFirestore.instance.collection(collectionName!);
+   
+    var data = await collectionData.orderBy('time_now').get();
+   
+    QueryDocumentSnapshot<Map<String, dynamic>> doc = data.docs.firstWhere((element) {
+      return element.data()[event.modelKey] == event.id;
+    });
+    await collectionData.doc(doc.id).delete();
+
+    var modelMap = doc.data();
+    
+    if (event.files != null && event.files!.isNotEmpty) {
+      for (var file in event.files!) {
+        if (modelMap.containsKey(file)) {
+          if (modelMap[file] is String) {
+            await FirebaseStorage.instance.refFromURL(modelMap[file]).delete();
+          } else if (modelMap[file] is List<String> && modelMap[file] != null && modelMap[file].isNotEmpty) {
+            for (var element in modelMap[file]) {
+              await FirebaseStorage.instance.refFromURL(modelMap[file][element]).delete();
+            }
+          }
+        }
+      }
+    }
+   
+    data = await collectionData.orderBy('time_now').get();
+   
+    List<T> result = [];
+   
+    for (var element in data.docs) {
+      result.add(factory?.call(element.data()));
+    }
+    emit(DataLoadedState<T>(data: result));
+  }
+
+   void _storeMesage(StoreMessageDataEvent event, Emitter emit) async {
+    emit(DataLoadingState());
+
+    final collectionData = FirebaseFirestore.instance.collection(collectionName!);
+    collectionData.add(event.data);
+
+    var data = await collectionData.orderBy('time_now').get();
     List<T> result = [];
     for (var element in data.docs) {
       result.add(factory?.call(element.data()));
