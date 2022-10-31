@@ -7,7 +7,7 @@ import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
-import 'package:m_hany_store/user/categories/product/product_page/preview_product_page.dart';
+import 'package:m_hany_store/user/product/product_page/preview_product_page.dart';
 
 // ignore: must_be_immutable
 class ProductWidget extends StatefulWidget {
@@ -52,8 +52,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 2/3,
                         crossAxisCount: 2,
-                        crossAxisSpacing: 2,
-                        mainAxisSpacing: 2,
+                        crossAxisSpacing: 3,
+                        mainAxisSpacing: 3,
                       ),
                       itemBuilder: (context,index) {
                         return getAllproducts(
@@ -82,8 +82,8 @@ class _ProductWidgetState extends State<ProductWidget> {
     required ItemModel itemModel,
    }){
     return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: InkWell(
+      padding: const EdgeInsets.all(12.0),
+      child: GestureDetector(
         onTap: (){
           Navigator.push(
             context,
@@ -100,16 +100,13 @@ class _ProductWidgetState extends State<ProductWidget> {
               width: 175,
               height: 270,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 color: ColorTheme.darkAppBar
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 5,
-                ),
                 Container(
                   width: 175,
                   height: 180,
@@ -118,8 +115,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     image:   DecorationImage(
                       fit: BoxFit.fill,
                       image: NetworkImage(
-                        itemModel.image
-                      ),
+                        itemModel.image),
                     ),
                   ),
                 ),
@@ -130,16 +126,18 @@ class _ProductWidgetState extends State<ProductWidget> {
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                   child: Text(
                     itemModel.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
                     style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
                   ),
                 ),
                 const SizedBox(
-                  height: 6,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                   child: Text(
-                    'Price ${itemModel.price} LE',
+                    '${itemModel.price} LE',
                     style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
                   ),
                 ),
