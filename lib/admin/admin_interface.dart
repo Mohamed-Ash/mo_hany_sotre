@@ -8,9 +8,6 @@ abstract class AdminInterface extends LayoutInterface{
   PreferredSizeWidget?  appBar(BuildContext context) => null;
 
   @override
-  Color? get  backgroundColor => null ;
-
-  @override
   Widget? get buildDrawer => null;
 
 }
