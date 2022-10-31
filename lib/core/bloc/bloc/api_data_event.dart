@@ -12,11 +12,11 @@ class IndexDataEvent extends DataEvent{
 
   const IndexDataEvent({this.where});
 }
-/* class SearchDataEvent extends DataEvent{
+class StreamDataEvent extends DataEvent{
   final WhereCriteria? where;
 
-  const IndexDataEvent({this.where});
-} */
+  const StreamDataEvent({this.where});
+}
 
 class DeleteDataEvent extends DataEvent{
   final String id;
@@ -25,6 +25,14 @@ class DeleteDataEvent extends DataEvent{
   // final List<String>? image;
 
   const DeleteDataEvent({required this.id, this.modelKey = 'id', this.files,});
+}
+class DeleteMessageDataEvent extends DataEvent{
+  final String id;
+  final String modelKey;
+  final List<String>? files;
+  // final List<String>? image;
+
+  const DeleteMessageDataEvent({required this.id, this.modelKey = 'id', this.files,});
 }
 
 class UpdateDataEvent extends DataEvent{
@@ -43,6 +51,13 @@ class StoreDataEvent extends DataEvent{
   final Map<String, dynamic> data;
 
   const StoreDataEvent({
+    required this.data,
+  });
+}
+class StoreMessageDataEvent extends DataEvent{
+  final Map<String, dynamic> data;
+
+  const StoreMessageDataEvent({
     required this.data,
   });
 }
