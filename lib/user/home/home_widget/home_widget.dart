@@ -1,3 +1,8 @@
+// ignore_for_file: avoid_print
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
@@ -19,26 +24,48 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
 
- /*  @override
+  var getToken = FirebaseMessaging.instance;
+  @override
   void initState() {
     super.initState();
-   widget.categoryBloc = ApiDataBloc<CategoryModel>();
-  } */
-  
+   /*  getToken.getToken().then((value) {
+      print('=============token=============');
+      print(value);
+      print('====================');
+    });
+     */
+    // setupToken();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+    FirebaseMessaging.onMessage.listen((event) {
+      print('================= event data =================');
+      print(event.notification!.body.toString());
+      print('=====================================');
+    });
+    widget.categoryBloc= ApiDataBloc()..add(const IndexDataEvent());
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: const ScrollPhysics(),
       child: Column(
         children: [
-          
           Container(
             height: 220,
             width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              image: const DecorationImage(
+              borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(22),
+                    bottomRight: Radius.circular(22),
+                  ),
+              image: DecorationImage(
                 fit: BoxFit.cover,
                 alignment: Alignment.center,
                 image: AssetImage('assets/images/bannar.jpg')
@@ -55,14 +82,20 @@ class _HomeWidgetState extends State<HomeWidget> {
                 return  const Center(child: CircularProgressIndicator(color: ColorTheme.primary),);
               } else if(state is DataLoadedState){
                 if ( state.data.isEmpty) {
-                  return Stack(
-                    children: [
-                      Text(
-                        'page is soon',
-                        style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
-                      ),
-                      FormFeilds.containerImage(assetImage: 'assets/images/coming_soon.png')
-                    ],
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FormFeilds.containerImage(assetImage: 'assets/images/waiting_pana.png',height: 200,width: 200),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        Text(
+                          'Wait for a new Categories to be uploaded',
+                          style: getBoldStyle(color: ColorTheme.wight,fontSize: 14),
+                        ),
+                      ],
+                    ),
                   );
                 }else{
                   return GridView.builder(
@@ -124,5 +157,23 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
       ),
     );
+  }
+  Future<void> saveTokenToDatabase(String token) async {
+  final userId = FirebaseAuth.instance.currentUser;
+
+  await FirebaseFirestore.instance
+    .collection('usersid')
+    .doc(userId!.uid)
+    .set({
+      'tokens': FieldValue.arrayUnion([token]),
+    });
+}
+
+ Future<void> setupToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    
+    await saveTokenToDatabase(token!);
+
+    FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   }
 }
