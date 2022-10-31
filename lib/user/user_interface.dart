@@ -8,9 +8,6 @@ import 'package:m_hany_store/core/layout/layout_interface.dart';
   PreferredSizeWidget? appBar(BuildContext context) => null;
 
   @override
-  Color? get  backgroundColor => null ;
-
-  @override
   Widget? get buildDrawer => null;
   
 }
