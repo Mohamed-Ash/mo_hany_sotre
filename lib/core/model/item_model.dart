@@ -1,42 +1,41 @@
-
-
 class ItemModel{
-  final int id; ///document id
-  final int categoryId; ///document id
+  final String id;
+  final String categoryId; 
   final int colorPlatform;
-  final int colorTextPlatform;
+  final int colorRegion;
   final String name;
-  final List<String>? nameArry;
   final String image;
   final String region;
-  final String price;
   final String platform;
-  final String? offerPrice;
+  final double price;
+  final double? offerPrice;
+  final double? percent;
   final bool? isOffer;
-  // final String? timeOffer;
-  final int? dayTimeOffer;
-  final int? hourTimeOffer;
+  final String urlLauncher;
+  final String? dateOffer;
   final String? createdAt;
   final String? updatedAt;
+  final int? indexRate;
   // sale ends
 
   ItemModel({
     required this.id,
     required this.categoryId,
     required this.name,
-    this.nameArry,
     required this.image,
     required this.region,
     required this.price,
     required this.platform,
     required this.colorPlatform,
-    required this.colorTextPlatform,
+    required this.colorRegion,
+    required this.urlLauncher,
     this.offerPrice,
+    this.percent,
     this.isOffer,
-    this.dayTimeOffer,
-    this.hourTimeOffer,
+    this.dateOffer,
     this.createdAt,
     this.updatedAt,
+    this.indexRate,
   });
 
   factory ItemModel.formJson(Map<String,dynamic>json){
@@ -45,37 +44,39 @@ class ItemModel{
       categoryId: json['category_id'],
       name: json['name'], 
       image: json['image'], 
-      nameArry : List<String>.from(json['name_arry']),
       region: json['region'], 
       price: json['price'],
-      offerPrice: json['new_price'],
+      offerPrice: json['offer_price'],
+      percent: json['percent'],
       platform: json['plat_form'],
+      urlLauncher: json['url_launcher'],
       colorPlatform: json['color_plat_form'],
-      colorTextPlatform: json['color_text_plat_form'],
+      colorRegion: json['color_text_plat_form'],
       isOffer: json['is_offer'],
-      dayTimeOffer: json['day_time_offer'],
-      hourTimeOffer: json['hour_time_offer'],
+      dateOffer: json['date_offer'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      indexRate: json['index_rate'],
     );
   }
 
   Map<String,dynamic> toJson()=>{
     "id": id,
     "category_id": categoryId,
-    "color_text_plat_form":colorTextPlatform,
+    "color_text_plat_form":colorRegion,
     "color_plat_form":colorPlatform,
     "name": name,
-    "name_arry": nameArry,
     "image": image,
     "region": region,
     "price": price,
-    "new_price": offerPrice,
+    "offer_price": offerPrice,
+    "percent": percent,
     "plat_form": platform,
+    "url_launcher":urlLauncher,
     "is_offer": isOffer,
-    "day_time_offer": dayTimeOffer,
-    "hour_time_offer": hourTimeOffer,
+    "date_offer": dateOffer,
     "created_at": createdAt,
     "updated_at": updatedAt,
+    "index_rate": indexRate,
   };
 }
