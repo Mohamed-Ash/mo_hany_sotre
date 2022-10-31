@@ -22,17 +22,15 @@ class AppPageLayout extends UserInterface{
       statusBarColor:  Colors.transparent,
     ),
     title: Text('M HANY STORE',style: getBoldStyle(color: ColorTheme.wight,fontSize: 18)), 
+    centerTitle: true,
     actions: [
       IconButton(
-        onPressed: (){
-          Navigator.pushNamed(context, searchPage);
-        }, 
+        onPressed: ()=> Navigator.pushNamed(context, searchPage), 
         icon: const Icon(Icons.search_sharp,color: ColorTheme.wight,),
       ),
       IconButton(
-        onPressed: (){
-        }, 
-        icon: const Icon(Icons.notifications_outlined,color: ColorTheme.wight,),
+        onPressed: ()=> Navigator.pushNamed(context, notificationPage), 
+        icon: FormFeilds.containerImage(assetImage: 'assets/icons/messages.png', height: 35,width: 35)
       ),
     ],
   );
