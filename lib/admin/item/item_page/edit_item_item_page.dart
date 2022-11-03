@@ -6,12 +6,12 @@ import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
 
 // ignore: must_be_immutable
-class EditItemShippingPage extends AdminInterface{
+class EditItemPage extends AdminInterface{
   late ApiDataBloc<ItemModel> itemBloc;
   final ItemModel itemModel;
   final CategoryModel categoriesModel;
 
-   EditItemShippingPage({super.key,required this.itemModel,required this.categoriesModel}){
+   EditItemPage({super.key,required this.itemModel,required this.categoriesModel}){
     itemBloc = ApiDataBloc<ItemModel>();
    }
 
