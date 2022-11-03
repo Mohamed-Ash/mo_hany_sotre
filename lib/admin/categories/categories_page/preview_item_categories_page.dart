@@ -1,3 +1,4 @@
+import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/admin/admin_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
@@ -26,22 +27,54 @@ class PreviewItemCategoriesPage extends AdminInterface{
             onPressed: () => Navigator.pop(context), 
             icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
           ), */
-          const SizedBox(height: 33,),
-          SizedBox(
-            width:  MediaQuery.of(context).size.width,
-            height: 400, 
-            child: PhysicalModel(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              color: Colors.black,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(8),
-              child: categoriesModel.image!.isNotEmpty? FadeInImage.assetNetwork(
-                placeholder: 'assets/icons/lloading.gif',
-                image: '${categoriesModel.image}',
-                fit: BoxFit.fill,
-                placeholderFit: BoxFit.contain,
-              ) : Image.asset('assets/images/no_image_available.jpg'),
-            ),
+          Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              InkWell(
+                onTap: (){
+                  openImagesPage(Navigator.of(context),
+                    imgUrls: ["${categoriesModel.image}"],
+                    onLongPressHandler: (con, url) => debugPrint(url),
+                    onPageChanged: (i, widget) async {
+                      if (widget != null) return widget;
+                      await Future.delayed(const Duration(seconds: 3));
+                      return null ;
+                    }
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 400,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(
+                        "${categoriesModel.image}"
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 33, 0, 0),
+                child: Container(
+                  width: 44,
+                  height: 44  ,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(78, 48, 48, 49),
+                    borderRadius: BorderRadius.circular(55),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      color: Colors.white,
+                      onPressed: (() => Navigator.pop(context)),
+                    ),
+                  ),
+                ),
+              ),
+            ], 
           ),
           const SizedBox(
             height: 22  ,
