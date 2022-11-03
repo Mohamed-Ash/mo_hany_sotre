@@ -114,7 +114,7 @@ void initState() {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+            /*   Container(
                 width: double.infinity,
                 height: 333,
                 decoration: BoxDecoration(
@@ -127,6 +127,28 @@ void initState() {
                     image: NetworkImage(
                       itemModel.image),
                   ),
+                ),
+              ), */
+              Container(
+                decoration:const BoxDecoration(
+                  borderRadius:  BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
+                width: double.infinity,
+                height: 333,
+                child: PhysicalModel(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  color: Colors.black,
+                  shape: BoxShape.rectangle,  
+                  borderRadius: BorderRadius.circular(8),
+                  child: itemModel.image.isNotEmpty? FadeInImage.assetNetwork(
+                    placeholder: 'assets/icons/lloading.gif',
+                    image: itemModel.image,
+                    fit: BoxFit.fill,
+                    placeholderFit: BoxFit.contain,
+                  ) : Image.asset('assets/images/no_image_available.jpg'),
                 ),
               ),
               Padding(
