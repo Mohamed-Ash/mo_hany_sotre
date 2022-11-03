@@ -276,7 +276,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
             height: 15,
           ),
           InkWell(
-            onTap: ()=> Navigator.pushNamed(context, checkoutpage,arguments: widget.itemModel),
+            onTap: ()=> Navigator.pushReplacementNamed(context, checkoutpage,arguments: widget.itemModel),
             child: FormFeilds.buttonFormField(
               title: 'Buy Now',
               colorButton: ColorTheme.primary, 
@@ -559,7 +559,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
             height: 15,
           ),
             InkWell(
-              onTap: () =>  Navigator.pushNamed(context, checkoutpage,arguments: widget.itemModel),
+              onTap: () =>  Navigator.pushReplacementNamed(context, checkoutpage,arguments: widget.itemModel),
               child: FormFeilds.buttonFormField(
                 title: 'Buy',
                 colorButton: ColorTheme.primary,
