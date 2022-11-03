@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_preview/image_preview.dart';
@@ -16,7 +17,7 @@ import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:path/path.dart';
 
-// ignore: must_be_immutable
+// ignore: must_be_immutable      
 class EditItemShippingWidget extends StatefulWidget {
   final ApiDataBloc<ItemModel> categoryBloc;
   final CategoryModel categoriesModel;
@@ -32,23 +33,37 @@ class EditItemShippingWidget extends StatefulWidget {
 
 class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
   XFile? image;
-  DateTime now =  DateTime.now();
+  late DateTime now = DateTime.parse('${widget.itemModel.dateOffer}');
   bool isSelect = false ;
+
+  late Color colorRegion;
+  late Color colorPlatform;
+  final formKey =GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
 
   var nameController = TextEditingController();
   var priceController = TextEditingController();
   var regionController = TextEditingController();
   var platformController = TextEditingController();
-  var newPriceController = TextEditingController();
-
-  final formKey =GlobalKey<FormState>();
-  final ImagePicker _picker = ImagePicker();
-
-  
-  
+  var offerPriceController = TextEditingController();
+  var urlController = TextEditingController();
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  
- @override
+
+  Future _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.parse( "${widget.itemModel.dateOffer}"),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101)
+    );
+    if (picked != null) {
+      setState(() {
+        now = picked ;
+      });
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     if ( widget.itemModel.name != null) {
@@ -58,7 +73,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
     }
     if(widget.itemModel.price != null){
       priceController = TextEditingController(
-        text: widget.itemModel.price,
+        text: "${widget.itemModel.price}",
       );
     }
     if(widget.itemModel.region != null){
@@ -74,12 +89,19 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       );
     }
     if(widget.itemModel.platform != null){
-      newPriceController = TextEditingController(
-        text: widget.itemModel.offerPrice,  
+      offerPriceController = TextEditingController(
+        text: '${widget.itemModel.offerPrice}',  
       );  
     }
+    if(widget.itemModel.platform != null){
+      urlController = TextEditingController(
+        text: widget.itemModel.urlLauncher,  
+      );  
+    }
+    colorRegion = Colors.blue;
+    colorPlatform = Colors.red;
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
@@ -165,18 +187,6 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
                   ),
                 ],
               ),
-            /* Container(
-              width: MediaQuery.of(context).size.width,
-              height: 300,
-              decoration:  BoxDecoration(
-                // color: Colors.white,
-                // borderRadius: BorderRadius.circular(12),
-                image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: NetworkImage(widget.categories!['images'])
-                ),
-              ),
-            ), */
             const SizedBox(
               height: 22,
             ),
@@ -285,82 +295,193 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
-              child: InkWell(
-                onTap: (){
-                  setState(() {
-                    isSelect = !isSelect;
-                  });
-                },
-                child: isSelect == false? Row(
+                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                child: Stack(
                   children: [
                     Container(
-                      height: 40,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image:  AssetImage('assets/images/discount.png'),
-                        ),
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color:  ColorTheme.backroundInput,
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'add sale',
-                      style: getBoldStyle(
-                        color: ColorTheme.wight, 
-                        dDecoration: TextDecoration.none,
-                        fontSize: 14
-                      ),
-                    ),
-                    const Spacer(),
-                    const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: ColorTheme.wight,
-                      size: 16,
-                    ),
-                  ],
-                )
-                : Column(
-                  children: [
-                    FormFeilds.rowTextIcon(
-                      isImage: true,
-                      firstIconImage: 'assets/images/discount.png',
-                      text:  'add sale',
-                      iconData: Icons.keyboard_arrow_down,
-                      iconSize: 25,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color:  ColorTheme.backroundInput,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          FormFeilds.textField(
-                            suffixIcon: FormFeilds.containerImage(
-                              assetImage: 'assets/images/discount.png',
-                              height: 30,
-                              width: 30
-                              ),
-                            controller: newPriceController, 
-                            keyboardType: TextInputType.number, 
-                            hintText: 'Add New price',
-                          ),
-                        ],
-                      ),
+                    FormFeilds.textField(
+                      controller: urlController, 
+                      keyboardType: TextInputType.text, 
+                      hintText: 'Add Link EasyKash',
+                      // hintTextColor: dialogPickerColor,
+                      validator:(validate){
+                        if(validate == null || validate.isEmpty){
+                          return 'please add EasyKash';
+                        }
+                        return null;
+                      },
                     ),
                   ],
                 ),
               ),
+                        Padding(
+              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+              child: InkWell(
+                child: isSelect == false ? Container(
+                  decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color:ColorTheme.darkAppBar,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image:  AssetImage('assets/icons/icons_offer.png'),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 15),
+                        Text(
+                          'add sale',
+                          style: getBoldStyle(
+                            color: ColorTheme.hintText, 
+                            dDecoration: TextDecoration.none,
+                            fontSize: 14
+                          ),
+                        ),
+                        const Spacer(),
+                         IconButton(
+                          onPressed: (){
+                            setState(() {
+                              isSelect = !isSelect;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: ColorTheme.wight,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                      ],
+                    ),
+                  ),
+                )
+                : Container(
+                    decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color:ColorTheme.darkAppBar,
+                    ),
+                    child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(22, 10, 10, 0),
+                        child: Row(
+                          children: [
+                            Text('Add Offer price',style: getSemiBoldStyle(color: ColorTheme.wight,),),
+                            const Spacer(),
+                            IconButton(
+                              onPressed: (){
+                                setState(() {
+                                  isSelect = !isSelect;
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: ColorTheme.wight,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color:  ColorTheme.backroundInput,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: FormFeilds.textField(
+                                controller: offerPriceController, 
+                                keyboardType: TextInputType.number, 
+                                hintText: 'Add offer price',
+                              ),
+                            ),
+                            const SizedBox(height: 12,),
+                            Text(
+                              "${now.toLocal()}".split(' ')[0],
+                              style: getBoldStyle(color: ColorTheme.wight,fontSize: 20),
+                            ),
+                            const SizedBox(height: 20.0,),
+                            GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: FormFeilds.buttonFormField(
+                                title: 'Select date',
+                                colorButton: ColorTheme.primary,
+                                colorText: ColorTheme.wight,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
+            
+            ListTile(  
+            title:  Text(
+              'Click this color to choose color  Platform',
+              style:  getBoldStyle(color: ColorTheme.wight,),
+            ),
+            trailing: ColorIndicator(
+              width: 44,
+              height: 44,
+              borderRadius: 4,
+              color: colorRegion,
+              onSelectFocus: false,
+              onSelect: () async {
+                final Color dd = colorRegion;
+                if (!(await colorRegionN(context))) {
+                  setState(() {
+                    colorRegion = dd;
+                  });
+                }
+              },
+            ),
+          ),
+          const SizedBox(
+            height:33, 
+          ),
+          ListTile(  
+          title:  Text(
+            'Click this color to choose color Region',
+            style:  getBoldStyle(color: ColorTheme.wight,),
+          ),
+          trailing: ColorIndicator(
+            width: 44,
+            height: 44,
+            borderRadius: 4,
+            color: colorPlatform,
+            onSelectFocus: false,
+            onSelect: () async {
+              final Color ss = colorPlatform;
+              if (!(await colorpPlatform(context))) {
+                setState(() {
+                  colorPlatform = ss;
+                });
+              }
+            },
+          ),
+        ),
             const SizedBox(
                 height:22, 
               ),
@@ -381,20 +502,28 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
       ),
     );
   }
-  String formattedDateTime() {
-      return "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
-  }
 
   postData(context)async{
-    // var postDat =  FirebaseFirestore.instance.collection('categories').doc(widget.categoriesModel.idDoc).collection(widget.categoriesModel.type);
-    // var postSearch =  FirebaseFirestore.instance.collection('Search');
-
+   String updatedAt = "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
+   var test = offerPriceController.text == null  ||offerPriceController.text.isEmpty? 0 :  double.parse(offerPriceController.text);
+    bool isOffer = test == null ? false : true;
+    double subtractprice = isOffer == false ? 0:double.parse(priceController.text) - double.parse(offerPriceController.text);
+    double pricePercent = double.parse(offerPriceController.text) > 0  ? subtractprice / double.parse(priceController.text) * 100 : 0;
+    DateTime  date;
+    if (DateTime.parse('${widget.itemModel.dateOffer}') == now) {
+      date = DateTime.parse('${widget.itemModel.dateOffer}');
+    } else {
+      date = DateTime.parse('$now');
+    }
+    print('$now');
+    print('$date');
     try{
       if (image != null){
-        // await FirebaseStorage.instance.refFromURL(widget.shippingModel.image).delete();
+        FirebaseStorage.instance.refFromURL(widget.itemModel.image).delete();
+        
         print("==++++++++++++++==");
         print('printDeleteImage');
-      
+        
         FormFeilds.showLoading(context);
 
         var file = File(image!.path);
@@ -404,79 +533,189 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
         var random = Random().nextInt(1000000);
 
         nameimage = "$random$nameimage";
-
-        var refSorage = FirebaseStorage.instance.ref("shipping").child(nameimage); 
+        var refSorage = FirebaseStorage.instance.ref(widget.categoriesModel.type).child(nameimage); 
         print('=========================================');
         print(nameimage);
         await refSorage.putFile(file);
 
         var uri =  await refSorage.getDownloadURL();
           
-          ItemModel shippingModel = ItemModel(
-            colorPlatform:0xFFF44336,
-            categoryId: widget.itemModel.categoryId,
-            colorTextPlatform:0xFFF44336,
-            createdAt: widget.itemModel.createdAt,
-            name: nameController.text, 
-            image: uri, 
-            region:regionController.text, 
-            price: priceController.text, 
-            platform: platformController.text,
-            offerPrice: newPriceController.text,
-            id: widget.itemModel.id,
-            updatedAt: formattedDateTime(),
-          );
-          widget.categoryBloc.add(UpdateDataEvent(id: widget.itemModel.id, data: shippingModel.toJson()));
+        ItemModel shippingModel = ItemModel(
+          categoryId: widget.itemModel.categoryId,
+          createdAt: widget.itemModel.createdAt,
+          name: nameController.text, 
+          image: uri,
+          colorRegion: colorRegion.value,
+          colorPlatform: colorPlatform.value,
+          urlLauncher: urlController.text,
+          region:regionController.text, 
+          platform: platformController.text,
+          id: widget.itemModel.id,
+          updatedAt: updatedAt,
+          dateOffer: "$date",
+          price: double.parse(priceController.text),
+          percent: pricePercent,
+          offerPrice: double.parse(offerPriceController.text),
+          isOffer: isOffer,
+        );
+        widget.categoryBloc.add(UpdateDataEvent(id: widget.itemModel.id, data: shippingModel.toJson()));
         FormFeilds.showMyDialog(
           context:  context, 
           message: 'product uploaded successfully',
-          actions: [ 
+          isImage: true,
+          actions: <Widget>[ 
             InkWell(
               onTap: () {
                 // Navigator.pushNamedAndRemoveUntil(context, shippingPage, (route) => false);
                 // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> ShippingPage(categoriesModel: widget.categoriesModel,)), (route) => false);
                 Navigator.pop(context);
-                Navigator.of(context).pushReplacementNamed(shippingPage, arguments: widget.categoriesModel);
+                Navigator.of(context).pushReplacementNamed(itemPage, arguments: widget.categoriesModel);
               },
               child: FormFeilds.buttonFormField(title: 'Back to products',colorButton: ColorTheme.primary)),
           ],
         );
       }else{
-        FormFeilds.showLoading(context);
-        ItemModel itemModel = ItemModel(
-          colorPlatform: 0xFFF44336,
-          categoryId: widget.itemModel.categoryId,
-          colorTextPlatform: 0xFFF44336,
-          name: nameController.text, 
-          createdAt: widget.itemModel.createdAt,
-          image: widget.itemModel.image, 
-          region:regionController.text,
-          offerPrice: newPriceController.text, 
-          price: priceController.text, 
-          platform: platformController.text,
-          id: widget.itemModel.id,
-          updatedAt: formattedDateTime(),
-        );
-        widget.categoryBloc.add(UpdateDataEvent(id: widget.itemModel.id, data: itemModel.toJson()));
+          FormFeilds.showLoading(context);
+          ItemModel itemModel = ItemModel(
+            urlLauncher: urlController.text,
+            colorRegion: colorRegion.value,
+            colorPlatform: colorPlatform.value,
+            categoryId: widget.itemModel.categoryId,
+            name: nameController.text, 
+            createdAt: widget.itemModel.createdAt,
+            image: widget.itemModel.image, 
+            region:regionController.text,
+            id: widget.itemModel.id,
+            platform: platformController.text,
+            updatedAt: updatedAt,
+            dateOffer: "$date",
 
-        FormFeilds.showMyDialog(
-        context:  context, 
-        message: 'product uploaded successfully',
-        actions: [ 
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed(shippingPage, arguments: widget.categoriesModel);
-            },
-            child: FormFeilds.buttonFormField(title: 'Back to products',colorButton: ColorTheme.primary)
-          ),
-        ],
-      );
+            price: double.parse(priceController.text),
+            percent: pricePercent,
+            offerPrice: double.parse(offerPriceController.text),
+            isOffer: isOffer,
+          );
+          widget.categoryBloc.add(UpdateDataEvent(id: widget.itemModel.id, data: itemModel.toJson()));
+
+          FormFeilds.showMyDialog(
+          context:  context, 
+          message: 'product uploaded successfully',
+          actions: <Widget> [ 
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).pushReplacementNamed(itemPage, arguments: widget.categoriesModel);
+              },
+              child: FormFeilds.buttonFormField(title: 'Back to products',colorButton: ColorTheme.primary)
+            ),
+          ],
+        );
+        
+      
       }
     }catch(e){
        print(e.toString());
     }
   } 
+  Future<bool> colorRegionN(context) async {
+    return ColorPicker(
+      borderColor: ColorTheme.wight,
+      color: colorRegion,
+      onColorChanged: (Color color) => setState(() => colorRegion = color),
+      width: 40,
+      height: 40,
+      borderRadius: 4,
+      spacing: 5,
+      runSpacing: 5,
+      wheelDiameter: 155,
+      heading: Text(
+        'Select color',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      subheading: Text(
+        'Select color shade',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      wheelSubheading: Text(
+        'Selected color and its shades',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      showMaterialName: true,
+      showColorName: true,
+      colorNameTextStyle:getBoldStyle(color: ColorTheme.wight,),
+      colorCodePrefixStyle: getBoldStyle(color: ColorTheme.wight,),
+      colorCodeTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      pickerTypeTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      showColorCode: true,
+      materialNameTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      
+      copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+        longPressMenu: true,
+      ),
+      pickersEnabled: const <ColorPickerType, bool>{
+        ColorPickerType.both: false,
+        ColorPickerType.primary: false,
+        ColorPickerType.accent: false,
+        ColorPickerType.bw: false,
+        ColorPickerType.custom: false,
+        ColorPickerType.wheel: true,
+      },
+      // customColorSwatchesAndNames: colorsNameMap, /// value color
+    ).showPickerDialog(
+      context,
+      backgroundColor: ColorTheme.darkBackroundPage,
+      actionsPadding: const EdgeInsets.all(16),
+      constraints: const BoxConstraints(minHeight: 380, minWidth: 300, maxWidth: 320),
+    );
+  }
 
- 
+  Future<bool> colorpPlatform(context) async {
+    return ColorPicker(
+      borderColor: ColorTheme.wight,
+      color: colorPlatform,
+      onColorChanged: (Color color) => setState(() => colorPlatform = color),
+      width: 40,
+      height: 40,
+      borderRadius: 4,
+      spacing: 5,
+      runSpacing: 5,
+      wheelDiameter: 155,
+      heading: Text(
+        'Select color',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      subheading: Text(
+        'Select color shade',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      wheelSubheading: Text(
+        'Selected color and its shades',
+        style: getBoldStyle(color: ColorTheme.wight,),
+      ),
+      showMaterialName: true,
+      showColorName: true,
+      colorNameTextStyle:getBoldStyle(color: ColorTheme.wight,),
+      colorCodePrefixStyle: getBoldStyle(color: ColorTheme.wight,),
+      colorCodeTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      pickerTypeTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      showColorCode: true,
+      materialNameTextStyle: getBoldStyle(color: ColorTheme.wight,),
+      copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+        longPressMenu: true,
+      ),
+      pickersEnabled: const <ColorPickerType, bool>{
+        ColorPickerType.both: false,
+        ColorPickerType.primary: false,
+        ColorPickerType.accent: false,
+        ColorPickerType.bw: false,
+        ColorPickerType.custom: false,
+        ColorPickerType.wheel: true,
+      },
+    ).showPickerDialog(
+      context,
+      backgroundColor: ColorTheme.darkBackroundPage,
+      actionsPadding: const EdgeInsets.all(16),
+      constraints: const BoxConstraints(minHeight: 380, minWidth: 300, maxWidth: 320),
+    );
+  }
 }
