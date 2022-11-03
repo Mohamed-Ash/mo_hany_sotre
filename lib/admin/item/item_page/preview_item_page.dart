@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/admin/admin_interface.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
@@ -6,34 +7,65 @@ import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 
 // ignore: must_be_immutable
-class PreviewItemShippingPage extends AdminInterface{
-  final  ItemModel shippingModel;
+class PreviewItemPage extends AdminInterface{
+  final  ItemModel itemModel;
 
-  // CollectionReference getAllProductSale = FirebaseFirestore.instance.collection('categories').doc(shippingModel.idDoc).collection('shipping');
+  // CollectionReference getAllProductSale = FirebaseFirestore.instance.collection('categories').doc(itemModel.idDoc).collection('shipping');
   
-  const PreviewItemShippingPage({super.key,required this.shippingModel});
+  const PreviewItemPage({super.key,required this.itemModel});
 
   @override
   Widget buildBody(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 33,),
-          SizedBox(
-            width:  MediaQuery.of(context).size.width,
-            height: 400, 
-            child: PhysicalModel(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              color: Colors.black,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(8),
-              child: shippingModel.image.isNotEmpty? FadeInImage.assetNetwork(
-                placeholder: 'assets/icons/lloading.gif',
-                image: shippingModel.image,
-                fit: BoxFit.fill,
-                placeholderFit: BoxFit.contain,
-              ) : Image.asset('assets/images/no_image_available.jpg'),
-            ),
+          Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              InkWell(
+                onTap: (){
+                  openImagesPage(Navigator.of(context),
+                    imgUrls: [itemModel.image],
+                    onLongPressHandler: (con, url) => debugPrint(url),
+                    onPageChanged: (i, widget) async {
+                      if (widget != null) return widget;
+                      await Future.delayed(const Duration(seconds: 3));
+                      return null ;
+                    }
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 400,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(
+                        itemModel.image),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 33, 0, 0),
+                child: Container(
+                  width: 44,
+                  height: 44  ,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(78, 48, 48, 49),
+                    borderRadius: BorderRadius.circular(55),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      color: Colors.white,
+                      onPressed: (() => Navigator.pop(context)),
+                    ),
+                  ),
+                ),
+              ),
+            ], 
           ),
           /* Container(
             width: MediaQuery.of(context).size.width,
@@ -43,7 +75,7 @@ class PreviewItemShippingPage extends AdminInterface{
               // borderRadius: BorderRadius.circular(12),
               image: DecorationImage(
                 fit: BoxFit.contain,
-                image: NetworkImage("${shippingModel.image}")
+                image: NetworkImage("${itemModel.image}")
               ),
             ),
           ), */
@@ -64,7 +96,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  shippingModel.name,
+                  itemModel.name,
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -84,7 +116,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  shippingModel.region,
+                  itemModel.region,
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -104,7 +136,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  shippingModel.price,
+                  "${itemModel.price}",
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -124,7 +156,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  shippingModel.platform,
+                  itemModel.platform,
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -144,7 +176,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  '${shippingModel.createdAt}',
+                  '${itemModel.createdAt}',
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -164,7 +196,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  '${shippingModel.updatedAt}',
+                  '${itemModel.updatedAt}',
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -209,7 +241,7 @@ class PreviewItemShippingPage extends AdminInterface{
               borderRadius: BorderRadius.circular(8),
               child:FadeInImage.assetNetwork(
                 placeholder: 'assets/icons/lloading.gif',
-                image: shippingModel.image,
+                image: itemModel.image,
                 fit: BoxFit.fill,
                 placeholderFit: BoxFit.contain,
               ),
@@ -223,7 +255,7 @@ class PreviewItemShippingPage extends AdminInterface{
               // borderRadius: BorderRadius.circular(12),
               image: DecorationImage(
                 fit: BoxFit.contain,
-                image: NetworkImage("${shippingModel.image}")
+                image: NetworkImage("${itemModel.image}")
               ),
             ),
           ), */
@@ -244,7 +276,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  shippingModel.name,
+                  itemModel.name,
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -264,7 +296,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  '${shippingModel.createdAt}',
+                  '${itemModel.createdAt}',
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -284,7 +316,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  '${shippingModel.updatedAt}',
+                  '${itemModel.updatedAt}',
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
@@ -304,7 +336,7 @@ class PreviewItemShippingPage extends AdminInterface{
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
                 Text(
-                  '${shippingModel.region}',
+                  '${itemModel.region}',
                   style: getSemiBoldStyle(color: ColorTheme.wight,),  
                 ),
               ],
