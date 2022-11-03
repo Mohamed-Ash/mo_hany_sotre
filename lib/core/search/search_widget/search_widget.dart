@@ -106,7 +106,7 @@ class SsearchWidgetState extends State<SearchWidget> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, previewProductPage,arguments: itemModel),
+        onTap: () => Navigator.pushReplacementNamed(context, previewProductPage,arguments: itemModel),
         child: Container(
           width: double.infinity,
           // height: 100,
