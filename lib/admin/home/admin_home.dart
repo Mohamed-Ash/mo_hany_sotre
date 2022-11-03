@@ -24,96 +24,129 @@ class AdminHome extends AdminInterface{
 
   @override
   Widget buildBody(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, categoriesPage);
-            },
-            child: Container(
-              width: double.infinity,
-              height: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: const Border(
-                  bottom: BorderSide(
-                    color: ColorTheme.porder,
-                    width: 1,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacementNamed(context, categoriesPage);
+              },
+              child: Card(
+                color: ColorTheme.porder,
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  left: BorderSide(
-                    color: ColorTheme.porder,
-                    width: 1,
-                  ),
-                  right: BorderSide(
-                    color: ColorTheme.porder,
-                    width: 1,
-                  ),
-                  top: BorderSide(
-                    color: ColorTheme.porder,
-                    width: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FormFeilds.containerImage(assetImage: 'assets/icons/category.png'),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Categories',
+                        style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FormFeilds.containerImage(assetImage: 'assets/icons/category.png'),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Categories',
-                    style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
-                  ),
-                ],
-              ),
             ),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Container(
-            width: double.infinity,
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: const Border(
-                bottom: BorderSide(
-                  color: ColorTheme.porder,
-                  width: 1,
-                ),
-                left: BorderSide(
-                  color: ColorTheme.porder,
-                  width: 1,
-                ),
-                right: BorderSide(
-                  color: ColorTheme.porder,
-                  width: 1,
-                ),
-                top: BorderSide(
-                  color: ColorTheme.porder,
-                  width: 1,
+            const SizedBox(
+              height: 50,
+            ),
+            GestureDetector(
+              onTap: () => Navigator.pushReplacementNamed(context, adminPanelPage),
+              child: Card(
+                color: ColorTheme.porder,
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FormFeilds.containerImage(assetImage: 'assets/icons/manager.png'),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Admin Panel',
+                        style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FormFeilds.containerImage(assetImage: 'assets/icons/manager.png'),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Admin Panel',
-                  style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
-                ),
-              ],
+            const SizedBox(
+              height: 50,
             ),
-          ),
-        ],
+            GestureDetector(
+              onTap: () => Navigator.pushReplacementNamed(context, topicPage),
+              child: Card(
+                color: ColorTheme.porder,
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FormFeilds.containerImage(assetImage: 'assets/icons/messages.png'),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Topics',
+                        style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            GestureDetector(
+              onTap: () => Navigator.pushReplacementNamed(context, reminderPage),
+              child: Card(
+                color: ColorTheme.porder,
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FormFeilds.containerImage(assetImage: 'assets/icons/reminder.png'),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'notifications',
+                        style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
