@@ -40,12 +40,11 @@ class _CategoryFormWidgetState extends State<CategoryFormWidget> {
   
 
   final List<String> genderItems = [
-    'Offers',
     'Products',
-    'Shipping Gta v',
-    'Shipping Red Dead',
-    'Shipping Valorant',
-    'Shipping Steam Gift Godes',
+    'Charge Gta v',
+    'Charge Red Dead',
+    'Charge Valorant',
+    'Charge Steam Gift Godes',
   ];
   
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -57,7 +56,7 @@ class _CategoryFormWidgetState extends State<CategoryFormWidget> {
         key: formKye,
         child: Column(
           children: [
-            const SizedBox(height: 55,),
+            const SizedBox(height: 33,),
             if (image == null)
               InkWell(
                 onTap: () async {
@@ -128,34 +127,8 @@ class _CategoryFormWidgetState extends State<CategoryFormWidget> {
                         },
                         child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 40,width: 40),
                       ),
-                    ) ,
+                    ),
                 ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color:  ColorTheme.backroundInput,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    FormFeilds.textField(
-                      controller: nameController, 
-                      keyboardType: TextInputType.text, 
-                      hintText: 'Add Name',
-                      validator:(validate){
-                        if(validate == null || validate.isEmpty){
-                          return 'please add Name';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
               ),
               Padding(
                 padding:  const EdgeInsets.fromLTRB(22, 0, 22, 00),
@@ -214,10 +187,36 @@ class _CategoryFormWidgetState extends State<CategoryFormWidget> {
                       color: ColorTheme.hintText,
                     ),
                   ),
+               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color:  ColorTheme.backroundInput,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    FormFeilds.textFormField(
+                      controller: nameController, 
+                      keyboardType: TextInputType.text, 
+                      hintText: 'Add Name',
+                      validator:(validate){
+                        if(validate == null || validate.isEmpty){
+                          return 'please add Name';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height:22, 
-                ),
+              ),
+              const SizedBox(
+                height:22, 
+              ),
               InkWell(
                 onTap: ()async{
                   if(formKye.currentState!.validate()){
@@ -260,7 +259,7 @@ class _CategoryFormWidgetState extends State<CategoryFormWidget> {
       await refSorage.putFile(file);
 
       var uri =  await refSorage.getDownloadURL();
-      int id = await NextIdHelper.getNextId("categories");
+      String id = await NextIdHelper.getNextId("categories");
       CategoryModel category = CategoryModel(
         id: id, 
         image: uri,
@@ -279,31 +278,22 @@ class _CategoryFormWidgetState extends State<CategoryFormWidget> {
       }); */
       //Product uploaded successfully
       FormFeilds.showMyDialog(
-       context:  context, 
+        context:  context, 
+        isImage: true,
         message: 'category uploaded successfully',
-        actions: [ 
+        actions: <Widget>[ 
           InkWell(
             onTap: () {
-              Navigator.pushNamed(context, categoriesPage);
+              Navigator.pushReplacementNamed(context, categoriesPage);
             },
             child: FormFeilds.buttonFormField(title: 'Back to categories',colorButton: ColorTheme.primary)),
-         /*  TextButton(
-            onPressed: (){
-              Navigator.pushNamedAndRemoveUntil(context, categoriesPage, (route) => false);
-            },
-            child: Text(
-              'Okay',
-              style: getBoldStyle(color: ColorTheme.wight,
-              )
-            ),
-          ), */
         ],
       );
     }else{
       FormFeilds.showMyDialog(
         context: context, 
         message: 'please choose image',//'please fill fields', 
-        actions: [
+        actions: <Widget>[
           TextButton(
             onPressed: ()=> Navigator.of(context).pop(), 
             child: Text(
