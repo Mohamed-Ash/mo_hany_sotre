@@ -376,12 +376,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }){
     print('=====================');
     print(adminModel.adminId.toString());
-    print('=====================');
     if (adminModel.adminId == user!.uid){
       return InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: (){
-          Navigator.pushReplacementNamed(context, adminHome);
+          Navigator.pushNamed(context, adminHome);
         },
         child: FormFeilds.buttonFormField(
           dPadding: false,
@@ -396,8 +395,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   logOut(context)async{
     await FirebaseAuth.instance.signOut();
-    Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
-    // Navigator.pushReplacementNamed(context, loginPage);
+    // Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
+    Navigator.pushReplacementNamed(context, loginPage);
   }
 }  
 //   getData()async{
