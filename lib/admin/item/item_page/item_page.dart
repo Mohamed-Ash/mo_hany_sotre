@@ -10,11 +10,11 @@ import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 // ignore: must_be_immutable
-class ShippingPage extends AdminInterface{
+class ItemPage extends AdminInterface{
   final CategoryModel? categoriesModel;
   late ApiDataBloc<ItemModel> itemBloc;
 
-   ShippingPage({super.key, this.categoriesModel}){
+   ItemPage({super.key, this.categoriesModel}){
     itemBloc = ApiDataBloc<ItemModel>()..add(
       IndexDataEvent(
         where: WhereCriteria(field: 'category_id', isEqualTo: categoriesModel!.id)
@@ -25,7 +25,7 @@ class ShippingPage extends AdminInterface{
   @override
   PreferredSizeWidget? appBar(BuildContext context) => AppBar(
     leading: IconButton(
-      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, categoriesPage, (route) => false),
+      onPressed: () => Navigator.pushReplacementNamed(context, categoriesPage,),
       icon: const Icon(Icons.arrow_back_ios_new_rounded) 
     ),
     title: Text(
