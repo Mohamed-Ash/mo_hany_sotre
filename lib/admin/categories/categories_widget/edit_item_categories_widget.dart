@@ -237,7 +237,7 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    FormFeilds.textField(
+                    FormFeilds.textFormField(
                       controller: nameController, 
                       keyboardType: TextInputType.text, 
                       hintText: 'Add Name',
@@ -375,7 +375,7 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
         FormFeilds.showMyDialog(
         context:  context, 
           message: 'category Updated successfully',
-          actions: [ 
+          actions: <Widget>[ 
             InkWell(
               onTap: () {
                  Navigator.of(context).pushReplacementNamed(categoriesPage, arguments: widget.categoriesModel);
@@ -399,10 +399,10 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
         FormFeilds.showMyDialog(
           context:  context, 
           message: 'category Updated successfully',
-          actions: [ 
+          actions: <Widget>[ 
             InkWell(
               onTap: (){
-                Navigator.pushNamedAndRemoveUntil(context, categoriesPage, (route) => false);
+                Navigator.pushReplacementNamed(context, categoriesPage,);
               },
               child: FormFeilds.buttonFormField(title: 'Back to categories',colorButton: ColorTheme.primary)),
           ],
