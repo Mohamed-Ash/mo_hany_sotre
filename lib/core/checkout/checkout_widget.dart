@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
@@ -8,8 +9,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CheckoutWidget extends StatefulWidget{
   final ItemModel itemModel;
+  final ApiDataBloc<ItemModel> itemBloc; 
 
-  const CheckoutWidget({super.key,required this.itemModel});
+  const CheckoutWidget({super.key,required this.itemModel,required this.itemBloc});
 
   @override
   State<CheckoutWidget> createState() => _CheckoutWidgetState();
@@ -56,8 +58,7 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                         image: DecorationImage(
                           fit: BoxFit.fill,
                           image: NetworkImage(
-                            widget.itemModel.image
-                          ),
+                            widget.itemModel.image),
                         ),
                       ),
                     ),
@@ -192,7 +193,7 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                           style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
                         ),
                         Text(
-                          '- ${widget.itemModel.offerPrice} LE',
+                          '- $percent LE',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
@@ -222,7 +223,7 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                           style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
                         ),
                         Text(
-                          '$percent LE',
+                          '${widget.itemModel.offerPrice} LE',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
@@ -247,7 +248,10 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: () => buildUil(),
+                      onTap: () async {
+                        buildUil();
+                        //  setNumberRate();
+                      },
                       child: FormFeilds.continueWith(
                         title: 'EasyKash', 
                         assetImage: 'assets/images/mastercard.png',
@@ -312,6 +316,32 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
       throw "Could not launch $url";
     }
   }
+
+  /* setNumberRate(){
+    int count = 10;
+    ItemModel data = ItemModel(
+      indexRate: count ++,
+      id: widget.itemModel.id, 
+      categoryId: widget.itemModel.categoryId, 
+      name: widget.itemModel.name, 
+      image: widget.itemModel.image, 
+      region: widget.itemModel.region, 
+      price: widget.itemModel.price, 
+      platform: widget.itemModel.platform, 
+      colorPlatform: widget.itemModel.colorPlatform, 
+      colorRegion: widget.itemModel.colorRegion, 
+      urlLauncher: widget.itemModel.urlLauncher,
+      createdAt: widget.itemModel.createdAt,
+      dateOffer: widget.itemModel.dateOffer,
+      isOffer: widget.itemModel.isOffer,
+      offerPrice: widget.itemModel.offerPrice,
+      percent: widget.itemModel.percent,
+      updatedAt: widget.itemModel.updatedAt,
+    );
+    widget.itemBloc.add(UpdateDataEvent(id: widget.itemModel.id, data:  data.toJson()));
+    print('done');
+    print('========================');
+  } */
 
  /*  buildpopUp(){
     return  showDialog(
