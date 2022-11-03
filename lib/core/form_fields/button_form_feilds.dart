@@ -381,6 +381,7 @@ class FormFeilds{
   static showLoading(context){
     return showDialog(
       context: context,
+      barrierColor: Colors.transparent,
       builder: (context) {
         return const AlertDialog(
           backgroundColor: Colors.transparent,
@@ -398,27 +399,27 @@ class FormFeilds{
     );
   }
 
-  static fixFontSize(BuildContext context){
+/*   static fixFontSize(BuildContext context){
     final width = MediaQuery.of(context).size.width;
-    if(width > 50.0 && width < 100.0 ) {
+    if(width > 50.0 || width < 100.0 ) {
       return 11.0;
-    }else if (width > 100.0 && MediaQuery.of(context).size.width < 200.0 ){
-      return 12.5;
+    }else if (width > 100.0 || width < 200.0 ){
+      return 12.0;
     }else{ 
       return 12.5;
     }
   }
 
-  static fixBixiles(BuildContext context){
-    final width = MediaQuery.of(context).size.width;
-    if(width > 50.0 && width < 100.0 ) {
-      return 90.0;
-    }else if (width > 100.0 && width < 150.0 ){
-      return 125.0;
-    }else if (width > 150.0 && width < 200.0 ){
-      return 140.0;
+  static fixBixiles(BuildContext context,double width){
+    
+    if(width >= 50.0 || width <= 100.0 ) {
+      return 120.0;
+    }else if (width > 100.0 || width < 150.0 ){
+      return 180.0;
+    }else if (width > 150.0 || width < 200.0 ){
+      return 270.0;
     }else{
-      return 160.0;
+      return 405.0;
     }
-  }
+  } */
 }
