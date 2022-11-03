@@ -269,7 +269,7 @@ class PreviewOfferPage extends UserInterface{
               thickness: 1,
             ),
             InkWell(
-              onTap: () => Navigator.pushNamed(context, checkoutpage,arguments: itemModel),
+              onTap: () => Navigator.pushReplacementNamed(context, checkoutpage,arguments: itemModel),
               child: FormFeilds.buttonFormField(
                 title: 'Buy',
                 colorButton: ColorTheme.primary,
