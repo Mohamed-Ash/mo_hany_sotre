@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:m_hany_store/admin/admin_panel/admin_panel_page/admin_panel_page.dart';
 import 'package:m_hany_store/admin/categories/categories_page/add_item_categories_page.dart';
 import 'package:m_hany_store/admin/categories/categories_page/categories_page.dart';
+import 'package:m_hany_store/admin/categories/categories_page/edit_item_categories_page.dart';
+import 'package:m_hany_store/admin/categories/categories_page/preview_item_categories_page.dart';
 import 'package:m_hany_store/admin/home/admin_home.dart';
+import 'package:m_hany_store/admin/item/item_page/add_item_page.dart';
 import 'package:m_hany_store/admin/item/item_page/item_page.dart';
+import 'package:m_hany_store/admin/item/item_page/preview_item_page.dart';
 import 'package:m_hany_store/admin/messages/messages_page/messages_form_page.dart';
 import 'package:m_hany_store/admin/messages/messages_page/messages_page.dart';
-import 'package:m_hany_store/admin/product/product_page/add_item_product_page.dart';
-import 'package:m_hany_store/admin/product/product_page/edit_item_product_page.dart';
-import 'package:m_hany_store/admin/product/product_page/admin_product_page.dart';
-import 'package:m_hany_store/admin/product/product_page/preview_item_product_page.dart';
+import 'package:m_hany_store/admin/reminder/reminder_page/reminder_page.dart';
 import 'package:m_hany_store/core/auth/confirm_email/confirm_email_page/confirm_email_page.dart';
 import 'package:m_hany_store/core/auth/login/login_page/login_page.dart';
 import 'package:m_hany_store/core/auth/register/register_page/register_page.dart';
@@ -54,16 +55,24 @@ class Routes{
       // todo: admin
 
       case adminHome:                                           return MaterialPageRoute(builder: (_)=> const AdminHome());
-      case adminProductsPage:                                   return MaterialPageRoute(builder: (_)=> const AdminProductsPage());
-      case previewItemProductPage:                              return MaterialPageRoute(builder: (_)=> const PreviewItemProductPage());
-      case editItemProductPage:                                 return MaterialPageRoute(builder: (_)=> const EditItemProductPage());
-      case addItemProductPage:                                  return MaterialPageRoute(builder: (_)=> const AddItemProductPage());
+      // case adminProductsPage:                                   return MaterialPageRoute(builder: (_)=> const AdminProductsPage());
       case adminPanelPage:                                      return MaterialPageRoute(builder: (_)=> const AdminPanelPage());
       case categoriesPage:                                      return MaterialPageRoute(builder: (_)=> CategoriePage());
       case addItemCategoriesPage:                               return MaterialPageRoute(builder: (_)=> AddItemCategoriesPage());
       case itemPage:                                            return MaterialPageRoute(builder: (_)=> ItemPage(categoriesModel: settings.arguments as CategoryModel,));
       case topicPage:                                           return MaterialPageRoute(builder: (_)=> MessagesPage());
       case messagesFormPage:                                    return MaterialPageRoute(builder: (_)=> MessagesFormPage());
+      case editItemCategoriesPage:                              return MaterialPageRoute(builder: (_)=> EditItemCategoriesPage(categoriesModel: settings.arguments as CategoryModel,));
+      case previewItemCategoriesPage:                           return MaterialPageRoute(builder: (_)=> PreviewItemCategoriesPage(categoriesModel: settings.arguments as CategoryModel));
+      case addItemPage:                                         return MaterialPageRoute(builder: (_)=> AddItemPage(categoriesModel: settings.arguments as CategoryModel,));
+      case previewItemPage:                                     return MaterialPageRoute(builder: (_)=> PreviewItemPage(itemModel: settings.arguments as ItemModel,));
+      // case editItemPage:                                        return MaterialPageRoute(builder: (_)=> EditItemPage(itemModel: settings.name as ItemModel, categoriesModel: settings.name as CategoryModel,));
+
+      // todo: notifications
+      case reminderPage:                                        return MaterialPageRoute(builder: (_)=> ReminderPage());
+
+
+
 
       default:
     }
