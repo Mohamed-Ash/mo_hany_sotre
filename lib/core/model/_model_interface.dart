@@ -2,6 +2,7 @@ import 'package:m_hany_store/core/model/admin_model.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/model/message_model.dart';
+import 'package:m_hany_store/core/model/user_model.dart';
 
 class ModelClass {
   final String collection;
@@ -24,5 +25,6 @@ class ModelInterface {
     CategoryModel: ModelClass(collection: 'categories', factory: CategoryModel.fromJson),
     AdminModel:    ModelClass(collection: 'admin', factory: AdminModel.fromJson),
     MessageModel:  ModelClass(collection: 'messages', factory: MessageModel.fromJson),
+    UserModel:     ModelClass(collection: 'usertoken', factory: UserModel.fromJson),
   };
 }
