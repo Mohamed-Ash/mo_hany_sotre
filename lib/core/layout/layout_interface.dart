@@ -9,7 +9,6 @@ abstract class LayoutInterface extends StatelessWidget{
 
   Widget? get  buildDrawer => null ;
 
-  Color? get  backgroundColor => null ;
   
   const LayoutInterface({Key? key}) : super(key: key);
   
