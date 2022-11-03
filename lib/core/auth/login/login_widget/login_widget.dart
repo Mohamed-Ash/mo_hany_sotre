@@ -24,7 +24,6 @@ class _LoginWidgetState extends State<LoginWidget> {
   final formKye = GlobalKey<FormState>();
 
   bool showPassword = true;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -68,7 +67,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    FormFeilds.textField(
+                    FormFeilds.textFormField(
                       controller: emailController, 
                       keyboardType: TextInputType.emailAddress, 
                       hintText: 'hello@company.com',
@@ -109,7 +108,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    FormFeilds.textField(
+                    FormFeilds.textFormField(
                       controller: passwordController, 
                       keyboardType: TextInputType.visiblePassword, 
                       hintText: 'your password',
@@ -144,7 +143,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   children: [
                     Text(
                       'Did you forget your password ?',
-                      style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: FormFeilds.fixFontSize(context)),
+                      style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 11.0),
                     ),
                     const SizedBox(
                       width: 11,
@@ -162,12 +161,12 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Reset a new password',
                           style:TextStyle(
                             fontFamily: FontsTheme.fontFamily,
                             color: ColorTheme.primary,
-                            fontSize: FormFeilds.fixFontSize(context),
+                            fontSize: 11.0,
                             fontWeight: FontWeight.w600
                           ),
                         ),
@@ -200,7 +199,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   children: [
                     Text(
                      'Do not have an account ?',
-                      style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 12),
+                      style: getSemiBoldStyle(color: ColorTheme.hintText,fontSize: 11.0,),
                     ),
                     const SizedBox(
                       width: 11,
@@ -223,7 +222,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           style:TextStyle(
                             fontFamily: FontsTheme.fontFamily,
                             color: ColorTheme.primary,
-                            fontSize: 12,
+                            fontSize: 11.0,
                             fontWeight: FontWeight.w600
                           ),
                         ),
@@ -234,9 +233,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                 const SizedBox(height: 22,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:  [
+                  children: [
                     Container(
-                      width: FormFeilds.fixBixiles(context),
+                      width: 120.0,
                       height: 2,
                       decoration: const BoxDecoration(
                         border: Border(
@@ -252,7 +251,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       style: getSemiBoldStyle(color: ColorTheme.hintText),
                     ),
                     Container(
-                      width: FormFeilds.fixBixiles(context),
+                      width: 120.0,
                       height: 2,
                       decoration: const BoxDecoration(
                         border: Border(
@@ -293,8 +292,8 @@ class _LoginWidgetState extends State<LoginWidget> {
         email: emailController.text,
         password: passwordController.text,
       );
-      if(credential.user!.emailVerified){
-        Navigator.pushNamedAndRemoveUntil(context, appPageLayout, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
+     /*  if(credential.user!.emailVerified){
       }else{
         Navigator.pop(context);
         FormFeilds.showMyDialog(
@@ -311,7 +310,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
           ]
         );
-      }
+      } */
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Navigator.of(context).pop();
@@ -365,9 +364,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         idToken: googleAuth?.idToken,
       );
       if (credential.idToken == null) {
-        Navigator.pushNamedAndRemoveUntil(context, loginPage, (route) => false);
+        Navigator.popUntil(context, (route) => false);
       } else {
-        Navigator.pushNamedAndRemoveUntil(context, appPageLayout, (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
       }
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
