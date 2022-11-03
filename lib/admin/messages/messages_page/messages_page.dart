@@ -18,7 +18,7 @@ class MessagesPage extends AdminInterface{
   @override
   PreferredSizeWidget? appBar(BuildContext context) => AppBar(
     leading: IconButton(
-      onPressed: () => Navigator.pushNamed(context, adminHome),
+      onPressed: () => Navigator.pushReplacementNamed(context, adminHome),
       icon: const Icon(Icons.arrow_back_ios_new_rounded) 
     ),
     title: Text(
