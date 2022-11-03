@@ -89,7 +89,7 @@ class ResetEmailPage extends UserInterface{
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    FormFeilds.textField(
+                    FormFeilds.textFormField(
                       controller: updateemailController, 
                       keyboardType: TextInputType.emailAddress, 
                       hintText: 'hello@company.com',
