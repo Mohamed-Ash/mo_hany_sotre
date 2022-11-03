@@ -8,21 +8,25 @@ import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 // ignore: must_be_immutable
-class AddItemShippingPage extends AdminInterface{
+class AddItemPage extends AdminInterface{
   late ApiDataBloc<CategoryModel> categoryBloc;
   late ApiDataBloc<ItemModel> itemBloc;
   
   final CategoryModel? categoriesModel;
 
-  AddItemShippingPage({super.key, this.categoriesModel}){
+  AddItemPage({super.key, this.categoriesModel}){
     categoryBloc = ApiDataBloc<CategoryModel>();
     itemBloc = ApiDataBloc<ItemModel>();
   }
 
-  @override
+   @override
   PreferredSizeWidget? appBar(BuildContext context) => AppBar(
+    leading: IconButton(
+      onPressed: () => Navigator.pop(context),
+      icon: const Icon(Icons.arrow_back_ios_new_rounded) 
+    ),
     title: Text(
-      'Dashbord',
+      'Add Products',
       style: getBoldStyle(color: ColorTheme.wight,fontSize: 22),
     ),
   );
