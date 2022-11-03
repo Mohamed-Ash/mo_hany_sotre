@@ -21,7 +21,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   bool showPassword = true;
   bool showConfirmPassword = true;
 
-  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final comfirmPasswordController = TextEditingController();
@@ -107,7 +106,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  FormFeilds.textField(
+                  FormFeilds.textFormField(
                     controller: emailController, 
                     keyboardType: TextInputType.emailAddress, 
                     hintText:  'hello@company.com',
@@ -147,7 +146,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  FormFeilds.textField(
+                  FormFeilds.textFormField(
                     controller: passwordController, 
                     keyboardType: TextInputType.visiblePassword, 
                     obscureText: showPassword,
@@ -198,7 +197,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  FormFeilds.textField(
+                  FormFeilds.textFormField(
                     controller: comfirmPasswordController, 
                     keyboardType: TextInputType.visiblePassword, 
                     obscureText: showConfirmPassword,
@@ -354,20 +353,21 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       );
       print(userCredential.user!.emailVerified);
         User? user = FirebaseAuth.instance.currentUser;
+      
           await FirebaseFirestore.instance.collection("users")
           .add({
-            "usernaem": nameController.text,
             "email": emailController.text,
             "id":user!.uid
           });
-        Navigator.pushNamedAndRemoveUntil(context, appPageLayout, (route) => false);
-      if(userCredential.user!.emailVerified == false ){
+        Navigator.pushNamedAndRemoveUntil(context, confirmEmailPage, (route) => false);
+        // await user.sendEmailVerification();
+      /* if(userCredential.user!.emailVerified == false ){
         // await user.sendEmailVerification()
         //   .then((value) =>
         //    Navigator.pushNamed(context, appPageLayout));
       }else{
 
-      }
+      } */
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Navigator.of(context).pop();
@@ -376,7 +376,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
           message: 'The password provided is too weak.',
           actions: <Widget>[
             TextButton(
-              onPressed: ()=>Navigator.of(context).pop(), 
+              onPressed: ()=> Navigator.of(context).pop(), 
               child: Text(
                 'Okay',
                 style: getBoldStyle(color: ColorTheme.wight,
@@ -425,9 +425,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       );
 
       if (credential.idToken == null) {
-        Navigator.pushNamedAndRemoveUntil(context, loginPage, (route) => false);
+       Navigator.popUntil(context, (route) => false);
       } else {
-        Navigator.pushNamedAndRemoveUntil(context, appPageLayout, (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
       }
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
