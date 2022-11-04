@@ -1,17 +1,22 @@
 // ignore_for_file: avoid_print, unrelated_type_equality_checks
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/helper/next_id_helper.dart';
+import 'package:m_hany_store/core/model/user_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/font_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 class RegisterWidget extends StatefulWidget {
-  const RegisterWidget({Key? key}) : super(key: key);
+  final ApiDataBloc<UserModel> userBloc;
+
+  const RegisterWidget({Key? key,required this.userBloc}) : super(key: key);
 
   @override
   State<RegisterWidget> createState() => _RegisterWidgetState();
@@ -347,27 +352,18 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   Future<void> buildResister(context)async{
     try {
       FormFeilds.showLoading(context);
-      final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
-      print(userCredential.user!.emailVerified);
-        User? user = FirebaseAuth.instance.currentUser;
-      
-          await FirebaseFirestore.instance.collection("users")
-          .add({
-            "email": emailController.text,
-            "id":user!.uid
-          });
-        Navigator.pushNamedAndRemoveUntil(context, confirmEmailPage, (route) => false);
-        // await user.sendEmailVerification();
-      /* if(userCredential.user!.emailVerified == false ){
-        // await user.sendEmailVerification()
-        //   .then((value) =>
-        //    Navigator.pushNamed(context, appPageLayout));
-      }else{
-
-      } */
+      String id = await NextIdHelper.getNextId('user');
+      UserModel data = UserModel(
+        id: id,
+        email: emailController.text,
+        token: await FirebaseMessaging.instance.getToken(),
+      );
+      widget.userBloc.add(StoreDataEvent(data: data.tojson()));
+      Navigator.pushNamedAndRemoveUntil(context, confirmEmailPage, (route) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Navigator.of(context).pop();
@@ -425,10 +421,20 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       );
 
       if (credential.idToken == null) {
-       Navigator.popUntil(context, (route) => false);
+      //  Navigator.popUntil(context, (route) => false);
       } else {
+        // print(user.email);
+
         Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
       }
+        String id = await NextIdHelper.getNextId('user');
+        UserModel data = UserModel(
+          id:id,
+          email: googleUser!.email,
+          token: await FirebaseMessaging.instance.getToken(),
+        );
+        widget.userBloc.add(StoreDataEvent(data: data.tojson()));
+        // widget.userBloc.add(DeleteDataEvent(id: id));
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
   }

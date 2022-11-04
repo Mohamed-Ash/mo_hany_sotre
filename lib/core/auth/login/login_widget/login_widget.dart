@@ -1,16 +1,21 @@
 // ignore_for_file: avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
+import 'package:m_hany_store/core/helper/next_id_helper.dart';
+import 'package:m_hany_store/core/model/user_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/font_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+  final ApiDataBloc<UserModel> userBloc;
+  const LoginWidget({Key? key,required this.userBloc}) : super(key: key);
 
   @override
   State<LoginWidget> createState() => _LoginWidgetState();
@@ -288,10 +293,17 @@ class _LoginWidgetState extends State<LoginWidget> {
   Future<void> buildLoginUser(context)async{
     try {
       FormFeilds.showLoading(context);
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
+      String id = await NextIdHelper.getNextId('user');
+      UserModel data = UserModel(
+        id: id,
+        email: emailController.text,
+        token:await FirebaseMessaging.instance.getToken(),
+      );
+      widget.userBloc.add(StoreDataEvent(data: data.tojson()));
       Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
      /*  if(credential.user!.emailVerified){
       }else{
@@ -366,6 +378,13 @@ class _LoginWidgetState extends State<LoginWidget> {
       if (credential.idToken == null) {
         Navigator.popUntil(context, (route) => false);
       } else {
+        String id = await NextIdHelper.getNextId('user');
+        UserModel data = UserModel(
+          id:id,
+          email: googleUser!.email,
+          token: await FirebaseMessaging.instance.getToken()
+        );
+        widget.userBloc.add(StoreDataEvent(data: data.tojson()));
         Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
       }
       // Once signed in, return the UserCredential
