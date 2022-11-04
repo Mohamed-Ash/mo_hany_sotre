@@ -2,13 +2,11 @@ class NotifcationModel{
   final String title;
   final String body;
   final String? image;
-  final String? id;
 
   NotifcationModel({
     required this.title,
     required this.body,
     required this.image,
-    this.id,
   });
   factory NotifcationModel.fromJson(Map<String,dynamic> json){
     return NotifcationModel(
@@ -17,5 +15,4 @@ class NotifcationModel{
       image: json['image'],  
     );
   }
-  Map<String,dynamic>tojson()=>{};
 }
