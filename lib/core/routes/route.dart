@@ -34,12 +34,12 @@ class Routes{
   Route? generateRoute(RouteSettings settings){
     switch (settings.name) {
       // todo: auth
-      case registerPage:                                        return MaterialPageRoute(builder: (_)=> const RegisterPage());
-      case loginPage:                                           return MaterialPageRoute(builder: (_)=> const LoginPage());
+      case registerPage:                                        return MaterialPageRoute(builder: (_)=> RegisterPage());
+      case loginPage:                                           return MaterialPageRoute(builder: (_)=> LoginPage());
       case resetPasswordPage:                                   return MaterialPageRoute(builder: (_)=> ResetPasswordPage());
       case checkEmailPage:                                      return MaterialPageRoute(builder: (_)=> const CheckEmailPage());
       case resetEmailPage:                                      return MaterialPageRoute(builder: (_)=> ResetEmailPage());
-      case confirmEmailPage:                                    return MaterialPageRoute(builder: (_)=> const ConfirmEmailPage());
+      case confirmEmailPage:                                    return MaterialPageRoute(builder: (_)=> ConfirmEmailPage());
       
       // todo: user
       case appPageLayout:                                       return MaterialPageRoute(builder: (_)=> const AppPageLayout());
