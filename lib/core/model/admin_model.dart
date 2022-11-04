@@ -1,14 +1,14 @@
 class AdminModel{
-  final String adminId;
+  final String email;
 
-  AdminModel({required this.adminId});
+  AdminModel({required this.email});
   
   factory AdminModel.fromJson(Map<String,dynamic> json){
     return AdminModel(
-      adminId: json['admin_id'],
+      email: json['email'],
     );
   }
   Map<String,dynamic> toJson() => {
-    "admin_id":adminId
+    "email":email
   };
 }
