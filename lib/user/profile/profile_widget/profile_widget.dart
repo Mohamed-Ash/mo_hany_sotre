@@ -22,15 +22,14 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
-  AdminModel? adminModel;
   Future<void>? launched;
-  Uri phone  = Uri.parse('tel:+201115506613'); 
+  Uri phone  = Uri.parse('tel:+201068693963'); 
   
   final user = FirebaseAuth.instance.currentUser;
   final Uri toLaunchFacbook = Uri(scheme: 'https', host: 'fb.me', path: '/mhany.store');
   final Uri toLaunchMessenger = Uri(scheme: 'https', host: 'm.me', path: '/MuhamedElnaashar');
   final Uri toLaunchDiscord = Uri(scheme: 'https', host: 'discord.com', path: '/invite/ZNbkzxhfxn');
-  final Uri toLaunchWhatsapp = Uri(scheme: 'https', host: 'wa.me', path: '/201115506613');
+  final Uri toLaunchWhatsapp = Uri(scheme: 'https', host: 'wa.me', path: '/201068693963');
 
 
 // https://www.facebook.com/messages/t/103525794476793
@@ -376,7 +375,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }){
     print('=====================');
     print(adminModel.adminId.toString());
-    if (adminModel.adminId == user!.uid){
+    if (adminModel.adminId == user!.email){
       return InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: (){
