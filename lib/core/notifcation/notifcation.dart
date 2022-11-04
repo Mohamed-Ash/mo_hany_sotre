@@ -6,7 +6,6 @@ class NotifcationPage{
   Future<void> sendNotification({
     required String title,
     required String body,
-    required String id,
   }) async {
     const postUrl = 'https://fcm.googleapis.com/fcm/send';
     Dio dio = Dio();
@@ -25,7 +24,7 @@ class NotifcationPage{
         "title": title,
         "body": body
       },
-      "to": id,
+      "to": '/topics/all',
     };
 
     dio.options.headers['Content-Type'] = 'application/json';

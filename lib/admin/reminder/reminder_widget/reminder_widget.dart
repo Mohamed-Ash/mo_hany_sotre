@@ -1,18 +1,12 @@
-// ignore_for_file: avoid_print
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/notifcation_model.dart';
-import 'package:m_hany_store/core/model/user_model.dart';
 import 'package:m_hany_store/core/notifcation/notifcation.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 
 class ReminderWidget extends StatefulWidget{
-  final ApiDataBloc<UserModel> userBloc;
-  const ReminderWidget({super.key,required this.userBloc});
+  const ReminderWidget({super.key,});
 
   @override
   State<ReminderWidget> createState() => _ReminderWidgetState();
@@ -106,11 +100,9 @@ class _ReminderWidgetState extends State<ReminderWidget> {
             const SizedBox(
               height:33, 
             ),
-            InkWell(
+           InkWell(
               onTap: ()async{
-                if(formKey.currentState!.validate()){
-                  await setReminder();
-                  }
+                setReminder();
               },
               child: FormFeilds.buttonFormField(
                 widthtButton: double.infinity,
@@ -122,7 +114,8 @@ class _ReminderWidgetState extends State<ReminderWidget> {
             const SizedBox(
               height: 40,
             ),
-              BlocBuilder(
+            
+            /*   BlocBuilder(
               bloc: widget.userBloc,
               builder: (context, state) {
                 if (state is DataLoadedState) {
@@ -130,50 +123,41 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                     shrinkWrap: true ,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: state.data.length,
-                    itemBuilder: (context, index) {
-                      return setReminder(userModel: state.data[index],);
+                    itemBuilder: (BuildContext context, int index){
+                      return InkWell(
+                        onTap: ()async{
+                          setReminder(userModel: state.data[index]);
+                        },
+                        child: FormFeilds.buttonFormField(
+                          widthtButton: double.infinity,
+                          heightButton: 50,
+                          title: 'Done',
+                          colorButton: ColorTheme.primary, 
+                        ),
+                      );
                     },
                   );
                 }else if(state is DataLoadingState){
-                  return const CircularProgressIndicator();
+                  return const CircularProgressIndicator(color: Colors.transparent,);
                 }else {
                   return const Text('404');
                 }
               } 
-            ),
+            ), */
           ],
         ),
       ),
     );
   }
 
-  setReminder({
-     UserModel? userModel
-  }){
-    try {
-      if (userModel!.token == null ) {
-        print('token is null');
-      } else {
-        InkWell(
-          onTap: ()async{
-            if(formKey.currentState!.validate()){
-              NotifcationPage().sendNotification(
-                title: nameController.text,
-                body: bodyController.text, 
-                id: userModel.id,
-              );
-            }
-          },
-          child: FormFeilds.buttonFormField(
-            widthtButton: double.infinity,
-            heightButton: 50,
-            title: 'Done',
-            colorButton: ColorTheme.primary, 
-          ),
-        );
-      }
-    } catch (e) {
-      print('===================error notification =================$e');
+  setReminder()async{
+    if(formKey.currentState!.validate()){
+      await NotifcationPage().sendNotification(
+        title: nameController.text,
+        body: bodyController.text,
+      );
+    }else{
+      return Container();
     }
   }
 }

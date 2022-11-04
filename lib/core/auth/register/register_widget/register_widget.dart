@@ -360,8 +360,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       UserModel data = UserModel(
         id: id,
         email: emailController.text,
-        token: await FirebaseMessaging.instance.getToken(),
       );
+      await FirebaseMessaging.instance.subscribeToTopic('all');
       widget.userBloc.add(StoreDataEvent(data: data.tojson()));
       Navigator.pushNamedAndRemoveUntil(context, confirmEmailPage, (route) => false);
     } on FirebaseAuthException catch (e) {
@@ -389,7 +389,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
           message: 'The account already exists for that email.',
           actions: <Widget> [
             TextButton(
-              onPressed: ()=>Navigator.of(context).pop(), 
+              onPressed: ()=> Navigator.of(context).pop(), 
               child: Text(
                 'Okay',
                 style: getBoldStyle(color: ColorTheme.wight,
@@ -407,35 +407,28 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   }
   
   Future<UserCredential> signInWithGoogle(context) async {
-      FormFeilds.showLoading(context);
-      // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    FormFeilds.showLoading(context);
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
 
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    if (credential.idToken == null) {
+    //  Navigator.popUntil(context, (route) => false);
+    } else {
+      // print(user.email);
 
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+      Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
+    }
+      String id = await NextIdHelper.getNextId('user');
+      UserModel data = UserModel(
+        id:id,
+        email: googleUser!.email,
       );
-
-      if (credential.idToken == null) {
-      //  Navigator.popUntil(context, (route) => false);
-      } else {
-        // print(user.email);
-
-        Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
-      }
-        String id = await NextIdHelper.getNextId('user');
-        UserModel data = UserModel(
-          id:id,
-          email: googleUser!.email,
-          token: await FirebaseMessaging.instance.getToken(),
-        );
-        widget.userBloc.add(StoreDataEvent(data: data.tojson()));
-        // widget.userBloc.add(DeleteDataEvent(id: id));
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseMessaging.instance.subscribeToTopic('all');
+      widget.userBloc.add(StoreDataEvent(data: data.tojson()));
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

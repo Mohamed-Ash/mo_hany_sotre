@@ -6,14 +6,15 @@ import 'package:m_hany_store/core/model/user_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
+// ignore: must_be_immutable
 class ReminderPage extends AdminInterface{
   late ApiDataBloc<UserModel> userBloc;
   
   ReminderPage({super.key}){
-    userBloc = ApiDataBloc()..add(const IndexDataEvent());
+    userBloc = ApiDataBloc<UserModel>()..add(const IndexDataEvent());
   }
 
-   @override
+  @override
   PreferredSizeWidget? appBar(BuildContext context) => AppBar(
     leading: IconButton(
       onPressed: () => Navigator.pop(context),
@@ -27,6 +28,6 @@ class ReminderPage extends AdminInterface{
   
   @override
   Widget buildBody(BuildContext context) {
-    return ReminderWidget(userBloc: userBloc,);
+    return const ReminderWidget();
   }
 }

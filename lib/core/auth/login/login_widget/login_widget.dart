@@ -301,8 +301,8 @@ class _LoginWidgetState extends State<LoginWidget> {
       UserModel data = UserModel(
         id: id,
         email: emailController.text,
-        token:await FirebaseMessaging.instance.getToken(),
       );
+      await FirebaseMessaging.instance.subscribeToTopic('all');
       widget.userBloc.add(StoreDataEvent(data: data.tojson()));
       Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
      /*  if(credential.user!.emailVerified){
@@ -382,8 +382,8 @@ class _LoginWidgetState extends State<LoginWidget> {
         UserModel data = UserModel(
           id:id,
           email: googleUser!.email,
-          token: await FirebaseMessaging.instance.getToken()
         );
+        await FirebaseMessaging.instance.subscribeToTopic('all');
         widget.userBloc.add(StoreDataEvent(data: data.tojson()));
         Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
       }
