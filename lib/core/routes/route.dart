@@ -39,7 +39,7 @@ class Routes{
       case resetPasswordPage:                                   return MaterialPageRoute(builder: (_)=> ResetPasswordPage());
       case checkEmailPage:                                      return MaterialPageRoute(builder: (_)=> const CheckEmailPage());
       case resetEmailPage:                                      return MaterialPageRoute(builder: (_)=> ResetEmailPage());
-      case confirmEmailPage:                                    return MaterialPageRoute(builder: (_)=> ConfirmEmailPage());
+      case confirmEmailPage:                                    return MaterialPageRoute(builder: (_)=> const ConfirmEmailPage());
       
       // todo: user
       case appPageLayout:                                       return MaterialPageRoute(builder: (_)=> const AppPageLayout());
@@ -56,7 +56,7 @@ class Routes{
 
       case adminHome:                                           return MaterialPageRoute(builder: (_)=> const AdminHome());
       // case adminProductsPage:                                   return MaterialPageRoute(builder: (_)=> const AdminProductsPage());
-      case adminPanelPage:                                      return MaterialPageRoute(builder: (_)=> const AdminPanelPage());
+      case adminPanelPage:                                      return MaterialPageRoute(builder: (_)=> AdminPanelPage());
       case categoriesPage:                                      return MaterialPageRoute(builder: (_)=> CategoriePage());
       case addItemCategoriesPage:                               return MaterialPageRoute(builder: (_)=> AddItemCategoriesPage());
       case itemPage:                                            return MaterialPageRoute(builder: (_)=> ItemPage(categoriesModel: settings.arguments as CategoryModel,));
