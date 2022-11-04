@@ -25,6 +25,6 @@ class ModelInterface {
     CategoryModel: ModelClass(collection: 'categories', factory: CategoryModel.fromJson),
     AdminModel:    ModelClass(collection: 'admin', factory: AdminModel.fromJson),
     MessageModel:  ModelClass(collection: 'messages', factory: MessageModel.fromJson),
-    UserModel:     ModelClass(collection: 'usertoken', factory: UserModel.fromJson),
+    UserModel:     ModelClass(collection: 'user', factory: UserModel.fromJson),
   };
 }
