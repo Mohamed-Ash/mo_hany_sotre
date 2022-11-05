@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:m_hany_store/admin/admin_panel/admin_panel_page/admin_panel_page.dart';
+import 'package:m_hany_store/admin/admin_panel/show_users/show_users_page/show_users_page.dart';
 import 'package:m_hany_store/admin/categories/categories_page/add_item_categories_page.dart';
 import 'package:m_hany_store/admin/categories/categories_page/categories_page.dart';
 import 'package:m_hany_store/admin/categories/categories_page/edit_item_categories_page.dart';
@@ -11,6 +12,7 @@ import 'package:m_hany_store/admin/item/item_page/preview_item_page.dart';
 import 'package:m_hany_store/admin/messages/messages_page/messages_form_page.dart';
 import 'package:m_hany_store/admin/messages/messages_page/messages_page.dart';
 import 'package:m_hany_store/admin/reminder/reminder_page/reminder_page.dart';
+import 'package:m_hany_store/admin/show_admins/show_admins_page/show_admins_page.dart';
 import 'package:m_hany_store/core/auth/confirm_email/confirm_email_page/confirm_email_page.dart';
 import 'package:m_hany_store/core/auth/login/login_page/login_page.dart';
 import 'package:m_hany_store/core/auth/register/register_page/register_page.dart';
@@ -55,8 +57,7 @@ class Routes{
       // todo: admin
 
       case adminHome:                                           return MaterialPageRoute(builder: (_)=> const AdminHome());
-      // case adminProductsPage:                                   return MaterialPageRoute(builder: (_)=> const AdminProductsPage());
-      case adminPanelPage:                                      return MaterialPageRoute(builder: (_)=> AdminPanelPage());
+      case adminPanelPage:                                      return MaterialPageRoute(builder: (_)=> const AdminPanelPage());
       case categoriesPage:                                      return MaterialPageRoute(builder: (_)=> CategoriePage());
       case addItemCategoriesPage:                               return MaterialPageRoute(builder: (_)=> AddItemCategoriesPage());
       case itemPage:                                            return MaterialPageRoute(builder: (_)=> ItemPage(categoriesModel: settings.arguments as CategoryModel,));
@@ -66,6 +67,9 @@ class Routes{
       case previewItemCategoriesPage:                           return MaterialPageRoute(builder: (_)=> PreviewItemCategoriesPage(categoriesModel: settings.arguments as CategoryModel));
       case addItemPage:                                         return MaterialPageRoute(builder: (_)=> AddItemPage(categoriesModel: settings.arguments as CategoryModel,));
       case previewItemPage:                                     return MaterialPageRoute(builder: (_)=> PreviewItemPage(itemModel: settings.arguments as ItemModel,));
+      case showUsersPage:                                       return MaterialPageRoute(builder: (_)=> ShowUsers());
+      case showAdminsPage:                                      return MaterialPageRoute(builder: (_)=> ShowAdminsPage());
+      // case adminProductsPage:                                   return MaterialPageRoute(builder: (_)=> const AdminProductsPage());
       // case editItemPage:                                        return MaterialPageRoute(builder: (_)=> EditItemPage(itemModel: settings.name as ItemModel, categoriesModel: settings.name as CategoryModel,));
 
       // todo: notifications
