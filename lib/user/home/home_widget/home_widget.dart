@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/category_model.dart';
+import 'package:m_hany_store/core/model/user_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
@@ -15,8 +16,9 @@ import 'package:m_hany_store/core/theme/fonts/style.dart';
 // ignore: must_be_immutable
 class HomeWidget extends StatefulWidget {
   late ApiDataBloc<CategoryModel> categoryBloc;
+  late ApiDataBloc<UserModel> userModel;
   
-  HomeWidget({Key? key,required this.categoryBloc}) : super(key: key);
+  HomeWidget({Key? key,required this.categoryBloc, required this.userModel}) : super(key: key);
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -24,32 +26,39 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
 
-  var getToken = FirebaseMessaging.instance;
+
+
   @override
   void initState() {
     super.initState();
-   /*  getToken.getToken().then((value) {
-      print('=============token=============');
-      print(value);
-      print('====================');
-    });
-     */
-    // setupToken();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    
+    /* FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('========================================token=========================================');
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
+        print('Message also contained a notification: ${message.notification!.body}');
+      print('========================================token=========================================');
+        Navigator.pushNamed(context,topicPage);
+      // if (message.notification != null) {
+      // }
+    }); */
     FirebaseMessaging.onMessage.listen((event) {
       print('================= event data =================');
       print(event.notification!.body.toString());
       print('=====================================');
     });
+    // initialMessage();
     widget.categoryBloc= ApiDataBloc()..add(const IndexDataEvent());
   }
+/* 
+  initialMessage()async{
+    var messg = await FirebaseMessaging.instance.getInitialMessage();
+    if (messg != null ) {
+      // ignore: use_build_context_synchronously
+      // Navigator.pushNamed(context,topicPage);
+    }
+  } */
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
