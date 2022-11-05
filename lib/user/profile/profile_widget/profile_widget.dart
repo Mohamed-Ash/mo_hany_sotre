@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
@@ -57,53 +58,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            /* Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 15, 15),
-              child: Text(
-                'My Profile',
-                style: getBoldStyle(color: ColorTheme.wight),
-              ),
-            ), */
-            /* Container(
-              width: double.infinity,
-              // height: 60,
-              decoration: BoxDecoration(
-              color: ColorTheme.darkAppBar,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: (){
-
-                      },
-                      child: FormFeilds.rowTextIcon(
-                        isImage: false,
-                        text: 'Personal info', 
-                        iconData: Icons.arrow_forward_ios_sharp,
-                        iconSize: 16,
-                      ),
-                    ),
-                    /* const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Divider(
-                        color: ColorTheme.primary,
-                        thickness: 1,
-                      ),
-                    ),
-                    FormFeilds.rowTextIcon(
-                      isImage: false,
-                      // firstIconData: Icons.favorite_border_rounded,
-                      // firstIconImage: 'assets/icons/purse.png',
-                      text:  'Liprary',
-                      iconData:  Icons.arrow_forward_ios_sharp,
-                    ), */
-                  ],
-                ),
-              ),
-            ), */
             Padding(
               padding: const EdgeInsets.fromLTRB( 0, 20, 15, 15),
               child: Text(
@@ -147,7 +101,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       },
                       child: FormFeilds.rowTextIcon(
                         isImage: true,
-                        // firstIconData: Icons.favorite_border_rounded,
                         firstIconImage: 'assets/icons/email.png',
                         text:  'Change Email ',
                         iconData:  Icons.arrow_forward_ios_sharp,
@@ -170,19 +123,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 borderRadius: BorderRadius.circular(8),
               ),
               width: double.infinity,
-              // height: 60,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                 child: Column(
                   children: [
                     InkWell(
                       onTap: () async{
-                      
-                        if (await launchUrl(phone)) {
-                          
-                        } else {
-                          
-                        }
+                        if (await launchUrl(phone)) {}
                       },
                       child: FormFeilds.rowTextIcon(
                         isImage: true,
@@ -241,7 +188,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       child: FormFeilds.rowTextIcon(
                         isImage: true,
                         firstIconImage: 'assets/images/messenger.png',
-                        // iconSize: 44,
                         text: 'massenger',
                         iconData: Icons.arrow_forward_ios_sharp,
                       ),
@@ -268,7 +214,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ),
               ),
             ),
-            
             Padding(
               padding: const EdgeInsets.fromLTRB(0 , 33, 22, 33),
               child: InkWell(
@@ -329,53 +274,19 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               } 
             ),
             const SizedBox(height: 35,)
-            /* StreamBuilder(
-              stream: users.snapshots(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    shrinkWrap: true ,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      if (snapshot.data!.docs[index]['admin_id'] == user!.uid) {
-                        print('=====================');
-                        print(snapshot.data!.docs[index]['admin_id'].toString());
-                        print('=====================');
-                        return  InkWell(
-                          borderRadius: BorderRadius.circular(8),
-                          onTap: (){
-                            Navigator.pushNamed(context, categoriesPage);
-                          },
-                          child: FormFeilds.buttonFormField(
-                            dPadding: false,
-                            title: 'Go to dashboard',
-                            colorButton: ColorTheme.primary,
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  );
-                  
-                } else {
-                  return Container();
-                }
-              } ,
-            ), */
           ],
         ),
       ),
     );
   }
+
   buildAdminButton({
      required AdminModel adminModel,
      required BuildContext context,
   }){
     print('=====================');
-    print(adminModel.adminId.toString());
-    if (adminModel.adminId == user!.email){
+    print(adminModel.email.toString());
+    if (adminModel.email == user!.email){
       return InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: (){
@@ -393,83 +304,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   logOut(context)async{
+    await FirebaseMessaging.instance.unsubscribeFromTopic('all');
     await FirebaseAuth.instance.signOut();
-    // Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
-    Navigator.pushReplacementNamed(context, loginPage);
+    Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
+    // Navigator.pushReplacementNamed(context, loginPage);
   }
 }  
-//   getData()async{
-//     try {
-//       var userss = await users.get();
-//       for (var element in userss.docs) {
-//         getAdmin.add(element.data());
-//       }
-//     } catch (e) {
-//       print(e.toString());
-//     }
-//   }
-// }
- /*  StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, userSnapshot) {
-                if (userSnapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                }
-                if (userSnapshot.connectionState == ConnectionState.done) {
-                  if (!userSnapshot.hasData) {
-                   return const Text('user');
-                  }
-                  else if (userSnapshot.data == "uidOfYourAdminUser") {
-                    return const Text('admin');
-                  }else{
-                    return const Text('user');
-                  }
-                }
-                return Container();
-              }
-            ) */
-            /* if(user!.uid.toString() == 'uO7W8tArnkTNDR6lJ6yOK553vXt2')
-              InkWell(
-                borderRadius: BorderRadius.circular(8),
-                onTap: (){
-                  Navigator.pushNamed(context, categoriesPage);
-                },
-                child: FormFeilds.buttonFormField(
-                  dPadding: false,
-                    title: 'Go to dashboard',
-                    colorButton: ColorTheme.primary
-                  ),
-              )
-            else
-              Container() , */
-           /*  BlocBuilder(
-              bloc: widget.adminBloc,
-              builder: (context, state) {
-                if (state is DataLoadedState) {
-                  if( state.data == user!.uid ){
-                    return InkWell(
-                      borderRadius: BorderRadius.circular(8),
-                      onTap: (){
-                        Navigator.pushNamed(context, categoriesPage);
-                      },
-                      child: FormFeilds.buttonFormField(
-                        dPadding: false,
-                          title: 'Go to dashboard',
-                          colorButton: ColorTheme.primary
-                        ),
-                    );
-                  }else{
-                    return Container() ; 
-                  }
-                  /* return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder:(context, index) => readDashboard(adminModel: state.data[index]),
-                  ); */
-                } else if(state is DataLoadingState){
-                  return  const Center(child: CircularProgressIndicator(color: ColorTheme.primary),);
-                } else{
-                  return Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),);
-                }
-              }
-            ), */
