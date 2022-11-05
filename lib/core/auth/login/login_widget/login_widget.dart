@@ -390,5 +390,4 @@ class _LoginWidgetState extends State<LoginWidget> {
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
   }
-  
 }

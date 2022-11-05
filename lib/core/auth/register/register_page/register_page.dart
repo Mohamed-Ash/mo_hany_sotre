@@ -8,7 +8,7 @@ class RegisterPage extends UserInterface{
   late final ApiDataBloc<UserModel> userBloc;
 
   RegisterPage({super.key}){
-    userBloc = ApiDataBloc<UserModel>();
+    userBloc = ApiDataBloc<UserModel>()..add(const IndexDataEvent());
   }
 
   @override
