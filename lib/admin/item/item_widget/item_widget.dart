@@ -12,21 +12,21 @@ import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 
-class ShippingWidget extends StatefulWidget {
+class ItemWidget extends StatefulWidget {
   final CategoryModel categoriesModel;
   final ApiDataBloc<ItemModel> itemBloc;
 
-  const ShippingWidget({
+  const ItemWidget({
     Key? key, 
     required this.categoriesModel,
     required this.itemBloc,
     }) : super(key: key);
 
   @override
-  State<ShippingWidget> createState() => _ShippingWidgetState();
+  State<ItemWidget> createState() => _ItemWidgetState();
 }
  
-class _ShippingWidgetState extends State<ShippingWidget> {
+class _ItemWidgetState extends State<ItemWidget> {
 
   @override
   Widget build(BuildContext context){
