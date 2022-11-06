@@ -1,3 +1,4 @@
+import 'package:date_count_down/date_count_down.dart';
 import 'package:flutter/material.dart';
 import 'package:image_preview/image_preview.dart';
 import 'package:m_hany_store/admin/admin_interface.dart';
@@ -16,6 +17,18 @@ class PreviewItemPage extends AdminInterface{
 
   @override
   Widget buildBody(BuildContext context) {
+        Object fiterOperatorr ;
+
+    if (itemModel.percent! < 10) {
+      fiterOperatorr = itemModel.percent.toString().substring(0,1 );
+    } else if(itemModel.price == itemModel.offerPrice ){
+      fiterOperatorr = 100 ;
+    }else{
+      fiterOperatorr = itemModel.percent.toString().substring(0,2);
+    }
+    // var fiterPercent = itemModel.price == itemModel.offerPrice ? 100 : itemModel.percent.toString().substring(0,2);
+    var fiterOfferPrice = itemModel.price == itemModel.offerPrice ? 'free' : "${itemModel.offerPrice} LE";
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -132,26 +145,6 @@ class PreviewItemPage extends AdminInterface{
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Price ',
-                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                ),
-                Text(
-                  "${itemModel.price}",
-                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                ),
-              ],
-            ),
-          ),  
-          const Divider(
-            color: ColorTheme.porder,
-            thickness: 1,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18,0,18,0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
                   'Platform',
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
@@ -172,6 +165,93 @@ class PreviewItemPage extends AdminInterface{
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
+                  'Price ',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                ),
+                Text(
+                  "${itemModel.price} LE",
+                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                ),
+              ],
+            ),
+          ),  
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Offer Price ',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                ),
+                Text(
+                  fiterOfferPrice,
+                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                ),
+              ],
+            ),
+          ),  
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Percent',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                ),
+                Text(
+                  "$fiterOperatorr %",
+                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
+                ),
+              ],
+            ),
+          ),  
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Date',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
+                ),
+                CountDownText(
+                  due: DateTime.parse("${itemModel.dateOffer}"),
+                  finishedText: "This offer has expired",
+                  showLabel: true,
+                  longDateName: true,
+                  daysTextLong: " days ",
+                  hoursTextLong: " hours ",
+                  minutesTextLong: " mins ",
+                  secondsTextLong: " secs ",
+                  style: getBoldStyle(color: ColorTheme.wight,fontSize: 14),
+                ),
+              ],
+            ),
+          ),  
+          const Divider(
+            color: ColorTheme.porder,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
                   'Creatged at ',
                   style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
                 ),
@@ -209,141 +289,5 @@ class PreviewItemPage extends AdminInterface{
         ],
       ),
     );
-   /*  return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            IconButton(
-              onPressed: () => Navigator.pop(context), 
-              icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
-            ),
-            getData(context),
-            
-          ],
-        ),
-      ),
-    ); */
   }
-
- /*  Widget getData(BuildContext context){
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            width:  MediaQuery.of(context).size.width,
-            height: 400, 
-            child: PhysicalModel(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              color: Colors.black,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(8),
-              child:FadeInImage.assetNetwork(
-                placeholder: 'assets/icons/lloading.gif',
-                image: itemModel.image,
-                fit: BoxFit.fill,
-                placeholderFit: BoxFit.contain,
-              ),
-            ),
-          ),
-          /* Container(
-            width: MediaQuery.of(context).size.width,
-            height: 300,
-            decoration:  BoxDecoration(
-              // color: Colors.white,
-              // borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                fit: BoxFit.contain,
-                image: NetworkImage("${itemModel.image}")
-              ),
-            ),
-          ), */
-          const SizedBox(
-            height: 22  ,
-          ),
-          const Divider(
-            color: ColorTheme.porder,
-            thickness: 1,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18,0,18,0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Name',
-                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                ),
-                Text(
-                  itemModel.name,
-                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                ),
-              ],
-            ),
-          ),  
-          const Divider(
-            color: ColorTheme.porder,
-            thickness: 1,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18,0,18,0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Creatged at ',
-                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                ),
-                Text(
-                  '${itemModel.createdAt}',
-                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                ),
-              ],
-            ),
-          ),  
-          const Divider(
-            color: ColorTheme.porder,
-            thickness: 1,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18,0,18,0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Updated At ',
-                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                ),
-                Text(
-                  '${itemModel.updatedAt}',
-                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                ),
-              ],
-            ),
-          ),  
-          const Divider(
-            color: ColorTheme.porder,
-            thickness: 1,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18,0,18,0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Rrgion ',
-                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                ),
-                Text(
-                  '${itemModel.region}',
-                  style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                ),
-              ],
-            ),
-          ),  
-        ],
-      ),
-    );
-  } */
 }
