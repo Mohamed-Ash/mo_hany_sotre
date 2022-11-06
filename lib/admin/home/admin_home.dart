@@ -32,7 +32,7 @@ class AdminHome extends AdminInterface{
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacementNamed(context, categoriesPage);
+                Navigator.pushNamed(context, categoriesPage);
               },
               child: Card(
                 color: ColorTheme.porder,
@@ -62,7 +62,40 @@ class AdminHome extends AdminInterface{
               height: 50,
             ),
             GestureDetector(
-              onTap: () => Navigator.pushReplacementNamed(context, adminPanelPage),
+              onTap: () {
+                Navigator.pushNamed(context, showOffersPage);
+                // Navigator.pushReplacementNamed(context, showOffersPage);
+              },
+              child: Card(
+                color: ColorTheme.porder,
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FormFeilds.containerImage(assetImage: 'assets/icons/un_select_offer.png'),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'offers',
+                        style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            GestureDetector(
+              onTap: () => Navigator.pushNamed(context, adminPanelPage),
+              // onTap: () => Navigator.pushReplacementNamed(context, adminPanelPage),
               child: Card(
                 color: ColorTheme.porder,
                 child: Container(
@@ -91,7 +124,8 @@ class AdminHome extends AdminInterface{
               height: 50,
             ),
             GestureDetector(
-              onTap: () => Navigator.pushReplacementNamed(context, topicPage),
+              onTap: () => Navigator.pushNamed(context, topicPage),
+              // onTap: () => Navigator.pushReplacementNamed(context, topicPage),
               child: Card(
                 color: ColorTheme.porder,
                 child: Container(
@@ -120,7 +154,8 @@ class AdminHome extends AdminInterface{
               height: 50,
             ),
             GestureDetector(
-              onTap: () => Navigator.pushReplacementNamed(context, reminderPage),
+              onTap: () => Navigator.pushNamed(context, reminderPage),
+              // onTap: () => Navigator.pushReplacementNamed(context, reminderPage),
               child: Card(
                 color: ColorTheme.porder,
                 child: Container(

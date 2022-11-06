@@ -13,6 +13,7 @@ import 'package:m_hany_store/admin/messages/messages_page/messages_form_page.dar
 import 'package:m_hany_store/admin/messages/messages_page/messages_page.dart';
 import 'package:m_hany_store/admin/reminder/reminder_page/reminder_page.dart';
 import 'package:m_hany_store/admin/show_admins/show_admins_page/show_admins_page.dart';
+import 'package:m_hany_store/admin/show_offers/show_offers_page/show_offers_page.dart';
 import 'package:m_hany_store/core/auth/confirm_email/confirm_email_page/confirm_email_page.dart';
 import 'package:m_hany_store/core/auth/login/login_page/login_page.dart';
 import 'package:m_hany_store/core/auth/register/register_page/register_page.dart';
@@ -69,6 +70,7 @@ class Routes{
       case previewItemPage:                                     return MaterialPageRoute(builder: (_)=> PreviewItemPage(itemModel: settings.arguments as ItemModel,));
       case showUsersPage:                                       return MaterialPageRoute(builder: (_)=> ShowUsers());
       case showAdminsPage:                                      return MaterialPageRoute(builder: (_)=> ShowAdminsPage());
+      case showOffersPage:                                      return MaterialPageRoute(builder: (_)=> ShowOffersPage());
       // case adminProductsPage:                                   return MaterialPageRoute(builder: (_)=> const AdminProductsPage());
       // case editItemPage:                                        return MaterialPageRoute(builder: (_)=> EditItemPage(itemModel: settings.name as ItemModel, categoriesModel: settings.name as CategoryModel,));
 
