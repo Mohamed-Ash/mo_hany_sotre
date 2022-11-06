@@ -76,7 +76,7 @@ class AppPageLayout extends UserInterface{
                       cubit.changeCurrentIndex(index);
                     },
                     // selectedItemColor: ColorTheme.darkAppBar,
-                    unselectedItemColor: ColorTheme.unSelectIconNavBar,
+                    // unselectedItemColor: ColorTheme.unSelectIconNavBar,
                     landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
                     
                     backgroundColor: ColorTheme.darkAppBar,
