@@ -36,6 +36,6 @@ class ItemPage extends AdminInterface{
 
   @override
   Widget buildBody(BuildContext context) {
-    return  ShippingWidget(itemBloc: itemBloc, categoriesModel: categoriesModel!,);
+    return  ItemWidget(itemBloc: itemBloc, categoriesModel: categoriesModel!,);
   }
 }
