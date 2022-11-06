@@ -13,7 +13,7 @@ class OfferPage extends UserInterface{
   OfferPage({super.key}) {
     itemBloc = ApiDataBloc<ItemModel>()..add( 
      IndexDataEvent(
-        where:  WhereCriteria(field: 'is_offer' ,isEqualTo: true),
+        where: WhereCriteria(field: 'is_offer' ,isEqualTo: true),
       ),
     );
   }
