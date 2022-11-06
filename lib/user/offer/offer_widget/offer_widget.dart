@@ -91,10 +91,11 @@ void initState() {
     required BuildContext context,
     required ItemModel itemModel,
   }){
-      Object fiterOperatorr ;
+    Object fiterOperatorr ;
+
     if (itemModel.percent! < 10) {
       fiterOperatorr = itemModel.percent.toString().substring(0,1 );
-    } else  if(itemModel.price == itemModel.offerPrice ){
+    } else if(itemModel.price == itemModel.offerPrice ){
       fiterOperatorr = 100 ;
     }else{
       fiterOperatorr = itemModel.percent.toString().substring(0,2);
@@ -217,7 +218,7 @@ void initState() {
                 padding: const EdgeInsets.fromLTRB(0,5,0,20),
                 child: CountDownText(
                   due: DateTime.parse("${itemModel.dateOffer}"),
-                  finishedText: "",
+                  finishedText: "This offer has expired",
                   showLabel: true,
                   longDateName: true,
                   daysTextLong: " days ",

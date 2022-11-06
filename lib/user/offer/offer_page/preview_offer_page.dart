@@ -152,7 +152,7 @@ class PreviewOfferPage extends UserInterface{
           ), */
           CountDownText(
             due: DateTime.parse("${itemModel.dateOffer}"),
-            finishedText: "",
+            finishedText: "This offer has expired",
             showLabel: true,
             longDateName: true,
             daysTextLong: " days ",
@@ -164,7 +164,7 @@ class PreviewOfferPage extends UserInterface{
           const SizedBox(
             height: 22,
           ),
-          Row(
+          /* Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FormFeilds.containerImage(assetImage: 'assets/images/download.png',height: 22,width: 22),
@@ -180,29 +180,8 @@ class PreviewOfferPage extends UserInterface{
                 width: 10,
               ),
             ],
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 15, 14, 15),
-            child: Text(
-              'In this section you can find all of FIFA\'s'
-              'official documents downloadable in PDF format.'
-              'From archived financial reports to published'
-              'circulars, on subjects as diverse at the Laws'
-              ' of the Game, the regulations of each and every'
-              'FIFA tournament, technical reports or even security'
-              'regulations, this collection of PDFs available online'
-              'via FIFA.com has been collated and organised to help you'
-              'find exactly the documents you are looking for.',
-              style: getRegulerStyle(
-                color: ColorTheme.authTitle,
-                fontSize: 14
-              ),
-            ),
-          ),
-          const Divider(
+          ), */
+                    const Divider(
             color: ColorTheme.primary,
             thickness: 1,
           ),
@@ -264,27 +243,59 @@ class PreviewOfferPage extends UserInterface{
                 ],
               ),
             ),  
-            const Divider(
-              color: ColorTheme.primary,
-              thickness: 1,
-            ),
-            InkWell(
-              onTap: () => Navigator.pushReplacementNamed(context, checkoutpage,arguments: itemModel),
-              child: FormFeilds.buttonFormField(
-                title: 'Buy',
-                colorButton: ColorTheme.primary,
-                colorText: ColorTheme.wight,
-                dPadding: false,
-                heightButton: 50,
-                widthtButton: 250,
+          const Divider(
+            color: ColorTheme.primary,
+            thickness: 1,
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          const Padding(
+            padding:  EdgeInsets.fromLTRB(22, 15, 22, 0),
+            child: Text(
+              'In this section you can find all of FIFA\'s'
+              'official documents downloadable in PDF format.'
+              'From archived financial reports to published'
+              'circulars, on subjects as diverse at the Laws'
+              ' of the Game, the regulations of each and every'
+              'FIFA tournament, technical reports or even security'
+              'regulations, this collection of PDFs available online'
+              'via FIFA.com has been collated and organised to help you'
+              'find exactly the documents you are looking for.',
+              style: TextStyle(
+                color: ColorTheme.hintText,
+                fontFamily: FontsTheme.fontFamily,
+                fontSize: 15,
+                height: 1.7,
+                fontWeight: FontWeight.w500,
               ),
             ),
+          ),
+          const Text(
+            'asd',
+            style: TextStyle(
+              color: Color.fromARGB(255, 158, 158, 158)
+            ),
+          ),
+          const SizedBox(height: 30),
+          InkWell(
+            onTap: () => Navigator.pushReplacementNamed(context, checkoutpage,arguments: itemModel),
+            child: FormFeilds.buttonFormField(
+              title: 'Buy',
+              colorButton: ColorTheme.primary,
+              colorText: ColorTheme.wight,
+              dPadding: false,
+              heightButton: 50,
+              widthtButton: 250,
+            ),
+          ),
+          const SizedBox(height: 30),
         ],
       ),
     );
   }
 
-  String rangView(){
+/*   String rangView(){
     if (itemModel.price<= 1000) {
       return '${itemModel.price.toString().substring(0,1)} k Download';
     } else if(itemModel.price<= 10000) {
@@ -292,7 +303,7 @@ class PreviewOfferPage extends UserInterface{
     }else{
       return '${itemModel.price} Download';
     }
-  }
+  } */
 
   /* createButtonSheet(BuildContext context){
     return showModalBottomSheet(
