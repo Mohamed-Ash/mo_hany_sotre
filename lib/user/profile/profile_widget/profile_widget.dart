@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/admin_model.dart';
+import 'package:m_hany_store/core/model/user_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
@@ -14,9 +15,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class ProfileWidget extends StatefulWidget {
-  ApiDataBloc<AdminModel>? adminBloc;
+  final ApiDataBloc<AdminModel> adminModel;
+  final ApiDataBloc<UserModel> userModel;
 
-  ProfileWidget({Key? key, required this.adminBloc}) : super(key: key);
+  const ProfileWidget({Key? key, required this.adminModel, required this.userModel}) : super(key: key);
 
   @override
   State<ProfileWidget> createState() => _ProfileWidgetState();
@@ -41,7 +43,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   void initState() {
     super.initState();
     getData();
-    // widget.adminBloc = ApiDataBloc<AdminModel>()..add(const IndexDataEvent());
+    // widget.adminModel = ApiDataBloc<AdminModel>()..add(const IndexDataEvent());
   } */
     Future<void> _launchInBrowser(Uri url) async {
     if (!await launchUrl(url, mode: LaunchMode.externalApplication,)) {
@@ -255,7 +257,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               ),
             ),
             BlocBuilder(
-              bloc: widget.adminBloc,
+              bloc: widget.adminModel,
               builder: (context, state) {
                 if (state is DataLoadedState) {
                   return ListView.builder(
