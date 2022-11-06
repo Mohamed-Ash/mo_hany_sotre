@@ -430,7 +430,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
           ), */
           CountDownText(
             due: DateTime.parse("${widget.itemModel.dateOffer}"),
-            finishedText: "",
+            finishedText: "This offer has expired",
             showLabel: true,
             longDateName: true,
             daysTextLong: " days ",
@@ -442,7 +442,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
           const SizedBox(
             height: 22,
           ),
-          Row(
+        /*   Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FormFeilds.containerImage(assetImage: 'assets/images/download.png',height: 22,width: 22),
@@ -458,7 +458,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
                 width: 10,
               ),
             ],
-          ),
+          ), */
           const SizedBox(
             height: 15,
           ),
