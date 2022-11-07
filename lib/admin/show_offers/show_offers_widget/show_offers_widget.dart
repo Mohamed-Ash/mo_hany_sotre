@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:date_count_down/date_count_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,13 +35,13 @@ class _ShowOffersWidgetState extends State<ShowOffersWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FormFeilds.containerImage(assetImage: 'assets/images/waiting.png',height: 200,width: 200),
+                  /* FormFeilds.containerImage(assetImage: 'assets/images/waiting.png',height: 200,width: 200),
                   const SizedBox(
                     height: 50,
-                  ),
+                  ), */
                   Text(
-                    'Wait for a new offers to be uploaded',
-                    style: getBoldStyle(color: ColorTheme.wight,fontSize: 14),
+                    'Offers page is empty',
+                    style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
                   ),
                 ],
               ),
