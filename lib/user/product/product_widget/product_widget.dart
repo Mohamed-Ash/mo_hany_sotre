@@ -107,15 +107,19 @@ class _ProductWidgetState extends State<ProductWidget> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 175,
-                  height: 180,
-                  decoration: BoxDecoration(
-                    borderRadius:BorderRadius.circular(8),
-                    image:   DecorationImage(
+                SizedBox(
+                  width: 180,
+                  height: 180, 
+                  child: PhysicalModel(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    color: Colors.black,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(8),
+                    child:FadeInImage.assetNetwork(
+                      placeholder: 'assets/icons/lloading.gif',
+                      image: itemModel.image,
                       fit: BoxFit.fill,
-                      image: NetworkImage(
-                        itemModel.image),
+                      placeholderFit: BoxFit.contain,
                     ),
                   ),
                 ),
