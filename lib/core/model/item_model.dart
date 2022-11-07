@@ -7,6 +7,7 @@ class ItemModel{
   final String image;
   final String region;
   final String platform;
+  final String info;
   final double price;
   final double? offerPrice;
   final double? percent;
@@ -24,6 +25,7 @@ class ItemModel{
     required this.name,
     required this.image,
     required this.region,
+    required this.info,
     required this.price,
     required this.platform,
     required this.colorPlatform,
@@ -48,6 +50,7 @@ class ItemModel{
       price: json['price'],
       offerPrice: json['offer_price'],
       percent: json['percent'],
+      info: json['info'],
       platform: json['plat_form'],
       urlLauncher: json['url_launcher'],
       colorPlatform: json['color_plat_form'],
@@ -68,6 +71,7 @@ class ItemModel{
     "name": name,
     "image": image,
     "region": region,
+    "info": info,
     "price": price,
     "offer_price": offerPrice,
     "percent": percent,
