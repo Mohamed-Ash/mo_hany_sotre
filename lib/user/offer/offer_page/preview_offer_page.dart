@@ -250,10 +250,10 @@ class PreviewOfferPage extends UserInterface{
           const SizedBox(
             height: 15,
           ),
-          const Padding(
-            padding:  EdgeInsets.fromLTRB(22, 15, 22, 0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 15, 22, 0),
             child: Text(
-              'In this section you can find all of FIFA\'s'
+              /* 'In this section you can find all of FIFA\'s'
               'official documents downloadable in PDF format.'
               'From archived financial reports to published'
               'circulars, on subjects as diverse at the Laws'
@@ -261,8 +261,9 @@ class PreviewOfferPage extends UserInterface{
               'FIFA tournament, technical reports or even security'
               'regulations, this collection of PDFs available online'
               'via FIFA.com has been collated and organised to help you'
-              'find exactly the documents you are looking for.',
-              style: TextStyle(
+              'find exactly the documents you are looking for.', */
+              itemModel.info,
+              style: const TextStyle(
                 color: ColorTheme.hintText,
                 fontFamily: FontsTheme.fontFamily,
                 fontSize: 15,

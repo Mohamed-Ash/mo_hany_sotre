@@ -41,6 +41,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   double? percent;
   Duration myDuration = const Duration(days: 5);
   String name = '';
+  double  sizedMessage = 80;
   
   late Color colorRegion;
   late Color colorPlatform;
@@ -55,6 +56,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   final dayController = TextEditingController();
   final hourController = TextEditingController();
   final urlController = TextEditingController();
+  final informationController = TextEditingController();
 
   var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
    DateTime selectedDate = DateTime.now();
@@ -205,6 +207,26 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
                             }
                             return null;
                           },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+                    child: Stack(
+                      children: [
+                         Container(
+                          width: double.infinity,
+                          height: sizedMessage < 90 ? sizedMessage : 200,
+                          decoration: BoxDecoration(
+                            color:  ColorTheme.backroundInput,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: FormFeilds.textField(
+                            controller: informationController, 
+                            keyboardType: TextInputType.multiline, 
+                            hintText: 'add information',
+                          ),
                         ),
                       ],
                     ),
@@ -529,6 +551,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
           colorPlatform: colorPlatform.value,
           colorRegion: colorRegion.value,
           name: nameController.text,
+          info: informationController.text,
           image: uri, 
           region: regionController.text,
           platform: platformController.text,
@@ -543,6 +566,7 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
         widget.itemBloc.add(StoreDataEvent(data: item.toJson()));
         FormFeilds.showMyDialog(
           context:  context, 
+          isImage: true,
           message: 'product uploaded successfully',
           actions: <Widget>[ 
             InkWell(

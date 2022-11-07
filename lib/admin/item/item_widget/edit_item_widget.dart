@@ -33,14 +33,16 @@ class EditItemShippingWidget extends StatefulWidget {
 
 class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
   XFile? image;
-  late DateTime now = DateTime.parse('${widget.itemModel.dateOffer}');
   bool isSelect = false ;
+  double  sizedMessage = 80;
+  late DateTime now = DateTime.parse('${widget.itemModel.dateOffer}');
 
   late Color colorRegion;
   late Color colorPlatform;
   final formKey =GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-
+  
+  var informationController = TextEditingController();
   var nameController = TextEditingController();
   var priceController = TextEditingController();
   var regionController = TextEditingController();
@@ -96,6 +98,11 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
     if(widget.itemModel.platform != null){
       urlController = TextEditingController(
         text: widget.itemModel.urlLauncher,  
+      );  
+    }
+    if(widget.itemModel.info != null){
+      urlController = TextEditingController(
+        text: widget.itemModel.info,  
       );  
     }
     colorRegion = Colors.blue;
@@ -212,6 +219,26 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
                       }
                       return null;
                     },
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: sizedMessage < 90 ? sizedMessage : 200,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: FormFeilds.textField(
+                      controller: informationController, 
+                      keyboardType: TextInputType.multiline, 
+                      hintText: 'add information',
+                    ),
                   ),
                 ],
               ),
@@ -547,6 +574,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
           image: uri,
           colorRegion: colorRegion.value,
           colorPlatform: colorPlatform.value,
+          info: informationController.text,
           urlLauncher: urlController.text,
           region:regionController.text, 
           platform: platformController.text,
@@ -585,6 +613,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
             createdAt: widget.itemModel.createdAt,
             image: widget.itemModel.image, 
             region:regionController.text,
+            info: informationController.text,
             id: widget.itemModel.id,
             platform: platformController.text,
             updatedAt: updatedAt,
@@ -610,13 +639,12 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
             ),
           ],
         );
-        
-      
       }
     }catch(e){
        print(e.toString());
     }
   } 
+  
   Future<bool> colorRegionN(context) async {
     return ColorPicker(
       borderColor: ColorTheme.wight,

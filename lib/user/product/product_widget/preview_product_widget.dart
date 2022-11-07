@@ -17,7 +17,6 @@ import 'package:image_preview/image_preview.dart';
 class PreviewProductWidget extends StatefulWidget {
   final  ItemModel itemModel;
   
-  
   const PreviewProductWidget({super.key,required this.itemModel});
 
   @override
@@ -182,15 +181,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 15, 14, 15),
             child: Text(
-              'In this section you can find all of FIFA\'s'
-              'official documents downloadable in PDF format.'
-              'From archived financial reports to published'
-              'circulars, on subjects as diverse at the Laws'
-              ' of the Game, the regulations of each and every'
-              'FIFA tournament, technical reports or even security'
-              'regulations, this collection of PDFs available online'
-              'via FIFA.com has been collated and organised to help you'
-              'find exactly the documents you are looking for.',
+              widget.itemModel.info,
               style: getRegulerStyle(
                 color: ColorTheme.authTitle,
                 fontSize: 14
@@ -306,28 +297,24 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
     // var fiterPercent = widget.itemModel.price == widget.itemModel.offerPrice ? 100 : widget.itemModel.percent.toString().substring(0,2);
     var fiterOfferPrice = widget.itemModel.price == widget.itemModel.offerPrice ? 'free' : "${widget.itemModel.offerPrice} LE";
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8,22,8,8),
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.topLeft,
-              children: [
-                InkWell(
-                  onTap: (){
-                    openImagesPage(
-                      Navigator.of(context),
-                      imgUrls: [widget.itemModel.image],
-                      index: 0,
-                      onLongPressHandler: (con, url) => debugPrint(url),
-                      onPageChanged: (i, widget) async {
-                        if (widget != null) return widget;
-                        await Future.delayed(const Duration(seconds: 3));
-                        return null ;
-                      }
-                    );
-                  },
-                  child: Container(
+      child: Column(
+        children: [
+          Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              InkWell(
+                onTap: (){
+                  openImagesPage(Navigator.of(context),
+                    imgUrls: [widget.itemModel.image],
+                    onLongPressHandler: (con, url) => debugPrint(url),
+                    onPageChanged: (i, widget) async {
+                      if (widget != null) return widget;
+                      await Future.delayed(const Duration(seconds: 3));
+                      return null ;
+                    }
+                  );
+                },
+                child: Container(
                   width: double.infinity,
                   height: 400,
                   decoration: BoxDecoration(
@@ -338,29 +325,29 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
                     ),
                   ),
                 ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 33, 0, 0),
-                  child: Container(
-                    width: 44,
-                    height: 44  ,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(78, 48, 48, 49),
-                      borderRadius: BorderRadius.circular(55),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        color: Colors.white,
-                        onPressed: (() => Navigator.pop(context)),
-                      ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 33, 0, 0),
+                child: Container(
+                  width: 44,
+                  height: 44  ,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(78, 48, 48, 49),
+                    borderRadius: BorderRadius.circular(55),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      color: Colors.white,
+                      onPressed: (() => Navigator.pop(context)),
                     ),
                   ),
                 ),
-              ], 
-            ),
-            const SizedBox(
+              ),
+            ], 
+          ),
+          const SizedBox(
             height: 15,
           ),
           Row(
@@ -442,7 +429,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
           const SizedBox(
             height: 22,
           ),
-        /*   Row(
+          /* Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FormFeilds.containerImage(assetImage: 'assets/images/download.png',height: 22,width: 22),
@@ -459,44 +446,20 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
               ),
             ],
           ), */
-          const SizedBox(
-            height: 15,
+                    const Divider(
+            color: ColorTheme.primary,
+            thickness: 1,
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(14, 15, 14, 15),
-            child: Text(
-              'In this section you can find all of FIFA\'s'
-              'official documents downloadable in PDF format.'
-              'From archived financial reports to published'
-              'circulars, on subjects as diverse at the Laws'
-              ' of the Game, the regulations of each and every'
-              'FIFA tournament, technical reports or even security'
-              'regulations, this collection of PDFs available online'
-              'via FIFA.com has been collated and organised to help you'
-              'find exactly the documents you are looking for.',
-              style: getRegulerStyle(
-                color: ColorTheme.authTitle,
-                fontSize: 14
-              ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(2,2,2,2),
-            child: Divider(
-              color: ColorTheme.primary,
-              thickness: 1,
-            ),
-          ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Platform',
-                    style: getRegulerStyle(color: ColorTheme.hintText,),  
-                  ),
-                  const Spacer(),
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Platform',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 13),  
+                ),
+                const Spacer(),
                   Container(
                     width: 120,
                     height: 25,
@@ -514,12 +477,9 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(2,2,2,2),
-              child: Divider(
-                color: ColorTheme.primary,
-                thickness: 1,
-              ),
+            const Divider(
+              color: ColorTheme.primary,
+              thickness: 1,
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(18,0,18,0),
@@ -548,29 +508,40 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
                 ],
               ),
             ),  
-            const Padding(
-              padding: EdgeInsets.fromLTRB(2,2,2,2),
-              child: Divider(
-                color: ColorTheme.primary,
-                thickness: 1,
-              ),
-            ),
+          const Divider(
+            color: ColorTheme.primary,
+            thickness: 1,
+          ),
           const SizedBox(
             height: 15,
           ),
-            InkWell(
-              onTap: () =>  Navigator.pushReplacementNamed(context, checkoutpage,arguments: widget.itemModel),
-              child: FormFeilds.buttonFormField(
-                title: 'Buy',
-                colorButton: ColorTheme.primary,
-                colorText: ColorTheme.wight,
-                dPadding: false,
-                heightButton: 50,
-                widthtButton: 250,
+           Padding(
+            padding: const EdgeInsets.fromLTRB(22, 15, 22, 0),
+            child: Text(
+              widget.itemModel.info,
+              style: const TextStyle(
+                color: ColorTheme.hintText,
+                fontFamily: FontsTheme.fontFamily,
+                fontSize: 15,
+                height: 1.7,
+                fontWeight: FontWeight.w500,
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 30),
+          InkWell(
+            onTap: () => Navigator.pushReplacementNamed(context, checkoutpage,arguments: widget.itemModel),
+            child: FormFeilds.buttonFormField(
+              title: 'Buy',
+              colorButton: ColorTheme.primary,
+              colorText: ColorTheme.wight,
+              dPadding: false,
+              heightButton: 50,
+              widthtButton: 250,
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
