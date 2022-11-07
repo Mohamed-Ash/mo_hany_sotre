@@ -40,114 +40,116 @@ class _ReminderWidgetState extends State<ReminderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
-              child: Stack(
-                children: [
-                  Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color:  ColorTheme.backroundInput,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+    return Form(
+      key: formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+            child: Stack(
+              children: [
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color:  ColorTheme.backroundInput,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  FormFeilds.textField(
-                    controller: nameController, 
-                    keyboardType: TextInputType.text, 
-                    hintText: 'Add title',
-                    // hintTextColor: dialogPickerColor,
-                    validator:(validate){
-                      if(validate == null || validate.isEmpty){
-                        return 'please add title';
-                      }
-                      return null;
-                    },
+                ),
+                FormFeilds.textField(
+                  controller: nameController, 
+                  keyboardType: TextInputType.text, 
+                  hintText: 'Add title',
+                  // hintTextColor: dialogPickerColor,
+                  validator:(validate){
+                    if(validate == null || validate.isEmpty){
+                      return 'please add title';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+            child: Stack(
+              children: [
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color:  ColorTheme.backroundInput,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ],
-              ),
+                ),
+                FormFeilds.textField(
+                  controller: bodyController, 
+                  keyboardType: TextInputType.text, 
+                  hintText: 'Add body',
+                  // hintTextColor: dialogPickerColor,
+                  validator:(validate){
+                    if(validate == null || validate.isEmpty){
+                      return 'please add body';
+                    }
+                    return null;
+                  },
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
-              child: Stack(
-                children: [
-                  Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color:  ColorTheme.backroundInput,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  FormFeilds.textField(
-                    controller: bodyController, 
-                    keyboardType: TextInputType.text, 
-                    hintText: 'Add body',
-                    // hintTextColor: dialogPickerColor,
-                    validator:(validate){
-                      if(validate == null || validate.isEmpty){
-                        return 'please add body';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-              ),
+          ),
+          const SizedBox(
+            height:33, 
+          ),
+         InkWell(
+            onTap: ()async{
+              if (formKey.currentState!.validate()) {
+                // setReminder();
+                'asdasd';
+              }
+            },
+            child: FormFeilds.buttonFormField(
+              widthtButton: double.infinity,
+              heightButton: 50,
+              title: 'Done',
+              colorButton: ColorTheme.primary, 
             ),
-            const SizedBox(
-              height:33, 
-            ),
-           InkWell(
-              onTap: ()async{
-                setReminder();
-              },
-              child: FormFeilds.buttonFormField(
-                widthtButton: double.infinity,
-                heightButton: 50,
-                title: 'Done',
-                colorButton: ColorTheme.primary, 
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            
-            /*   BlocBuilder(
-              bloc: widget.userBloc,
-              builder: (context, state) {
-                if (state is DataLoadedState) {
-                  return ListView.builder(
-                    shrinkWrap: true ,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.data.length,
-                    itemBuilder: (BuildContext context, int index){
-                      return InkWell(
-                        onTap: ()async{
-                          setReminder(userModel: state.data[index]);
-                        },
-                        child: FormFeilds.buttonFormField(
-                          widthtButton: double.infinity,
-                          heightButton: 50,
-                          title: 'Done',
-                          colorButton: ColorTheme.primary, 
-                        ),
-                      );
-                    },
-                  );
-                }else if(state is DataLoadingState){
-                  return const CircularProgressIndicator(color: Colors.transparent,);
-                }else {
-                  return const Text('404');
-                }
-              } 
-            ), */
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          
+          /*   BlocBuilder(
+            bloc: widget.userBloc,
+            builder: (context, state) {
+              if (state is DataLoadedState) {
+                return ListView.builder(
+                  shrinkWrap: true ,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.data.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return InkWell(
+                      onTap: ()async{
+                        setReminder(userModel: state.data[index]);
+                      },
+                      child: FormFeilds.buttonFormField(
+                        widthtButton: double.infinity,
+                        heightButton: 50,
+                        title: 'Done',
+                        colorButton: ColorTheme.primary, 
+                      ),
+                    );
+                  },
+                );
+              }else if(state is DataLoadingState){
+                return const CircularProgressIndicator(color: Colors.transparent,);
+              }else {
+                return const Text('404');
+              }
+            } 
+          ), */
+        ],
       ),
     );
   }
