@@ -308,7 +308,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   logOut(context)async{
     await FirebaseMessaging.instance.unsubscribeFromTopic('all');
     await FirebaseAuth.instance.signOut();
-    Navigator.restorablePushNamedAndRemoveUntil(context, loginPage, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, loginPage, (route) => false);
     // Navigator.pushReplacementNamed(context, loginPage);
   }
 }  
