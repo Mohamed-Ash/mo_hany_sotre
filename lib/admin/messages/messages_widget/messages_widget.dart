@@ -47,6 +47,7 @@ class TtopicWidgetState extends State<MessagesWidget> {
                 }else{
                   return Expanded(
                     child: SingleChildScrollView(
+                      reverse: true,
                       physics: const ScrollPhysics(),
                       child: ListView.separated(
                         physics: const NeverScrollableScrollPhysics(),
@@ -66,17 +67,8 @@ class TtopicWidgetState extends State<MessagesWidget> {
               }else {
                 return Expanded(child: Center(child: Text('error 404',style: getSemiBoldStyle(color: ColorTheme.wight,fontSize: 14,),)));
               }
-            },//
+            },
           ),
-          /* 'In this section you can find all of FIFA\'s'
-            'official documents downloadable in PDF format.'
-            'From archived financial reports to published'
-            'circulars, on subjects as diverse at the Laws'
-            ' of the Game, the regulations of each and every'
-            'FIFA tournament, technical reports or even security'
-            'regulations, this collection of PDFs available online'
-            'via FIFA.com has been collated and organised to help you'
-            'find exactly the documents you are looking for.', */
           const SizedBox(
             height: 22,
           ),
@@ -163,11 +155,13 @@ class TtopicWidgetState extends State<MessagesWidget> {
   sendMessage(context)async{
     if(messageController !=null || messageController.text.isEmpty){
       String timeTest  =  DateFormat.jm().format( DateTime.now());
+      DateTime  dateMessage = DateTime.now();
       FormFeilds.showLoading(context);
       String id = await NextIdHelper.getNextId('messages');
       MessageModel data = MessageModel(
         text:  messageController.text, 
         timeNow: timeTest,
+        dateMessage: '$dateMessage',
         id: id,
       );
       widget.messageBloc.add(StoreMessageDataEvent(data:data.toJson()));

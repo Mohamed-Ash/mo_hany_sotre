@@ -31,6 +31,7 @@ class NnotificationWidgetState extends State<TopicWidget> {
               if (state is DataLoadedState) {
                 return Expanded(
                   child: SingleChildScrollView(
+                    reverse: true,
                     physics: const ScrollPhysics(),
                     child: ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),

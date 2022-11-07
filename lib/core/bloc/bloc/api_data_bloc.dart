@@ -18,11 +18,11 @@ class ApiDataBloc<T> extends Bloc<DataEvent, DataState> {
 
   ApiDataBloc() : super(DataLoadingState()) {
     on<IndexDataEvent>(_index);
-    on<StreamDataEvent>(_getChatMessage);
     on<DeleteDataEvent>(_delete);
-    on<DeleteMessageDataEvent>(_deleteMessage);
     on<UpdateDataEvent>(_update);
     on<StoreDataEvent>(_store);
+    on<StreamDataEvent>(_getChatMessage);
+    on<DeleteMessageDataEvent>(_deleteMessage);
     on<StoreMessageDataEvent>(_storeMesage);
 
     ModelClass? modelClass = ModelInterface.getModelClass(type);
@@ -143,7 +143,7 @@ class ApiDataBloc<T> extends Bloc<DataEvent, DataState> {
       
     collection = FirebaseFirestore.instance.collection(collectionName!);
       
-    final collectionData = await collection.orderBy('time_now').get();
+    final collectionData = await collection.orderBy('date_message').get();
 
     List<T> data = [];
     for (var element in collectionData.docs) {
@@ -157,7 +157,7 @@ class ApiDataBloc<T> extends Bloc<DataEvent, DataState> {
    
     final collectionData = FirebaseFirestore.instance.collection(collectionName!);
    
-    var data = await collectionData.orderBy('time_now').get();
+    var data = await collectionData.orderBy('date_message').get();
    
     QueryDocumentSnapshot<Map<String, dynamic>> doc = data.docs.firstWhere((element) {
       return element.data()[event.modelKey] == event.id;
