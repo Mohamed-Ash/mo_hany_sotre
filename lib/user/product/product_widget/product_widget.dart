@@ -13,6 +13,7 @@ import 'package:m_hany_store/user/product/product_page/preview_product_page.dart
 class ProductWidget extends StatefulWidget {
   final ApiDataBloc<ItemModel> itemBloc;
   final CategoryModel categoriesModel;
+  
   const ProductWidget({
     Key? key,
     required this.categoriesModel,
@@ -50,10 +51,10 @@ class _ProductWidgetState extends State<ProductWidget> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 2/3,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 3,
-                        mainAxisSpacing: 3,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      mainAxisExtent: 270,
                       ),
                       itemBuilder: (context,index) {
                         return getAllproducts(
