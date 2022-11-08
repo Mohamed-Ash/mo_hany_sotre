@@ -284,7 +284,9 @@ class _CategoryFormWidgetState extends State<CategoryFormWidget> {
         actions: <Widget>[ 
           InkWell(
             onTap: () {
-              Navigator.pushReplacementNamed(context, categoriesPage);
+              Navigator.pop(context);
+              // Navigator.pushReplacementNamed(context, categoriesPage);
+              Navigator.pushNamedAndRemoveUntil(context, categoriesPage,ModalRoute.withName(appPageLayout));
             },
             child: FormFeilds.buttonFormField(title: 'Back to categories',colorButton: ColorTheme.primary)),
         ],
