@@ -10,7 +10,7 @@ class CheckoutPage extends UserInterface{
   final ItemModel itemModel;
   late ApiDataBloc<ItemModel> itemBloc; 
    CheckoutPage({super.key,required this.itemModel}){
-    itemBloc = ApiDataBloc<ItemModel>();
+    itemBloc = ApiDataBloc<ItemModel>()..add(const IndexDataEvent());
   }
 
   @override
