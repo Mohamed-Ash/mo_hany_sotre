@@ -93,10 +93,10 @@ void initState() {
   }){
     Object fiterOperatorr ;
 
-    if (itemModel.percent! < 10) {
-      fiterOperatorr = itemModel.percent.toString().substring(0,1 );
-    } else if(itemModel.price == itemModel.offerPrice ){
+    if (itemModel.price == itemModel.offerPrice){
       fiterOperatorr = 100 ;
+    } else if(itemModel.percent! < 10){
+      fiterOperatorr = itemModel.percent.toString().substring(0,1 );
     }else{
       fiterOperatorr = itemModel.percent.toString().substring(0,2);
     }
