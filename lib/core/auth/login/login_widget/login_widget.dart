@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
-import 'package:m_hany_store/core/helper/next_id_helper.dart';
 import 'package:m_hany_store/core/model/user_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
@@ -297,14 +296,8 @@ class _LoginWidgetState extends State<LoginWidget> {
         email: emailController.text,
         password: passwordController.text,
       );
-      String id = await NextIdHelper.getNextId('user');
-      UserModel data = UserModel(
-        id: id,
-        email: emailController.text,
-      );
-      await FirebaseMessaging.instance.subscribeToTopic('all');
-      widget.userBloc.add(StoreDataEvent(data: data.tojson()));
       Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
+      await FirebaseMessaging.instance.subscribeToTopic('all');
      /*  if(credential.user!.emailVerified){
       }else{
         Navigator.pop(context);
@@ -378,13 +371,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       if (credential.idToken == null) {
         Navigator.popUntil(context, (route) => false);
       } else {
-        String id = await NextIdHelper.getNextId('user');
-        UserModel data = UserModel(
-          id:id,
-          email: googleUser!.email,
-        );
         await FirebaseMessaging.instance.subscribeToTopic('all');
-        widget.userBloc.add(StoreDataEvent(data: data.tojson()));
         Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
       }
       // Once signed in, return the UserCredential

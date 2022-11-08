@@ -422,10 +422,10 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
       Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
     }
-      String id = await NextIdHelper.getNextId('user');
+      // String id = await NxextIdHelper.getNextId('user');
       UserModel data = UserModel(
-        id:id,
-        email: googleUser!.email,
+        id:googleUser!.id,
+        email: googleUser.email,
       );
       await FirebaseMessaging.instance.subscribeToTopic('all');
       widget.userBloc.add(StoreDataEvent(data: data.tojson()));
