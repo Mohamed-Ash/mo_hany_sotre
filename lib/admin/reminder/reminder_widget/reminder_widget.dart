@@ -19,7 +19,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
 
   final bodyController = TextEditingController();
 
-  final formKey = GlobalKey<FormState>();
+  final formKye = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: formKye,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -102,11 +102,10 @@ class _ReminderWidgetState extends State<ReminderWidget> {
           const SizedBox(
             height:33, 
           ),
-         InkWell(
+         GestureDetector(
             onTap: ()async{
-              if (formKey.currentState!.validate()) {
-                // setReminder();
-                'asdasd';
+              if (formKye.currentState!.validate()) {
+                await setReminder();
               }
             },
             child: FormFeilds.buttonFormField(
@@ -155,13 +154,30 @@ class _ReminderWidgetState extends State<ReminderWidget> {
   }
 
   setReminder()async{
-    if(formKey.currentState!.validate()){
-      await NotifcationPage().sendNotification(
-        title: nameController.text,
-        body: bodyController.text,
+    await NotifcationPage().sendNotification(
+      title: nameController.text,
+      body: bodyController.text,
+    ).then((value) {
+      FormFeilds.showMyDialog(
+        context: context, 
+        isImage: true,
+        tabButton: true,
+        message: 'Notification uploaded successfully',
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: FormFeilds.buttonFormField(
+              title: 'Back to Home',
+              colorButton: ColorTheme.primary,
+              colorText: ColorTheme.wight,
+              fontSize: 16,
+            ),
+          ),
+        ]
       );
-    }else{
-      return Container();
-    }
+    });
   }
 }
