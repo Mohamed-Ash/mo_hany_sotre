@@ -90,18 +90,18 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
         
       );
     }
-    if(widget.itemModel.platform != null){
+    if(widget.itemModel.offerPrice != null){
       offerPriceController = TextEditingController(
         text: '${widget.itemModel.offerPrice}',  
       );  
     }
-    if(widget.itemModel.platform != null){
+    if(widget.itemModel.urlLauncher != null){
       urlController = TextEditingController(
         text: widget.itemModel.urlLauncher,  
       );  
     }
     if(widget.itemModel.info != null){
-      urlController = TextEditingController(
+      informationController = TextEditingController(
         text: widget.itemModel.info,  
       );  
     }
@@ -238,6 +238,12 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
                       controller: informationController, 
                       keyboardType: TextInputType.multiline, 
                       hintText: 'add information',
+                      validator:(validate){
+                        if(validate == null || validate.isEmpty){
+                          return 'please add information';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -322,33 +328,36 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
               ),
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color:  ColorTheme.backroundInput,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+              padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:  ColorTheme.backroundInput,
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    FormFeilds.textField(
-                      controller: urlController, 
-                      keyboardType: TextInputType.text, 
-                      hintText: 'Add Link EasyKash',
-                      // hintTextColor: dialogPickerColor,
-                      validator:(validate){
-                        if(validate == null || validate.isEmpty){
-                          return 'please add EasyKash';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                  FormFeilds.textField(
+                    controller: urlController, 
+                    keyboardType: TextInputType.text, 
+                    coloInputText: const Color.fromARGB(255, 90, 174, 243),
+                    hintText: 'Add Link EasyKash',
+                    // hintTextColor: dialogPickerColor,
+                    validator:(validate){
+                      if(validate == null || validate.isEmpty){
+                        return 'please add EasyKash';
+                      }else if( !RegExp("https").hasMatch(validate)){
+                        return 'add link pay ment';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
-                        Padding(
+            ),
+            Padding(
               padding: const EdgeInsets.fromLTRB(22, 10, 22, 22),
               child: InkWell(
                 child: isSelect == false ? Container(
@@ -533,8 +542,8 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
   postData(context)async{
    String updatedAt = "${now.day} ${month[now.month-1]} ${now.year} ${now.hour}:${now.minute}";
    var test = offerPriceController.text == null  ||offerPriceController.text.isEmpty? 0 :  double.parse(offerPriceController.text);
-    bool isOffer = test == null ? false : true;
-    double subtractprice = isOffer == false ? 0:double.parse(priceController.text) - double.parse(offerPriceController.text);
+    bool isOffer = test  > 0  ? true : false;
+    double subtractprice = isOffer == false ? 0 : double.parse(priceController.text) - double.parse(offerPriceController.text);
     double pricePercent = double.parse(offerPriceController.text) > 0  ? subtractprice / double.parse(priceController.text) * 100 : 0;
     DateTime  date;
     if (DateTime.parse('${widget.itemModel.dateOffer}') == now) {
@@ -597,7 +606,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
                 // Navigator.pushNamedAndRemoveUntil(context, shippingPage, (route) => false);
                 // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> ShippingPage(categoriesModel: widget.categoriesModel,)), (route) => false);
                 Navigator.pop(context);
-                Navigator.of(context).pushReplacementNamed(itemPage, arguments: widget.categoriesModel);
+                Navigator.of(context).pushNamedAndRemoveUntil(itemPage, arguments: widget.categoriesModel,ModalRoute.withName(appPageLayout));
               },
               child: FormFeilds.buttonFormField(title: 'Back to products',colorButton: ColorTheme.primary)),
           ],
@@ -629,11 +638,12 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
           FormFeilds.showMyDialog(
           context:  context, 
           message: 'product uploaded successfully',
+          isImage: true,
           actions: <Widget> [ 
             InkWell(
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).pushReplacementNamed(itemPage, arguments: widget.categoriesModel);
+                Navigator.of(context).pushNamedAndRemoveUntil(itemPage, arguments: widget.categoriesModel,ModalRoute.withName(appPageLayout));
               },
               child: FormFeilds.buttonFormField(title: 'Back to products',colorButton: ColorTheme.primary)
             ),
