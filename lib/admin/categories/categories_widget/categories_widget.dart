@@ -73,7 +73,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
             height: 22,
           ),
           InkWell(
-            onTap: () => Navigator.pushReplacementNamed(context, addItemCategoriesPage),
+            onTap: () => Navigator.pushNamed(context, addItemCategoriesPage),
             child: FormFeilds.buttonFormField(
               title: 'Add  new Categories',
               dPadding: false,
