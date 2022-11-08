@@ -20,10 +20,10 @@ class PreviewOfferPage extends UserInterface{
 
     Object fiterOperatorr;
     
-    if (itemModel.percent! < 10) {
-      fiterOperatorr = itemModel.percent.toString().substring(0,1 );
-    } else  if(itemModel.price == itemModel.offerPrice ){
+    if (itemModel.price == itemModel.offerPrice){
       fiterOperatorr = 100 ;
+    } else if(itemModel.percent! < 10){
+      fiterOperatorr = itemModel.percent.toString().substring(0,1 );
     }else{
       fiterOperatorr = itemModel.percent.toString().substring(0,2);
     }
@@ -270,12 +270,6 @@ class PreviewOfferPage extends UserInterface{
                 height: 1.7,
                 fontWeight: FontWeight.w500,
               ),
-            ),
-          ),
-          const Text(
-            'asd',
-            style: TextStyle(
-              color: Color.fromARGB(255, 158, 158, 158)
             ),
           ),
           const SizedBox(height: 30),
