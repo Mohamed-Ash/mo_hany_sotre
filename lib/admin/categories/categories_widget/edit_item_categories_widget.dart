@@ -138,119 +138,32 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
                     ),
                   ],
                 ),
-              const SizedBox(
-                height: 22  ,
-              ),
-              const Divider(
-                color: ColorTheme.porder,
-                thickness: 1,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18,0,18,0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Name',
-                      style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                    ),
-                    Text(
-                      widget.categoriesModel.name,
-                      style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                    ),
-                  ],
-                ),
-              ),  
-              const Divider(
-                color: ColorTheme.porder,
-                thickness: 1,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18,0,18,0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Creatged at ',
-                      style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                    ),
-                    Text(
-                       '${widget.categoriesModel.createdAt}',
-                      style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                    ),
-                  ],
-                ),
-              ),  
-              const Divider(
-                color: ColorTheme.porder,
-                thickness: 1,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18,0,18,0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Updated At ',
-                      style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                    ),
-                    Text(
-                      widget.categoriesModel.updatedAt ?? "-:-:-",
-                      style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                    ),
-                  ],
-                ),
-              ),  
-              const Divider(
-                color: ColorTheme.porder,
-                thickness: 1,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18,0,18,0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Type',
-                      style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 15),  
-                    ),
-                    Text(
-                      widget.categoriesModel.type,
-                      style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                    ),
-                  ],
-                ),
-              ),  
-              const Divider(
-                color: ColorTheme.porder,
-                thickness: 1,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color:  ColorTheme.backroundInput,
-                        borderRadius: BorderRadius.circular(8),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color:  ColorTheme.backroundInput,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                    ),
-                    FormFeilds.textFormField(
-                      controller: nameController, 
-                      keyboardType: TextInputType.text, 
-                      hintText: 'Add Name',
-                      validator:(validate){
-                        if(validate == null || validate.isEmpty){
-                          return 'please add Name';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
+                      FormFeilds.textFormField(
+                        controller: nameController, 
+                        keyboardType: TextInputType.text, 
+                        hintText: 'Add Name',
+                        validator:(validate){
+                          if(validate == null || validate.isEmpty){
+                            return 'please add Name';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
                 Padding(
                   padding:  const EdgeInsets.fromLTRB(22, 0, 22, 00),
                   child: DropdownButtonFormField2(
@@ -378,9 +291,10 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
           actions: <Widget>[ 
             InkWell(
               onTap: () {
-                 Navigator.of(context).pushReplacementNamed(categoriesPage, arguments: widget.categoriesModel);
+                Navigator.pushNamedAndRemoveUntil(context, categoriesPage, arguments: widget.categoriesModel, (route) => false);
               },
-              child: FormFeilds.buttonFormField(title: 'Back to categories',colorButton: ColorTheme.primary)),
+              child: FormFeilds.buttonFormField(title: 'Back to categories',colorButton: ColorTheme.primary)
+            ),
           ],
         );
       } else {
