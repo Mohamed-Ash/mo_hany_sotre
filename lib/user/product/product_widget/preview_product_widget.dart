@@ -43,7 +43,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
       }
     });
   } */
-  String rangView(){
+/*   String rangView(){
     if (widget.itemModel.price<= 1000) {
       return '${widget.itemModel.price.toString().substring(0,1)} k Download';
     } else if(widget.itemModel.price<= 10000) {
@@ -51,7 +51,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
     }else{
       return '${widget.itemModel.price} Download';
     }
-  }
+  } */
   
   @override
   Widget build(BuildContext context) {
@@ -120,72 +120,23 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
             padding: const EdgeInsets.fromLTRB(14, 15, 14, 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children:[
                 Flexible(
                   fit: FlexFit.tight,
                   flex: 4,
                   child: Text(
                     widget.itemModel.name,
-                    style: getBoldStyle(color: Colors.white,fontSize: 19),
+                    style: getBoldStyle(color: Colors.white,fontSize: 16),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(18,0,0,0),
                   child: Text(
                     '${widget.itemModel.price} LE',
-                    style: getBoldStyle(color: Colors.white,fontSize: 26),
+                    style: getBoldStyle(color: Colors.white,fontSize: 20),
                   ),
                 ),
               ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FormFeilds.containerImage(assetImage: 'assets/images/download.png',height: 22,width: 22),
-              const SizedBox(
-                width: 5,
-              ),  
-              Text(
-                // '${widget.itemModel.price >= 1000 ? '${widget.itemModel.price.toString().substring(0,1)} k' :  widget.itemModel.price} Download',
-                rangView(),
-                style: getRegulerStyle(color: ColorTheme.authTitle,fontSize: 14),
-              ),
-               const SizedBox(
-                width: 10,
-              ),
-              /* Container(
-                width: 2,
-                height: 22,
-                decoration: const BoxDecoration(
-                  color: ColorTheme.authTitle,
-                ),
-              ),
-               const SizedBox(
-                width: 10,
-              ),
-              FormFeilds.containerImage(assetImage: 'assets/images/winner.png',height: 28,width: 28),
-              // FormFeilds.containerImage(assetImage: 'assets/images/download.png',height: 28,width: 28),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                '99 Matchs',
-                style: getRegulerStyle(color: ColorTheme.authTitle,fontSize: 14),
-              ), */
-            ],
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 15, 14, 15),
-            child: Text(
-              widget.itemModel.info,
-              style: getRegulerStyle(
-                color: ColorTheme.authTitle,
-                fontSize: 14
-              ),  
             ),
           ),
           const Padding(
@@ -195,84 +146,97 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
               thickness: 1,
             ),
           ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Platform',
-                    style: getRegulerStyle(color: ColorTheme.hintText,),  
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Platform',
+                  style: getRegulerStyle(color: ColorTheme.hintText,),  
+                ),
+                const Spacer(),
+                Container(
+                  width: 120,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    color: Color(widget.itemModel.colorPlatform),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  const Spacer(),
-                  Container(
-                    width: 120,
-                    height: 25,
-                    decoration: BoxDecoration(
-                      color: Color(widget.itemModel.colorPlatform),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        widget.itemModel.platform,
-                        style: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 16),
-                      ),
+                  child: Center(
+                    child: Text(
+                      widget.itemModel.platform,
+                      style: getSemiBoldStyle(color: ColorTheme.wight, fontSize: 16),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(2,2,2,2),
-              child: Divider(
-                color: ColorTheme.primary,
-                thickness: 1,
-              ),
+          ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(2,2,2,2),
+            child: Divider(
+              color: ColorTheme.primary,
+              thickness: 1,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18,0,18,0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Region',
-                    style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 13),  
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18,0,18,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Region',
+                  style: getRegulerStyle(color: ColorTheme.hintText,fontSize: 13),  
+                ),
+                const Spacer(),
+                Container(
+                  width: 120,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    color: Color(widget.itemModel.colorRegion),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  const Spacer(),
-                  Container(
-                    width: 120,
-                    height: 25,
-                    decoration: BoxDecoration(
-                      color: Color(widget.itemModel.colorRegion),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        widget.itemModel.region,
-                          style: getSemiBoldStyle(color: ColorTheme.wight,),  
-                      ),
+                  child: Center(
+                    child: Text(
+                      widget.itemModel.region,
+                        style: getSemiBoldStyle(color: ColorTheme.wight,),  
                     ),
                   ),
-                ],
-              ),
-            ),  
-            const Padding(
-              padding: EdgeInsets.fromLTRB(2,2,2,2),
-              child: Divider(
-                color: ColorTheme.primary,
-                thickness: 1,
-              ),
+                ),
+              ],
             ),
+          ),  
+          const Padding(
+            padding: EdgeInsets.fromLTRB(2,2,2,2),
+            child: Divider(
+              color: ColorTheme.primary,
+              thickness: 1,
+            ),
+          ),
           const SizedBox(
             height: 15,
           ),
+           Padding(
+            padding: const EdgeInsets.fromLTRB(22, 15, 22, 0),
+            child: Text(
+              widget.itemModel.info,
+              style: const TextStyle(
+                color: ColorTheme.hintText,
+                fontFamily: FontsTheme.fontFamily,
+                fontSize: 15,
+                height: 1.7,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          const SizedBox(height: 30),
           InkWell(
             onTap: ()=> Navigator.pushReplacementNamed(context, checkoutpage,arguments: widget.itemModel),
             child: FormFeilds.buttonFormField(
               title: 'Buy Now',
               colorButton: ColorTheme.primary, 
               fontSize: 15,
-              // widthtButton: 100,
               dPadding: true,
             ),
           ),
@@ -397,24 +361,6 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
           const SizedBox(
             height: 15,
           ),
-         /*  Text(
-            'Sale ends 9/27/2022 at 3:00 pm',
-            style: getBoldStyle(color: ColorTheme.wight,fontSize: 14),
-          ),
-        CountDownText(
-            due: DateTime.parse("${itemModel.dateOffer}"),
-            finishedText: "",
-            showLabel: true,
-            longDateName: true,
-            daysTextLong: " DAYS ",
-            hoursTextLong: " HOURS ",
-            minutesTextLong: " MINUTES ",
-            secondsTextLong: " SECONDS ",
-            style: TextStyle(color: Colors.white),
-          ),
-          const SizedBox(
-            height: 22,
-          ), */
           CountDownText(
             due: DateTime.parse("${widget.itemModel.dateOffer}"),
             finishedText: "This offer has expired",
@@ -429,24 +375,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
           const SizedBox(
             height: 22,
           ),
-          /* Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FormFeilds.containerImage(assetImage: 'assets/images/download.png',height: 22,width: 22),
-              const SizedBox(
-                width: 5,
-              ),  
-              Text(
-                // '${widget.itemModel.price >= 1000 ? '${widget.itemModel.price.toString().substring(0,1)} k' :  widget.itemModel.price} Download',
-                rangView(),
-                style: getRegulerStyle(color: ColorTheme.authTitle,fontSize: 14),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-            ],
-          ), */
-                    const Divider(
+          const Divider(
             color: ColorTheme.primary,
             thickness: 1,
           ),
