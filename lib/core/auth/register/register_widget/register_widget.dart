@@ -416,10 +416,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     );
 
     if (credential.idToken == null) {
-    //  Navigator.popUntil(context, (route) => false);
+      Navigator.pop(context,(route) => false);
     } else {
-      // print(user.email);
-
       Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
     }
       // String id = await NxextIdHelper.getNextId('user');
