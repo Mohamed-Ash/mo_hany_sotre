@@ -99,15 +99,14 @@ class _ConfirmEemailWidgetState extends State<ConfirmEemailWidget> {
                 ), */
             InkWell(
               onTap: () {
+                Navigator.pushReplacementNamed(context, appPageLayout,);
                /*  // confirmEmail();
                   print(comfirmuser!.emailVerified.toString());
                 if (comfirmuser!.emailVerified) {
                   print('true');
                 } else {
                   print('email not confrimed');
-                }
- */
-                  Navigator.pushReplacementNamed(context, appPageLayout,);
+                }*/
               },
               child: FormFeilds.buttonFormField(
                 title: 'Go to home page',
