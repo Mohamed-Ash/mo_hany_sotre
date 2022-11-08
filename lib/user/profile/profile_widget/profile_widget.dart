@@ -269,7 +269,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     },
                   );
                 }else if(state is DataLoadingState){
-                  return const CircularProgressIndicator();
+                  return Container();
                 }else {
                   return const Text('404');
                 }
@@ -282,13 +282,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 
-  buildAdminButton({
-     required AdminModel adminModel,
-     required BuildContext context,
+  Widget buildAdminButton({
+    required AdminModel adminModel,
+    required BuildContext context,
   }){
     print('=====================');
     print(adminModel.email.toString());
-    if (adminModel.email == user!.email){
+    if (user!.email == adminModel.email ){
       return InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: (){
