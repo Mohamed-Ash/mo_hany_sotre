@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
+import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,19 +20,22 @@ class CheckoutWidget extends StatefulWidget{
 
 class _CheckoutWidgetState extends State<CheckoutWidget> {
   double? percent;
-  
+
   @override
   void initState() {
-    if(widget.itemModel.offerPrice! > 0 ) {
+    super.initState();
+    if(widget.itemModel.offerPrice! == widget.itemModel.price ) {
+      percent = widget.itemModel.offerPrice! ;
+    }else if(widget.itemModel.offerPrice! > 0){
       percent = widget.itemModel.price - widget.itemModel.offerPrice! ;
     }else{
-      percent = widget.itemModel.price ;
+      percent = widget.itemModel.offerPrice! ;
     }
-    super.initState();
   }
   
-  @override
+  @override //01117400649
   Widget build(BuildContext context) {
+      var  total = widget.itemModel.price == widget.itemModel.offerPrice ? 'free' : "${widget.itemModel.price}";
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -49,6 +53,25 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                 children: [
                   Padding(
                     padding: const  EdgeInsets.fromLTRB(8, 10, 8, 4),
+                    child: SizedBox(
+                      width:90,
+                      height: 130,
+                      child: PhysicalModel(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        color: Colors.black,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(8),
+                        child:FadeInImage.assetNetwork(
+                          placeholder: 'assets/icons/lloading.gif',
+                          image: widget.itemModel.image,
+                          fit: BoxFit.fill,
+                          placeholderFit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                  /* Padding(
+                    padding: const  EdgeInsets.fromLTRB(8, 10, 8, 4),
                     child: Container( 
                       width:90,
                       height: 130,
@@ -62,7 +85,7 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                         ),
                       ),
                     ),
-                  ),
+                  ), */
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 2, 15),
@@ -223,7 +246,7 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                           style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
                         ),
                         Text(
-                          '${widget.itemModel.offerPrice} LE',
+                          '$total LE',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: getBoldStyle(color: ColorTheme.wight,fontSize: 18),
@@ -244,7 +267,7 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 18, 24, 0),
+                padding: const EdgeInsets.fromLTRB(24, 18, 24, 18),
                 child: Column(
                   children: [
                     GestureDetector(
@@ -293,8 +316,16 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                       ),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ), 
+                    GestureDetector(
+                      onTap: () => Navigator.pushReplacementNamed(context, appPageLayout),
+                      child: FormFeilds.buttonFormField(
+                        title: 'Back to home',
+                        colorButton: ColorTheme.primary,
+                        colorText: ColorTheme.wight,
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -314,6 +345,23 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
       await launchUrl(url).then((value) => Navigator.pop(context));
     } else {
       throw "Could not launch $url";
+    }
+  }
+
+/*   buildTotalPrice(){
+    if (widget.itemModel.offerPrice == widget.itemModel.price) {
+      total = 'free';
+    } else {
+      total= widget.itemModel.offerPrice;
+    }
+  } */
+  buildpercentPrice(){
+    if(widget.itemModel.offerPrice! > 0 ) {
+      percent = widget.itemModel.price - widget.itemModel.offerPrice! ;
+    }else if(widget.itemModel.price == widget.itemModel.offerPrice){
+      percent = widget.itemModel.price ;
+    }else{
+      percent = widget.itemModel.offerPrice ;
     }
   }
 
