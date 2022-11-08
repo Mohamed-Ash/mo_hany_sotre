@@ -369,7 +369,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         idToken: googleAuth?.idToken,
       );
       if (credential.idToken == null) {
-        Navigator.popUntil(context, (route) => false);
+        Navigator.pop(context,(route) => false);
       } else {
         await FirebaseMessaging.instance.subscribeToTopic('all');
         Navigator.pushNamedAndRemoveUntil(context, appPageLayout,(route) => false,);
