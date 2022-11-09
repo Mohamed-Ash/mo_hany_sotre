@@ -47,7 +47,6 @@ dependencies:
   firebase_core: ^2.1.1
   firebase_auth: ^4.1.1
   google_sign_in: ^5.4.2
-  flutter_native_splash: ^2.2.14
   cloud_firestore: ^4.0.4
   firebase_storage: ^11.0.4
   path: ^1.8.2
@@ -56,7 +55,6 @@ dependencies:
   intl: ^0.17.0
   dropdown_button2: ^1.8.9
   flex_color_picker: ^2.6.1
-  flutter_launcher_icons: ^0.10.0
   firebase_messaging: ^14.0.4
   url_launcher: ^6.1.6
   app_links: ^3.3.0
@@ -64,7 +62,10 @@ dependencies:
   flutter_local_notifications: ^12.0.3
   dio: ^4.0.6
   firebase_core_platform_interface: ^4.5.2  
-  firebase_auth_platform_interface: ^6.11.1 
+  firebase_auth_platform_interface: ^6.11.1
+  drag_select_grid_view: ^0.6.1
+  # flutter_native_splash: ^2.2.14
+  # flutter_launcher_icons: ^0.10.0
  # stream_chat_flutter: ^4.2.0
   # flutterfire_ui: ^0.4.3+17
   # flow_builder: ^0.0.9
@@ -77,7 +78,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
-  build_runner: ^2.3.2
+  # build_runner: ^2.3.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -141,7 +142,7 @@ fonts:
   # see https://flutter.dev/custom-fonts/#from-packages
   
 flutter_launcher_name:
-  name: "m.Hany Store"
+  name: "M-Hany Store"
 
 flutter_icons:
   android: true
