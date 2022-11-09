@@ -111,10 +111,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 2/3,
                       crossAxisCount: 2,
-                      crossAxisSpacing: 2,
-                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      mainAxisExtent: 180,
                     ),
                     itemBuilder: (context,index) {
                       return buildCategories(
@@ -150,7 +150,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         padding: const EdgeInsets.all(12.0),
         child: SizedBox(
           width: 180,
-          height: 250, 
+          height: 180, 
           child: PhysicalModel(
             clipBehavior: Clip.antiAliasWithSaveLayer,
             color: Colors.black,
@@ -167,7 +167,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       ),
     );
   }
-  Future<void> saveTokenToDatabase(String token) async {
+/*   Future<void> saveTokenToDatabase(String token) async {
   final userId = FirebaseAuth.instance.currentUser;
 
   await FirebaseFirestore.instance
@@ -176,13 +176,13 @@ class _HomeWidgetState extends State<HomeWidget> {
     .set({
       'tokens': FieldValue.arrayUnion([token]),
     });
-}
+} */
 
- Future<void> setupToken() async {
+/*  Future<void> setupToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
     
     await saveTokenToDatabase(token!);
 
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
-  }
+  } */
 }
