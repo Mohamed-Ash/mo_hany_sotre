@@ -63,7 +63,7 @@ dependencies:
   dio: ^4.0.6
   firebase_core_platform_interface: ^4.5.2  
   firebase_auth_platform_interface: ^6.11.1
-  drag_select_grid_view: ^0.6.1
+  
   # flutter_native_splash: ^2.2.14
   # flutter_launcher_icons: ^0.10.0
  # stream_chat_flutter: ^4.2.0

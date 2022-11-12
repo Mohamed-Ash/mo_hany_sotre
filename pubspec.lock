@@ -183,13 +183,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
-  drag_select_grid_view:
-    dependency: "direct main"
-    description:
-      name: drag_select_grid_view
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.1"
   dropdown_button2:
     dependency: "direct main"
     description:
