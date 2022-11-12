@@ -64,7 +64,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
   }
 
   Widget buildItem({required BuildContext context,}){
-   
+    
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -231,7 +231,7 @@ class _PreviewProductWidgetState extends State<PreviewProductWidget> {
             ),
           ),
           const SizedBox(height: 30),
-          InkWell(
+          GestureDetector(
             onTap: ()=> Navigator.pushReplacementNamed(context, checkoutpage,arguments: widget.itemModel),
             child: FormFeilds.buttonFormField(
               title: 'Buy Now',
