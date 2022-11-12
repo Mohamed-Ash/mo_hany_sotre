@@ -7,7 +7,7 @@ import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
-import 'package:m_hany_store/user/product/product_page/preview_product_page.dart';
+import 'package:m_hany_store/user/product/product_widget/product_item_widget.dart';
 
 // ignore: must_be_immutable
 class ProductWidget extends StatefulWidget {
@@ -25,6 +25,8 @@ class ProductWidget extends StatefulWidget {
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
+  bool isSelected   = false;
+ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,27 +44,32 @@ class _ProductWidgetState extends State<ProductWidget> {
                 ),
               );
             }else{
-              return SingleChildScrollView(
-                physics: const ScrollPhysics(),
+              return // const SizedBox(height: 30),
+              SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    // const SizedBox(height: 30),
                     GridView.builder(
-                      shrinkWrap: true,
+                      // controller: controller,
+                      shrinkWrap: true ,
                       physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      mainAxisExtent: 270,
-                      ),
-                      itemBuilder: (context,index) {
-                        return getAllproducts(
-                          context: context,
-                          itemModel: state.data[index],
-                        );
-                      } ,
+                      mainAxisExtent: isSelected == false ? 300 : 400, 
+                      ), 
+                      itemBuilder: (BuildContext context,int index,) => ProductItemWidget(itemModel: state.data[index],isSelected: isSelected),
                       itemCount: state.data.length,
+                      
+                    /*   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      mainAxisExtent: 410,
+                      ), */
+                      // itemBuilder: (BuildContext context,int index,) => ProductItemWidget(itemModel: state.data[index],isSelected: isSelected),
+                      // itemCount: state.data.length,
                     ),
                   ],
                 ),
@@ -77,92 +84,4 @@ class _ProductWidgetState extends State<ProductWidget> {
       ),
     );
   }
-
-  Widget getAllproducts({
-    required BuildContext context,
-    required ItemModel itemModel,
-   }){
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: GestureDetector(
-        onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context){
-                return PreviewProductPage(itemModel: itemModel,);
-              }
-            ),
-          );
-        },
-        child: Stack(
-          children: [
-            Container(
-              width: 175,
-              height: 270,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: ColorTheme.darkAppBar
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 180,
-                  height: 180, 
-                  child: PhysicalModel(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    color: Colors.black,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(8),
-                    child:FadeInImage.assetNetwork(
-                      placeholder: 'assets/icons/lloading.gif',
-                      image: itemModel.image,
-                      fit: BoxFit.fill,
-                      placeholderFit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-                  child: Text(
-                    itemModel.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-                  child: Text(
-                    '${itemModel.price} LE',
-                    style: getBoldStyle(color: ColorTheme.wight,fontSize: 16),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  fixBixiles(BuildContext context){
-    if(MediaQuery.of(context).size.width > 30.0 && MediaQuery.of(context).size.width < 100.0 ) {
-      return 130.0;
-    }else if (MediaQuery.of(context).size.width < 100.0 && MediaQuery.of(context).size.width > 200.0 ){
-      return 150.0;
-    }else if (MediaQuery.of(context).size.width < 200.0 && MediaQuery.of(context).size.width > 300.0 ){
-      return 160.0;
-    }else{
-      return 175.0;
-    }
-  }  
 }
