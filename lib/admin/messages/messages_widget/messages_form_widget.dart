@@ -41,7 +41,6 @@ class MessagesFormWidgetState extends State<MessagesFormWidget> {
             ],
           ),
         ),
-
         Container(
           margin: const EdgeInsets.all(15.0),
           height: 61,
@@ -104,14 +103,15 @@ class MessagesFormWidgetState extends State<MessagesFormWidget> {
           padding: MediaQuery.of(context).viewInsets,
           color: Colors.grey[300],
           child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Type a message',
-                  ),
-                ))
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            child: const TextField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Type a message',
+              ),
+            ),
+          ),
         ),
       ],
     );

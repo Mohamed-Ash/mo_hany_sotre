@@ -1,7 +1,11 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_preview/image_preview.dart';
 import 'package:intl/intl.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
@@ -22,13 +26,19 @@ class MessagesWidget extends StatefulWidget {
 }
 
 class TtopicWidgetState extends State<MessagesWidget> {
-  double  sizedMessage = 80;
+  List<XFile>? imageFile; 
+  String timeTest  =  DateFormat.jm().format( DateTime.now());
+  DateTime dateMessage = DateTime.now();
+  final ImagePicker _imagePicker = ImagePicker();
+
+  final formKey = GlobalKey<FormState>();
   final messageController = TextEditingController();
- 
+  
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+  EdgeInsets sizedMessage  = MediaQuery.of(context).viewInsets;
+    return Form(
+      key: formKey,
       child: Column(
         children: [
           BlocBuilder(
@@ -49,15 +59,18 @@ class TtopicWidgetState extends State<MessagesWidget> {
                     child: SingleChildScrollView(
                       reverse: true,
                       physics: const ScrollPhysics(),
-                      child: ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context ,index) => getDataMessage(messageModel: state.data[index]),
-                        separatorBuilder: (context ,index) => const SizedBox(
-                          height: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context ,index) => getDataMessage(messageModel: state.data[index]),
+                          separatorBuilder: (context ,index) => const SizedBox(
+                            height: 50,
+                          ),
+                          itemCount: state.data.length,
                         ),
-                        itemCount: state.data.length,
                       ),
                     ),
                   );
@@ -72,35 +85,133 @@ class TtopicWidgetState extends State<MessagesWidget> {
           const SizedBox(
             height: 22,
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(22, 10, 10, 22),
-            child: Row(
-              children: [
-                 Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    height: sizedMessage < 90 ? sizedMessage : 200,
-                    decoration: BoxDecoration(
-                      color:  ColorTheme.backroundInput,
-                      borderRadius: BorderRadius.circular(8),
+          Container(
+            color: ColorTheme.darkAppBar,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 22),
+              child: Column(
+                children: [
+                  if(imageFile != null)
+                    Stack(  
+                      alignment: Alignment.topRight,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                              /*  onTap: (){
+                                  openImagesPage(
+                                    Navigator.of(context),
+                                    imgUrls:[imageFile.],
+                                    index: 0,
+                                  );
+                                }, 
+                                Image.file(
+                                  width: double.infinity,
+                                  height: 100,
+                                  fit: BoxFit.fill,
+                                  filterQuality: FilterQuality.high,
+                                  File(imageFile)),
+                                */
+                                child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: imageFile!.length,
+                                  separatorBuilder: (context, index) => const SizedBox(width: 5),
+                                  itemBuilder: (context, index){
+                                    return Semantics(
+                                      label: 'image_picker_example_picked_image',
+                                      child: InkWell(
+                                        onTap: () {
+                                          openImagesPage(
+                                            Navigator.of(context),
+                                            imgUrls:[imageFile![index].path],
+                                            imgOriginalUrls: [imageFile![index].path],
+                                            index: 0,
+                                          );
+                                        },
+                                        child: Image.file(
+                                          File(imageFile![index].path)
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          child: InkWell(
+                            onTap: (){
+                              setState(() {
+                                imageFile = null;
+                              });
+                            },
+                            child: FormFeilds.containerImage(assetImage: 'assets/images/cancel.png',height: 15,width: 15),
+                          ),
+                        ),
+                      ],
                     ),
-                    child: FormFeilds.textField(
-                      controller: messageController, 
-                      keyboardType: TextInputType.multiline, 
-                      hintText: 'write somesing...',
-                    ),
+                  /* Container(
+                    width: 50,
+                    height: 50,
+                    child: Image.file(filterQuality: FilterQuality.high ,File(imageFile!.path)),
+                  ), */
+                  const SizedBox(height: 10,),
+                  Row(
+                    children: [
+                       Expanded(
+                        child: Container(
+                          padding: sizedMessage,
+                          width: double.infinity,
+                          // height: sizedMessage < 50 ? sizedMessage : 50,
+                          decoration: BoxDecoration(
+                            color:  ColorTheme.backroundInput,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: FormFeilds.textField(
+                            controller: messageController, 
+                            keyboardType: TextInputType.multiline, 
+                            hintText: 'write somesing...',
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                       InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () async {
+                          List<XFile> images = await  _imagePicker.pickMultiImage(requestFullMetadata: true);
+                          setState(() {
+                            imageFile = images ;
+                          });
+                        },
+                        child: FormFeilds.containerImage(assetImage:'assets/icons/add_image.png',height: 30,width: 30)
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                       InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () {
+                          if (formKey.currentState!.validate()) {
+                            sendMessage(context);
+                          }
+                        },
+                        child: FormFeilds.containerImage(assetImage:'assets/icons/send_message.png',height: 30,width: 30)
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                 GestureDetector(
-                  onTap: () {
-                    sendMessage(context);
-                  },
-                  child: FormFeilds.containerImage(assetImage:'assets/icons/send_message.png',height: 30,width: 30)
-                ),
-              ],
+                ],
+              ),
             ),
           ),       
         ],
@@ -153,38 +264,19 @@ class TtopicWidgetState extends State<MessagesWidget> {
   }
 
   sendMessage(context)async{
-    if(messageController !=null || messageController.text.isEmpty){
-      String timeTest  =  DateFormat.jm().format( DateTime.now());
-      DateTime  dateMessage = DateTime.now();
-      FormFeilds.showLoading(context);
-      String id = await NextIdHelper.getNextId('messages');
-      MessageModel data = MessageModel(
-        text:  messageController.text, 
-        timeNow: timeTest,
-        dateMessage: '$dateMessage',
-        id: id,
-      );
-      widget.messageBloc.add(StoreMessageDataEvent(data:data.toJson()));
-      setState(() {
-        messageController.clear();
-        // messageController.dispose();
-      });
-      Navigator.pop(context);
-    }else{
-      FormFeilds.showMyDialog(
-        context: context, 
-        message: 'please choose image', 
-        actions: <Widget>[
-          TextButton(
-            onPressed: ()=>Navigator.of(context).pop(), 
-            child: Text(
-              'Okay',
-              style: getBoldStyle(color: ColorTheme.wight,
-              )
-            ),
-          ),
-        ]
-      );
-    }
+    FormFeilds.showLoading(context);
+    String id = await NextIdHelper.getNextId('messages');
+    MessageModel data = MessageModel(
+      text:  messageController.text, 
+      timeNow: timeTest,
+      dateMessage: '$dateMessage',
+      id: id,
+    );
+    widget.messageBloc.add(StoreMessageDataEvent(data:data.toJson()));
+    setState(() {
+      messageController.clear();
+      // messageController.dispose();
+    });
+    Navigator.pop(context);
   }
 }

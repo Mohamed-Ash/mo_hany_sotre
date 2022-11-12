@@ -9,7 +9,6 @@ import 'package:m_hany_store/admin/home/admin_home.dart';
 import 'package:m_hany_store/admin/item/item_page/add_item_page.dart';
 import 'package:m_hany_store/admin/item/item_page/item_page.dart';
 import 'package:m_hany_store/admin/item/item_page/preview_item_page.dart';
-import 'package:m_hany_store/admin/messages/messages_page/messages_form_page.dart';
 import 'package:m_hany_store/admin/messages/messages_page/messages_page.dart';
 import 'package:m_hany_store/admin/reminder/reminder_page/reminder_page.dart';
 import 'package:m_hany_store/admin/show_admins/show_admins_page/show_admins_page.dart';
@@ -63,7 +62,6 @@ class Routes{
       case addItemCategoriesPage:                               return MaterialPageRoute(builder: (_)=> AddItemCategoriesPage());
       case itemPage:                                            return MaterialPageRoute(builder: (_)=> ItemPage(categoriesModel: settings.arguments as CategoryModel,));
       case topicPage:                                           return MaterialPageRoute(builder: (_)=> MessagesPage());
-      case messagesFormPage:                                    return MaterialPageRoute(builder: (_)=> MessagesFormPage());
       case editItemCategoriesPage:                              return MaterialPageRoute(builder: (_)=> EditItemCategoriesPage(categoriesModel: settings.arguments as CategoryModel,));
       case previewItemCategoriesPage:                           return MaterialPageRoute(builder: (_)=> PreviewItemCategoriesPage(categoriesModel: settings.arguments as CategoryModel));
       case addItemPage:                                         return MaterialPageRoute(builder: (_)=> AddItemPage(categoriesModel: settings.arguments as CategoryModel,));
