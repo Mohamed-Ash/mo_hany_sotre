@@ -180,7 +180,7 @@ class ApiDataBloc<T> extends Bloc<DataEvent, DataState> {
       }
     }
    
-    data = await collectionData.orderBy('time_now').get();
+    data = await collectionData.orderBy('date_message').get();
    
     List<T> result = [];
    
@@ -196,7 +196,7 @@ class ApiDataBloc<T> extends Bloc<DataEvent, DataState> {
     final collectionData = FirebaseFirestore.instance.collection(collectionName!);
     collectionData.add(event.data);
 
-    var data = await collectionData.orderBy('time_now').get();
+    var data = await collectionData.orderBy('date_message').get();
     List<T> result = [];
     for (var element in data.docs) {
       result.add(factory?.call(element.data()));
