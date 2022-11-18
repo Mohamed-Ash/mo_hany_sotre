@@ -39,7 +39,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
           children: [
             SizedBox(
               width: 180,
-              height: 280, 
+              height: 200, 
               child: PhysicalModel(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 color: Colors.black,
