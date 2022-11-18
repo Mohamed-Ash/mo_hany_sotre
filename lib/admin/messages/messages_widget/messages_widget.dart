@@ -1,7 +1,10 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:io';
+import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +17,7 @@ import 'package:m_hany_store/core/model/message_model.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/font_theme.dart';
 import 'package:m_hany_store/core/theme/fonts/style.dart';
+import 'package:path/path.dart';
 
 // ignore: must_be_immutable
 class MessagesWidget extends StatefulWidget {
@@ -26,10 +30,10 @@ class MessagesWidget extends StatefulWidget {
 }
 
 class TtopicWidgetState extends State<MessagesWidget> {
-  List<XFile>? imageFile; 
+  XFile? imageFile; 
+  final ImagePicker _imagePicker = ImagePicker();
   String timeTest  =  DateFormat.jm().format( DateTime.now());
   DateTime dateMessage = DateTime.now();
-  final ImagePicker _imagePicker = ImagePicker();
 
   final formKey = GlobalKey<FormState>();
   final messageController = TextEditingController();
@@ -103,7 +107,7 @@ class TtopicWidgetState extends State<MessagesWidget> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Padding(
+                            child:  Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: InkWell(
                               /*  onTap: (){
@@ -120,7 +124,7 @@ class TtopicWidgetState extends State<MessagesWidget> {
                                   filterQuality: FilterQuality.high,
                                   File(imageFile)),
                                 */
-                                child: ListView.separated(
+                                /* child: ListView.separated(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: imageFile!.length,
                                   separatorBuilder: (context, index) => const SizedBox(width: 5),
@@ -142,7 +146,12 @@ class TtopicWidgetState extends State<MessagesWidget> {
                                       ),
                                     );
                                   },
-                                ),
+                                ), */
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Image.file(filterQuality: FilterQuality.high ,File(imageFile!.path)),
+                                ), 
                               ),
                             ),
                           ),
@@ -159,15 +168,28 @@ class TtopicWidgetState extends State<MessagesWidget> {
                         ),
                       ],
                     ),
-                  /* Container(
-                    width: 50,
-                    height: 50,
-                    child: Image.file(filterQuality: FilterQuality.high ,File(imageFile!.path)),
-                  ), */
+                    /* Container(
+                      width: 50,
+                      height: 50,
+                      child: Image.file(filterQuality: FilterQuality.high ,File(imageFile!.path)),
+                    ), */
                   const SizedBox(height: 10,),
                   Row(
                     children: [
-                       Expanded(
+                      InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () async {
+                          XFile? images = await  _imagePicker.pickImage(source: ImageSource.gallery);
+                          setState(() {
+                            imageFile = images ;
+                          });
+                        },
+                        child: FormFeilds.containerImage(assetImage:'assets/icons/add_image.png',height: 30,width: 30)
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
                         child: Container(
                           padding: sizedMessage,
                           width: double.infinity,
@@ -182,19 +204,6 @@ class TtopicWidgetState extends State<MessagesWidget> {
                             hintText: 'write somesing...',
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                       InkWell(
-                        borderRadius: BorderRadius.circular(20),
-                        onTap: () async {
-                          List<XFile> images = await  _imagePicker.pickMultiImage(requestFullMetadata: true);
-                          setState(() {
-                            imageFile = images ;
-                          });
-                        },
-                        child: FormFeilds.containerImage(assetImage:'assets/icons/add_image.png',height: 30,width: 30)
                       ),
                       const SizedBox(
                         width: 10,
@@ -231,13 +240,13 @@ class TtopicWidgetState extends State<MessagesWidget> {
       },
       child: Column(
         children: [
-          Text(   
+          Text(
             messageModel.timeNow,
             style: getMediumStyle(color: ColorTheme.wight, fontSize: 15),
           ),
           const SizedBox( 
             height: 25,
-          ) ,
+          ),
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -246,15 +255,36 @@ class TtopicWidgetState extends State<MessagesWidget> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(22.0),
-              child: SelectableText(
-                messageModel.text,
-                style: const TextStyle(
-                  color: ColorTheme.wight,
-                  fontFamily: FontsTheme.fontFamily,
-                  fontSize: 15,
-                  height: 1.7,
-                  fontWeight: FontWeight.w500,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SelectableText(
+                    messageModel.text,
+                    style: const TextStyle(
+                      color: ColorTheme.wight,
+                      fontFamily: FontsTheme.fontFamily,
+                      fontSize: 15,
+                      height: 1.7,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    // width: 180,
+                    // height: 180, 
+                    child: PhysicalModel(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      color: Colors.black,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(8),
+                      child:FadeInImage.assetNetwork(
+                        placeholder: 'assets/icons/lloading.gif',
+                        image: '${messageModel.image}',
+                        fit: BoxFit.fill,
+                        placeholderFit: BoxFit.contain,
+                      ),
+                    ),
+                  ), 
+                ],
               ),
             ),
           ),
@@ -263,20 +293,56 @@ class TtopicWidgetState extends State<MessagesWidget> {
     );
   }
 
-  sendMessage(context)async{
+  Future<void> sendMessage(context)async{
     FormFeilds.showLoading(context);
-    String id = await NextIdHelper.getNextId('messages');
-    MessageModel data = MessageModel(
-      text:  messageController.text, 
-      timeNow: timeTest,
-      dateMessage: '$dateMessage',
-      id: id,
-    );
-    widget.messageBloc.add(StoreMessageDataEvent(data:data.toJson()));
-    setState(() {
-      messageController.clear();
-      // messageController.dispose();
-    });
+    try {
+      if (imageFile != null) {
+        String id = await NextIdHelper.getNextId('messages');
+        
+      /*  final LostDataResponse response  = await _imagePicker.retrieveLostData();
+        
+        final  imageFile =  response.files; */
+        
+        var nameimage = basename(imageFile!.path);
+        
+        var random = Random().nextInt(1000000);
+        
+        nameimage = "$random$nameimage";
+        var file = File(imageFile!.path);
+        var refSorage = FirebaseStorage.instance.ref("Message").child(nameimage); 
+        // await refSorage.putFile(imageFile);
+        await refSorage.putFile(file); 
+        var urlImage =  await refSorage.getDownloadURL();
+        MessageModel data = MessageModel(
+          text:  messageController.text, 
+          timeNow: timeTest,
+          image: urlImage,
+          dateMessage: '$dateMessage',
+          id: id,
+        );
+        widget.messageBloc.add(StoreMessageDataEvent(data:data.toJson()));
+        setState(() {
+          messageController.clear();
+          // messageController.dispose();
+        });
+      } else {
+        String id = await NextIdHelper.getNextId('messages');
+        MessageModel data = MessageModel(
+          text:  messageController.text, 
+          timeNow: timeTest,
+          image: null,
+          dateMessage: '$dateMessage',
+          id: id,
+        );
+        widget.messageBloc.add(StoreMessageDataEvent(data:data.toJson()));
+        setState(() {
+          messageController.clear();
+          // messageController.dispose();
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
     Navigator.pop(context);
   }
 }
