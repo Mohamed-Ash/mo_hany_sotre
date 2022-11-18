@@ -84,7 +84,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       },
                       child: FormFeilds.rowTextIcon(
                         isImage: true,
-                        text: 'Change passord',
+                        text: 'Change password',
                         firstIconImage: 'assets/icons/password.png',
                         iconData: Icons.arrow_forward_ios_sharp,
                         iconSize: 16,
@@ -130,13 +130,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: () async{
-                        if (await launchUrl(phone)) {}
-                      },
+                      onTap: () =>  setState(() {
+                        launched = _launchInBrowser(toLaunchMessenger);
+                      }),
                       child: FormFeilds.rowTextIcon(
                         isImage: true,
-                        text: 'call phone',
-                        firstIconImage: 'assets/icons/phone.png',
+                        firstIconImage: 'assets/images/messenger.png',
+                        text: 'massenger',
                         iconData: Icons.arrow_forward_ios_sharp,
                       ),
                     ),
@@ -185,12 +185,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     ),
                     InkWell(
                       onTap: () =>  setState(() {
-                        launched = _launchInBrowser(toLaunchMessenger);
+                        launched = _launchInBrowser(toLaunchWhatsapp);
                       }),
                       child: FormFeilds.rowTextIcon(
                         isImage: true,
-                        firstIconImage: 'assets/images/messenger.png',
-                        text: 'massenger',
+                        text: 'whats app',
+                        firstIconImage: 'assets/images/whatsapp.png',
                         iconData: Icons.arrow_forward_ios_sharp,
                       ),
                     ),
@@ -202,13 +202,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       ),
                     ),
                     InkWell(
-                      onTap: () =>  setState(() {
-                        launched = _launchInBrowser(toLaunchWhatsapp);
-                      }),
+                      onTap: () async{
+                        if (await launchUrl(phone)) {}
+                      },
                       child: FormFeilds.rowTextIcon(
                         isImage: true,
-                        text: 'whats app',
-                        firstIconImage: 'assets/images/whatsapp.png',
+                        text: 'call phone',
+                        firstIconImage: 'assets/icons/phone.png',
                         iconData: Icons.arrow_forward_ios_sharp,
                       ),
                     ),
