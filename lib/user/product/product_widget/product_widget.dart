@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
@@ -26,7 +25,6 @@ class ProductWidget extends StatefulWidget {
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
-  bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,31 +42,21 @@ class _ProductWidgetState extends State<ProductWidget> {
                 ),
               );
             }else{
-              return // const SizedBox(height: 30),
-              SingleChildScrollView(
+              return SingleChildScrollView(
                 physics: const ScrollPhysics(),
-                child: Column(
+                child: Wrap(
                   children: [
                     GridView.builder(
-                      shrinkWrap: true ,
+                      shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      mainAxisExtent: 350 , 
+                      mainAxisExtent: 280 , 
                       ), 
-                      itemBuilder: (BuildContext context,int index,) => ProductItemWidget(itemModel: state.data[index],isSelected: isSelected),
+                      itemBuilder: (BuildContext context,int index,) => ProductItemWidget(itemModel: state.data[index]),
                       itemCount: state.data.length,
-                      
-                    /*   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      mainAxisExtent: 410,
-                      ), */
-                      // itemBuilder: (BuildContext context,int index,) => ProductItemWidget(itemModel: state.data[index],isSelected: isSelected),
-                      // itemCount: state.data.length,
                     ),
                   ],
                 ),
