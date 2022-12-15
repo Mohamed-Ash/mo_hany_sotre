@@ -31,19 +31,19 @@ class _HomeWidgetState extends State<HomeWidget> {
     super.initState();
     
     /* FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('========================================token=========================================');
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-        print('Message also contained a notification: ${message.notification!.body}');
-      print('========================================token=========================================');
+      debugPrint('========================================token=========================================');
+      debugPrint('Got a message whilst in the foreground!');
+      debugPrint('Message data: ${message.data}');
+        debugPrint('Message also contained a notification: ${message.notification!.body}');
+      debugPrint('========================================token=========================================');
         Navigator.pushNamed(context,topicPage);
       // if (message.notification != null) {
       // }
     }); */
     FirebaseMessaging.onMessage.listen((event) {
-      print('================= event data =================');
-      print(event.notification!.body.toString());
-      print('=====================================');
+      debugPrint('================= event data =================');
+      debugPrint(event.notification!.body.toString());
+      debugPrint('=====================================');
     });
     // initialMessage();
     widget.categoryBloc= ApiDataBloc()..add(const IndexDataEvent());
@@ -112,7 +112,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      mainAxisExtent: 180,
+                      mainAxisExtent: 280,
                     ),
                     itemBuilder: (context,index) {
                       return buildCategories(
@@ -145,7 +145,7 @@ class _HomeWidgetState extends State<HomeWidget> {
          Navigator.pushNamed(context, productPagse,arguments: categoriesModel);
       },
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(0.0),
         child: SizedBox(
           width: 180,
           height: 180, 
