@@ -20,7 +20,7 @@ class Ooffer_widrItemWState extends State<OfferItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-     Object fiterOperatorr ;
+    Object fiterOperatorr ;
 
     if (widget.itemModel.price == widget.itemModel.offerPrice){
       fiterOperatorr = 100 ;
@@ -32,7 +32,7 @@ class Ooffer_widrItemWState extends State<OfferItemWidget> {
     // var fiterPercent = itemModel.price == itemModel.offerPrice ? 100 : itemModel.percent.toString().substring(0,2);
     var fiterOfferPrice = widget.itemModel.price == widget.itemModel.offerPrice ? 'free' : "${widget.itemModel.offerPrice} LE";
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 22, 12, 22),
+      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
       child: InkWell(
         onTap: () => Navigator.pushNamed(context, previewSalePage,arguments: widget.itemModel),
         child: Container(
@@ -100,8 +100,7 @@ class Ooffer_widrItemWState extends State<OfferItemWidget> {
                       TextSpan(
                         text: '${widget.itemModel.price}',
                         style: TextStyle(
-                          decoration: TextDecoration.combine(
-                            [
+                          decoration: TextDecoration.combine([
                               TextDecoration.lineThrough,
                               TextDecoration.lineThrough,
                             ],
