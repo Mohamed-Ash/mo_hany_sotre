@@ -112,12 +112,12 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                                 width: 90,
                                 height: 18,
                                 decoration: BoxDecoration(
-                                  color: Color(widget.itemModel.colorPlatform),
+                                  color: Color(widget.itemModel.colorRegion),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Center(
                                   child: Text(
-                                    widget.itemModel.platform,
+                                    widget.itemModel.region,
                                     style: getSemiBoldStyle(color: ColorTheme.wight,),
                                   ),
                                 ),
@@ -139,12 +139,12 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
                                 width: 90,
                                 height: 18,
                                 decoration: BoxDecoration(
-                                  color: Color(widget.itemModel.colorRegion),
+                                  color: Color(widget.itemModel.colorPlatform),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Center(
                                   child: Text(
-                                    widget.itemModel.region,
+                                    widget.itemModel.platform,
                                       style: getSemiBoldStyle(color: ColorTheme.wight,),  
                                   ),
                                 ),
@@ -387,8 +387,8 @@ class _CheckoutWidgetState extends State<CheckoutWidget> {
       updatedAt: widget.itemModel.updatedAt,
     );
     widget.itemBloc.add(UpdateDataEvent(id: widget.itemModel.id, data:  data.toJson()));
-    print('done');
-    print('========================');
+    debugPrint('done');
+    debugPrint('========================');
   } */
 
  /*  buildpopUp(){

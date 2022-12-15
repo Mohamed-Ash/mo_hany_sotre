@@ -3,12 +3,10 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_preview/image_preview.dart';
 import 'package:intl/intl.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
@@ -231,7 +229,69 @@ class TtopicWidgetState extends State<MessagesWidget> {
   Widget getDataMessage({
     required MessageModel messageModel,
   }){
-    return Dismissible(
+    if(messageModel.image != null){
+      return Dismissible(
+        key: ObjectKey(messageModel),
+        onDismissed: (direction) {
+          setState(() {
+            widget.messageBloc.add(DeleteMessageDataEvent(id: messageModel.id));
+          });
+        },
+        child: Column(
+          children: [
+            Text(
+              messageModel.timeNow,
+              style: getMediumStyle(color: ColorTheme.wight, fontSize: 15),
+            ),
+            const SizedBox( 
+              height: 25,
+            ),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: ColorTheme.darkAppBar
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(22.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SelectableText(
+                      messageModel.text,
+                      style: const TextStyle(
+                        color: ColorTheme.wight,
+                        fontFamily: FontsTheme.fontFamily,
+                        fontSize: 15,
+                        height: 1.7,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      // width: 180,
+                      // height: 180, 
+                      child: PhysicalModel(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        color: Colors.black,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(8),
+                        child:FadeInImage.assetNetwork(
+                          placeholder: 'assets/icons/lloading.gif',
+                          image: '${messageModel.image}',
+                          fit: BoxFit.fill,
+                          placeholderFit: BoxFit.contain,
+                        ),
+                      ),
+                    ), 
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }else{
+      return Dismissible(
       key: ObjectKey(messageModel),
       onDismissed: (direction) {
         setState(() {
@@ -255,42 +315,23 @@ class TtopicWidgetState extends State<MessagesWidget> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(22.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SelectableText(
-                    messageModel.text,
-                    style: const TextStyle(
-                      color: ColorTheme.wight,
-                      fontFamily: FontsTheme.fontFamily,
-                      fontSize: 15,
-                      height: 1.7,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(
-                    // width: 180,
-                    // height: 180, 
-                    child: PhysicalModel(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      color: Colors.black,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(8),
-                      child:FadeInImage.assetNetwork(
-                        placeholder: 'assets/icons/lloading.gif',
-                        image: '${messageModel.image}',
-                        fit: BoxFit.fill,
-                        placeholderFit: BoxFit.contain,
-                      ),
-                    ),
-                  ), 
-                ],
+              child: SelectableText(
+                messageModel.text,
+                style: const TextStyle(
+                  color: ColorTheme.wight,
+                  fontFamily: FontsTheme.fontFamily,
+                  fontSize: 15,
+                  height: 1.7,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
         ],
       ),
     );
+    }
+    
   }
 
   Future<void> sendMessage(context)async{
@@ -341,7 +382,7 @@ class TtopicWidgetState extends State<MessagesWidget> {
         });
       }
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
     Navigator.pop(context);
   }

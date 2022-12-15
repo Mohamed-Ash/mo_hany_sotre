@@ -30,9 +30,9 @@ class _ReminderWidgetState extends State<ReminderWidget> {
    void firebaseMessagingListener() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       NotifcationModel notificationMessage = NotifcationModel.fromJson(message.data);
-      print('notification from foreground : ${notificationMessage.title}');
-      print('notification from foreground : ${notificationMessage.body}');
-      print('=++++++++++++++++++++++++++++++++++++++++notification from foreground : ${notificationMessage.title}');
+      debugPrint('notification from foreground : ${notificationMessage.title}');
+      debugPrint('notification from foreground : ${notificationMessage.body}');
+      debugPrint('=++++++++++++++++++++++++++++++++++++++++notification from foreground : ${notificationMessage.title}');
 
     });
   }

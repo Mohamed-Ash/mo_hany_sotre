@@ -63,7 +63,7 @@ void initState() {
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-              mainAxisExtent:   350, 
+              mainAxisExtent: 320, 
               ), 
               itemBuilder: (BuildContext context,int index,) => OfferItemWidget(itemModel: state.data[index]),
               itemCount: state.data.length,

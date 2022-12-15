@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_hany_store/core/bloc/bloc/api_data_bloc.dart';
 import 'package:m_hany_store/core/form_fields/button_form_feilds.dart';
-import 'package:m_hany_store/core/model/category_model.dart';
 import 'package:m_hany_store/core/model/item_model.dart';
 import 'package:m_hany_store/core/routes/string_route.dart';
 import 'package:m_hany_store/core/theme/colors/color_theme.dart';
@@ -13,9 +12,8 @@ import 'package:m_hany_store/core/theme/fonts/style.dart';
 
 class ShowOffersWidget extends StatefulWidget {
   final ApiDataBloc<ItemModel> itemModel;
-  final ApiDataBloc<CategoryModel> categoriesModel;
 
-  const ShowOffersWidget({Key? key,required this.itemModel, required this.categoriesModel}) : super(key: key);
+  const ShowOffersWidget({Key? key,required this.itemModel}) : super(key: key);
 
   @override
   State<ShowOffersWidget> createState() => _ShowOffersWidgetState();
@@ -71,11 +69,9 @@ class _ShowOffersWidgetState extends State<ShowOffersWidget> {
     Widget buildItemProduct({
     required BuildContext context,
     required ItemModel itemModel,
-    // required CategoryModel categoriesModel,
   }){
     return Container(
       width: double.infinity,
-      // height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: const Border(
@@ -133,27 +129,14 @@ class _ShowOffersWidgetState extends State<ShowOffersWidget> {
                     icon: FormFeilds.containerImage(assetImage: 'assets/images/eye.png',height: 18,width: 18),
                   ),
                   IconButton(
-                    onPressed: () {
-                     /*  Navigator.pushReplacement(
-                      context, MaterialPageRoute(
-                        builder: (context){
-                          return  EditItemPage(itemModel: itemModel,categoriesModel: widget.categoriesModel,);
-                        }
-                      ),
-                    ); */
-                    },
-                    icon: FormFeilds.containerImage(assetImage: 'assets/images/edit.png',height: 18,width: 18),
-                  ),
-                  IconButton(
                     onPressed: (){
                       FormFeilds.deleteMessage(
                         context, 
                         'Are you sure to delete?',
                         InkWell(
                           onTap: () async {
-                              Navigator.of(context).pushReplacementNamed(itemPage, arguments: widget.categoriesModel);
                             widget.itemModel.add(DeleteDataEvent(id: itemModel.id, files: const ['image']));
-                            // Navigator.push(context, MaterialPageRoute(builder: (_)=> ShippingPage(categoriesModel: widget.categoriesModel,)));
+                            Navigator.pop(context);
                           },
                           child: FormFeilds.buttonFormField(title: 'delete',colorButton: ColorTheme.primary),
                         ),

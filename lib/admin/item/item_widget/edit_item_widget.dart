@@ -105,8 +105,8 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
         text: widget.itemModel.info,  
       );  
     }
-    colorRegion = Colors.blue;
-    colorPlatform = Colors.red;
+    colorRegion =  Colors.red;
+    colorPlatform =Colors.blue;
   }
   
   @override
@@ -551,15 +551,11 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
     } else {
       date = DateTime.parse('$now');
     }
-    print('$now');
-    print('$date');
+
     try{
       if (image != null){
         FirebaseStorage.instance.refFromURL(widget.itemModel.image).delete();
-        
-        print("==++++++++++++++==");
-        print('printDeleteImage');
-        
+   
         FormFeilds.showLoading(context);
 
         var file = File(image!.path);
@@ -570,8 +566,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
 
         nameimage = "$random$nameimage";
         var refSorage = FirebaseStorage.instance.ref(widget.categoriesModel.type).child(nameimage); 
-        print('=========================================');
-        print(nameimage);
+        
         await refSorage.putFile(file);
 
         var uri =  await refSorage.getDownloadURL();
@@ -651,7 +646,7 @@ class _EditItemShippingWidgetState extends State<EditItemShippingWidget> {
         );
       }
     }catch(e){
-       print(e.toString());
+       debugPrint(e.toString());
     }
   } 
   

@@ -88,11 +88,11 @@ class _ConfirmEemailWidgetState extends State<ConfirmEemailWidget> {
                   stream: FirebaseAuth.instance.authStateChanges(),
                   builder:(context, snapshot) {
                     if (canEmailVerified) {
-                       print('succses');
+                       debugPrint('succses');
                         
                       return Text(''); 
                     } else {
-                       print('email not confrimed');
+                       debugPrint('email not confrimed');
                       return const Text('');
                     }
                   }, 
@@ -101,11 +101,11 @@ class _ConfirmEemailWidgetState extends State<ConfirmEemailWidget> {
               onTap: () {
                 Navigator.pushReplacementNamed(context, appPageLayout,);
                /*  // confirmEmail();
-                  print(comfirmuser!.emailVerified.toString());
+                  debugPrint(comfirmuser!.emailVerified.toString());
                 if (comfirmuser!.emailVerified) {
-                  print('true');
+                  debugPrint('true');
                 } else {
-                  print('email not confrimed');
+                  debugPrint('email not confrimed');
                 }*/
               },
               child: FormFeilds.buttonFormField(
@@ -143,7 +143,7 @@ class _ConfirmEemailWidgetState extends State<ConfirmEemailWidget> {
     try {
       await comfirmuser!.sendEmailVerification();
     } catch (e) {
-        print(e.toString());
+        debugPrint(e.toString());
     }
   }
 
@@ -160,7 +160,7 @@ class _ConfirmEemailWidgetState extends State<ConfirmEemailWidget> {
         canEmailVerified = true;
         Navigator.pushNamedAndRemoveUntil(context, appPageLayout, (route) => false);
       });
-      print('susscses');
+      debugPrint('susscses');
       timer?.cancel();
     }
   }

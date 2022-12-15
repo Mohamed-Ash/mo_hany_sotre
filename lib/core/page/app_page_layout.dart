@@ -135,7 +135,4 @@ class AppPageLayout extends UserInterface{
       ),
     );
   }
-  buildS ( context){
-    Navigator.pushNamed(context, adminHome);
-  }
 }

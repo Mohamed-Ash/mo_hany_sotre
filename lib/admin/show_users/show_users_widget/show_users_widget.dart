@@ -128,7 +128,7 @@ class _ShowUsersWidgetState extends State<ShowUsersWidget> {
       widget.adminModel.add(StoreDataEvent(data: data.toJson()));
     } catch (e) {
       // ignore: avoid_print
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 }

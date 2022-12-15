@@ -199,7 +199,7 @@ class PreviewOfferPage extends UserInterface{
                     width: 120,
                     height: 25,
                     decoration: BoxDecoration(
-                      color: Color(itemModel.colorPlatform),
+                      color: Color(itemModel.colorRegion),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(

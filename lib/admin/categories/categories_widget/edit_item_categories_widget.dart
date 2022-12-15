@@ -255,8 +255,8 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
       if (image != null){
         await FirebaseStorage.instance.refFromURL("${widget.categoriesModel.image}").delete();
 
-        print("==++++++++++++++==");
-        print('printDeleteImage');
+        debugPrint("==++++++++++++++==");
+        debugPrint('printDeleteImage');
       
         FormFeilds.showLoading(context);
 
@@ -269,8 +269,8 @@ class _EditItemCategoriesWidgetState extends State<EditItemCategoriesWidget> {
         nameimage = "$random$nameimage";
 
         var refSorage = FirebaseStorage.instance.ref("categories").child(nameimage); 
-        print('=========================================');
-        print(nameimage);
+        debugPrint('=========================================');
+        debugPrint(nameimage);
         await refSorage.putFile(file);
 
         var uri =  await refSorage.getDownloadURL();

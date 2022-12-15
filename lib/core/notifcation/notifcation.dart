@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 
 class NotifcationPage{
   Future<void> sendNotification({
@@ -11,7 +12,7 @@ class NotifcationPage{
     Dio dio = Dio();
 
     // var token = await getDeviceToken();
-    // print('device token : $token');
+    // debugPrint('device token : $token');
 
 
     final data = {
@@ -33,12 +34,12 @@ class NotifcationPage{
     try {
       final response = await dio.post(postUrl, data: data);
       if (response.statusCode == 200) {
-        print('Request Sent To Driver');
+        debugPrint('Request Sent To Driver');
       } else {
-        print('notification sending failed');
+        debugPrint('notification sending failed');
       }
     } catch (e) {
-      print('exception $e');
+      debugPrint('exception $e');
     }
   }
 }

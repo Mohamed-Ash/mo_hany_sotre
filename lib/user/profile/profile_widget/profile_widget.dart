@@ -286,8 +286,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     required AdminModel adminModel,
     required BuildContext context,
   }){
-    print('=====================');
-    print(adminModel.email.toString());
+    debugPrint('=====================');
+    debugPrint(adminModel.email.toString());
     if (user!.email == adminModel.email ){
       return InkWell(
         borderRadius: BorderRadius.circular(8),

@@ -333,7 +333,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
           ]  
         );
-        print('No user found for that email.');
+        debugPrint('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         Navigator.of(context).pop();
         FormFeilds.showMyDialog(
@@ -350,7 +350,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
           ]
         );
-        print('Wrong password provided for that user.');
+        debugPrint('Wrong password provided for that user.');
       }
     }
   }

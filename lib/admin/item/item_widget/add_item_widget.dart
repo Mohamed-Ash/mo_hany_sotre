@@ -78,8 +78,8 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
   @override
   void initState() {
     super.initState();
-    colorRegion = Colors.blue;
-    colorPlatform = Colors.red;
+    colorRegion  =Colors.red;
+    colorPlatform =Colors.blue;
   }
 
   void startTimer() {
@@ -804,14 +804,14 @@ class _AddItemShippingWidgetState extends State<AddItemShippingWidget> {
 
 /* Future<void> messageHandler(RemoteMessage message) async {
   Data notificationMessage = Data.fromJson(message.data);
-  print('notification from background : ${notificationMessage.title}');
+  debugPrint('notification from background : ${notificationMessage.title}');
 
 }
 
 void firebaseMessagingListener() {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     Data notificationMessage = Data.fromJson(message.data);
-    print('notification from foreground : ${notificationMessage.title}');
+    prdebugPrintint('notification from foreground : ${notificationMessage.title}');
 
   });
 } */

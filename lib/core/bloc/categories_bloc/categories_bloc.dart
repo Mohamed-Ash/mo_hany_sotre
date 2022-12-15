@@ -73,8 +73,8 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       yield CategoriesLoadingState();
       
       var getAllCategories = await categoriesRpoSitory.getCategoriesModel();
-      print('gtetd data ');
-      print('+++===============');
+      debugPrint('gtetd data ');
+      debugPrint('+++===============');
       yield GetCategoriesState(getAllCategories);
 
     }else if(event is AddCategoriesEvent){

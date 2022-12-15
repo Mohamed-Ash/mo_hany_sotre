@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
+
 class CategoryModel{
   final String id;
   final String name;
@@ -19,7 +21,7 @@ class CategoryModel{
 
 
   factory CategoryModel.fromJson(Map<String,dynamic> json){
-    print(json);
+    debugPrint(json.toString());
     return CategoryModel(
       id: json['id'],
       image: json['image'], 

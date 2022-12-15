@@ -164,7 +164,7 @@ class ResetEmailPage extends UserInterface{
           );
         });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 }

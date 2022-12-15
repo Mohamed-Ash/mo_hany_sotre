@@ -141,7 +141,7 @@ class ResetPasswordPage extends UserInterface{
         (value) => Navigator.pushNamedAndRemoveUntil(context, checkEmailPage, (route) => false));  
       // Navigator.pushNamedAndRemoveUntil(context, checkEmailPage, (route) => false);
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 }

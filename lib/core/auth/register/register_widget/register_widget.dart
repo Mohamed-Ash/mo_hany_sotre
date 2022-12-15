@@ -335,7 +335,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
               InkWell(
                 onTap: ()async {
                   UserCredential cred = await signInWithGoogle(context);
-                  print(cred.toString());                
+                  debugPrint(cred.toString());                
                 },
                 child: FormFeilds.continueWith(
                   title: 'Continue with google',
@@ -381,7 +381,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             ),
           ]
         );
-        print('The password provided is too weak.');
+        debugPrint('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         Navigator.of(context).pop();
         FormFeilds.showMyDialog(
@@ -398,11 +398,11 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             ),
           ]  
         );
-        print('The account already exists for that email.');
+        debugPrint('The account already exists for that email.');
       }
       
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }  
   }
   
